@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import type { FunctionComponent } from "react";
 import Image from "next/image";
 
 export const ViewToggle: FunctionComponent = () => {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { RegisterForm } from '../components/auth/RegisterForm';
-import { AuthFormData } from '../types/auth';
+import type { AuthFormData } from '../types/auth';
 
 export default function RegisterPage() {
   const handleRegister = async (data: AuthFormData) => {

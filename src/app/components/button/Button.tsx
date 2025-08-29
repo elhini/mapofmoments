@@ -5,13 +5,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
 }
 
-export const Button: React.FC<ButtonProps> = ({ 
-  children, 
-  isLoading, 
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  isLoading,
   variant = 'primary',
   className = '',
   disabled,
-  ...props 
+  ...props
 }) => {
   const baseClasses = 'w-full py-2 px-4 rounded-md font-medium transition-colors';
   const variants = {

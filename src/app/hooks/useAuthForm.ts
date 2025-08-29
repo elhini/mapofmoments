@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AuthFormData, AuthMode } from '../types/auth';
+import type { AuthFormData, AuthMode } from '../types/auth';
 
 interface UseAuthFormProps {
   mode: AuthMode;
@@ -40,7 +40,7 @@ export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -59,7 +59,7 @@ export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name as keyof AuthFormData]) {
       setErrors(prev => ({

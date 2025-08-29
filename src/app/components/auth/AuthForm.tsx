@@ -4,7 +4,7 @@ import React from 'react';
 import { Input } from '../input/Input';
 import { Button } from '../button/Button';
 import { useAuthForm } from '../../hooks/useAuthForm';
-import { AuthFormProps, AuthMode } from '../../types/auth';
+import type { AuthFormProps, AuthMode } from '../../types/auth';
 
 interface AuthFormComponentProps extends AuthFormProps {
   mode: AuthMode;
