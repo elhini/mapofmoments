@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "stylelint": "stylelint \"**/*.css\"",
+    "stylelint:fix": "stylelint \"**/*.css\" --fix",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:ci": "vitest run"
@@ -34,6 +36,8 @@
     "jsdom": "^26.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "stylelint": "^16",
+    "stylelint-config-standard": "^36"
   }
 }
