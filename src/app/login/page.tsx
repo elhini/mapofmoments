@@ -3,11 +3,16 @@
 import React from 'react';
 import { LoginForm } from '../components/auth/LoginForm';
 import type { AuthFormData } from '../types/auth';
+import { useLoginMutation } from '../hooks/useAuthApi';
 
 export default function LoginPage() {
+  const mutation = useLoginMutation();
+
   const handleLogin = async (data: AuthFormData) => {
-    console.log('Login data:', data);
+    await mutation.mutateAsync({ email: data.email, password: data.password });
   };
 
-  return <LoginForm onSubmit={handleLogin} />;
+  const errorMessage = mutation.error ? mutation.error.statusText || 'Login failed' : '';
+
+  return <LoginForm onSubmit={handleLogin} isLoading={mutation.isPending} error={errorMessage} />;
 }
