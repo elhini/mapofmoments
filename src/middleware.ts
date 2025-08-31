@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getSupabaseServiceClient } from './app/api/supabaseClient';
-import { handleUnauthorizedRequest } from './app/api/auth/authUtils';
+import { getSupabaseServiceClient } from '@/api/supabaseClient';
+import { handleUnauthorizedRequest } from '@/api/auth/authUtils';
 
 export const config = {
     matcher: [

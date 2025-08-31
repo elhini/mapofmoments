@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { createApiClient, ApiError } from '@/app/api/apiClient';
+import { createApiClient, ApiError } from '@/api/apiClient';
 
 describe('apiClient', () => {
     const baseUrl = 'https://api.test';

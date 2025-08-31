@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { RegisterForm } from '../components/auth/RegisterForm';
-import type { AuthFormData } from '../types/auth';
-import { useRegisterMutation } from '../hooks/useAuthApi';
+import { RegisterForm } from '@/components/auth/RegisterForm';
+import type { AuthFormData } from '@/types/auth';
+import { useRegisterMutation } from '@/hooks/useAuthApi';
 
 export default function RegisterPage() {
     const mutation = useRegisterMutation();

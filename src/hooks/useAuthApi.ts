@@ -5,8 +5,8 @@ import {
     type LoginRequest,
     type RegisterRequest,
     type AuthResponse,
-} from '@/app/api/auth/authApi';
-import type { ApiError } from '@/app/api/apiClient';
+} from '@/api/auth/authApi';
+import type { ApiError } from '@/api/apiClient';
 
 export function useLoginMutation() {
     return useMutation<AuthResponse, ApiError, LoginRequest>({

@@ -1,4 +1,4 @@
-import { api } from '@/app/api/apiClient';
+import { api } from '@/api/apiClient';
 
 export type LoginRequest = {
     email: string;

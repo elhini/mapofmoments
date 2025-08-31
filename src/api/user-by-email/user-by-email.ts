@@ -1,4 +1,4 @@
-import { getSupabaseBrowserClient } from '@/app/api/supabaseClient';
+import { getSupabaseBrowserClient } from '@/api/supabaseClient';
 
 // will be used to check user-by-email before inviting them
 export const getUserByEmail = async (email: string) => {

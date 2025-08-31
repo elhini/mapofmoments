@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { LoginForm } from '../components/auth/LoginForm';
-import type { AuthFormData } from '../types/auth';
-import { useLoginMutation } from '../hooks/useAuthApi';
+import { LoginForm } from '@/components/auth/LoginForm';
+import type { AuthFormData } from '@/types/auth';
+import { useLoginMutation } from '@/hooks/useAuthApi';
 
 export default function LoginPage() {
     const mutation = useLoginMutation();

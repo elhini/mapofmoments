@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { login, register, type LoginRequest, type RegisterRequest } from '@/app/api/auth/authApi';
-import { api } from '@/app/api/apiClient';
+import { login, register, type LoginRequest, type RegisterRequest } from '@/api/auth/authApi';
+import { api } from '@/api/apiClient';
 
 // Mock the api client module and its default exported singleton `api`
 vi.mock('@/app/api/apiClient', () => {
