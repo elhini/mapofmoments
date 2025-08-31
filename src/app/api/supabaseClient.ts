@@ -17,7 +17,7 @@ export const getSupabaseBrowserClient = () => {
         throw new Error('Missing NEXT_PUBLIC_SUPABASE_ANON_KEY');
     }
     return createClient(supabaseUrl, supabaseAnonKey);
-}
+};
 
 // Server-only client for privileged operations
 export const getSupabaseServiceClient = () => {
@@ -28,4 +28,4 @@ export const getSupabaseServiceClient = () => {
         throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY');
     }
     return createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
-}
+};

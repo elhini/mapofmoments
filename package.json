@@ -12,6 +12,7 @@
         "stylelint:fix": "stylelint \"**/*.css\" --fix",
         "prettier": "prettier --check .",
         "prettier:fix": "prettier --write .",
+        "prepare": "husky",
         "test": "vitest",
         "test:ui": "vitest --ui",
         "test:ci": "vitest run"
@@ -36,7 +37,9 @@
         "@vitest/ui": "^3.2.4",
         "eslint": "^9",
         "eslint-config-next": "15.5.2",
+        "husky": "^9.1.7",
         "jsdom": "^26.1.0",
+        "lint-staged": "^16.1.5",
         "prettier": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.6.9",
         "stylelint": "^16",
@@ -44,5 +47,18 @@
         "tailwindcss": "^4",
         "typescript": "^5",
         "vitest": "^3.2.4"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{css,scss,sass}": [
+            "stylelint --fix",
+            "prettier --write"
+        ],
+        "*.{json,md,yml,yaml}": [
+            "prettier --write"
+        ]
     }
 }
