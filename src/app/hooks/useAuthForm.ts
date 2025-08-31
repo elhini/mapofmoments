@@ -45,7 +45,7 @@ export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
 
         setIsLoading(true);
         try {
-            await onSubmit(formData);
+            onSubmit(formData);
         } catch (error) {
             console.error('Auth error:', error);
         } finally {
