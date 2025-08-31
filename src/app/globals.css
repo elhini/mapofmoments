@@ -1,4 +1,4 @@
-@import url('tailwindcss');
+@import url('tailwindcss/index');
 
 :root {
     --background: #fff;

@@ -53,7 +53,7 @@
             "eslint --fix",
             "prettier --write"
         ],
-        "*.{css,scss,sass}": [
+        "*.{css}": [
             "stylelint --fix",
             "prettier --write"
         ],
