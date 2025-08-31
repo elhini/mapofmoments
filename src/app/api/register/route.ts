@@ -2,7 +2,6 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from '@/app/api/supabaseClient';
 import crypto from 'crypto';
-import { randomUUID } from 'crypto';
 
 function normalizeEmail(email: string) {
     return email.trim().toLowerCase();
@@ -65,12 +64,11 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Failed to hash password' }, { status: 500 });
     }
 
-    const id = randomUUID();
     const name = username?.trim() || null;
 
     const { data, error } = await supabase
         .from('users')
-        .insert({ id, email: userEmail, password_hash, name })
+        .insert({ email: userEmail, password_hash, name })
         .select('id,email,name,created_at')
         .single();
 
