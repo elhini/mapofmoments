@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from '../supabaseClient';
 
+// api/register
 export async function POST(req: NextRequest) {
     const { email, password, username } = await req.json();
     if (!email || !password) {
