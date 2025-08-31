@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from '../supabaseClient';
+import { buildSignUpOptions, handleAuthorizedRequest } from '../auth/authUtils';
 
 // api/register
 export async function POST(req: NextRequest) {
@@ -10,19 +11,17 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = getSupabaseServiceClient();
-    const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-            data: {
-                display_name: username,
-            },
-        },
-    });
+    const params = { email, password, options: buildSignUpOptions(username || email) };
+    const { data, error } = await supabase.auth.signUp(params);
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 401 });
     }
 
-    return NextResponse.redirect(new URL('/', req.url));
+    const accessToken = data?.session?.access_token;
+    if (!accessToken) {
+        // Registration may require email confirmation, so `session` may be null
+        return NextResponse.redirect(new URL('/verify-email', req.url), 303);
+    }
+    return handleAuthorizedRequest(accessToken, req.url);
 }

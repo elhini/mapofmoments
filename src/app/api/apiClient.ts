@@ -243,6 +243,10 @@ export function createApiClient(opts: ApiClientOptions = {}) {
             });
         }
 
+        if (res.redirected) {
+            window.location.href = res.url;
+        }
+
         const { data } = await parseResponse<R>(res, parseAs);
         return data as R;
     }

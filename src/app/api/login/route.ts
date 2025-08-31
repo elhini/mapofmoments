@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from '../supabaseClient';
+import { handleAuthorizedRequest } from '../auth/authUtils';
 
 // api/login
 export async function POST(req: NextRequest) {
@@ -10,11 +11,17 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = getSupabaseServiceClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const params = { email, password };
+    const { data, error } = await supabase.auth.signInWithPassword(params);
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 401 });
     }
 
-    return NextResponse.redirect(new URL('/', req.url));
+    const accessToken = data?.session?.access_token;
+    if (!accessToken) {
+        // Strange case, but we should handle it
+        return NextResponse.json({ error: 'No access token returned' }, { status: 500 });
+    }
+    return handleAuthorizedRequest(accessToken, req.url);
 }
