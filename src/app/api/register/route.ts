@@ -1,18 +1,18 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getSupabaseServiceClient } from '../supabaseClient';
-import { handleAuthorizedRequest } from '../auth/authUtils';
+import { getSupabaseServiceClient } from '@/api/supabaseClient';
+import { buildSignUpOptions, handleAuthorizedRequest } from '@/api/auth/authUtils';
 
-// api/login
+// api/register
 export async function POST(req: NextRequest) {
-    const { email, password } = await req.json();
+    const { email, password, username } = await req.json();
     if (!email || !password) {
         return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
     const supabase = getSupabaseServiceClient();
-    const params = { email, password };
-    const { data, error } = await supabase.auth.signInWithPassword(params);
+    const params = { email, password, options: buildSignUpOptions(username || email) };
+    const { data, error } = await supabase.auth.signUp(params);
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 401 });
@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
 
     const accessToken = data?.session?.access_token;
     if (!accessToken) {
-        // Strange case, but we should handle it
-        return NextResponse.json({ error: 'No access token returned' }, { status: 500 });
+        // Registration may require email confirmation, so `session` may be null
+        return NextResponse.redirect(new URL('/verify-email', req.url), 303);
     }
     return handleAuthorizedRequest(accessToken, req.url);
 }

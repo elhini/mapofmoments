@@ -1,6 +1,6 @@
 import { getSupabaseBrowserClient } from '@/api/supabaseClient';
 
-// will be used to check user-by-email before inviting them
+// will be used to check users before inviting them
 export const getUserByEmail = async (email: string) => {
     const { data, error } = await getSupabaseBrowserClient()
         .from('users')
