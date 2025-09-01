@@ -4,7 +4,7 @@ export const buildSignUpOptions = (username: string) => ({
     data: { display_name: username },
 });
 
-const SUPABASE_COOKIE_KEY = 'sb-access-token';
+export const SUPABASE_COOKIE_KEY = 'sb-access-token';
 
 export const handleAuthorizedRequest = (accessToken: string, reqUrl: string) => {
     const response = NextResponse.redirect(new URL('/map', reqUrl), 303);
