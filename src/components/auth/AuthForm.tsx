@@ -73,15 +73,15 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                         />
                     </div>
 
-                    {externalError && (
-                        <div className="rounded-md bg-red-50 p-4">
-                            <p className="text-sm text-red-800">{externalError}</p>
-                        </div>
-                    )}
-
                     <Button type="submit" isLoading={isLoading}>
                         {submitText}
                     </Button>
+
+                    {externalError && (
+                        <div className="rounded-md bg-red-50 p-3 font-medium text-red-800">
+                            {externalError}
+                        </div>
+                    )}
 
                     <div className="text-center">
                         <p className="text-sm text-gray-600">

@@ -13,7 +13,7 @@ export const Button: React.FC<ButtonProps> = ({
     disabled,
     ...props
 }) => {
-    const baseClasses = 'w-full py-2 px-4 rounded-md font-medium transition-colors';
+    const baseClasses = 'w-full rounded-md p-3 font-medium transition-colors hover:cursor-pointer';
     const variants = {
         primary: 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400',
         secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 disabled:bg-gray-100',
@@ -23,11 +23,11 @@ export const Button: React.FC<ButtonProps> = ({
         <button
             {...props}
             disabled={disabled || isLoading}
-            className={` ${baseClasses} ${variants[variant]} ${className} `}
+            className={`${baseClasses} ${variants[variant]} ${className}`}
         >
             {isLoading ? (
                 <div className="flex items-center justify-center">
-                    <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"></div>
+                    <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-white"></div>
                 </div>
             ) : (
                 children
