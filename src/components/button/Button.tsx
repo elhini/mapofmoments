@@ -17,7 +17,8 @@ export const Button: React.FC<ButtonProps> = ({
     disabled,
     ...props
 }) => {
-    const baseClasses = 'w-full rounded-md font-medium transition-colors hover:cursor-pointer';
+    const baseClasses =
+        'rounded-md font-medium transition-colors hover:cursor-pointer flex justify-center items-center gap-4';
     const variants = {
         primary: 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400',
         secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 disabled:bg-gray-100',
@@ -41,10 +42,10 @@ export const Button: React.FC<ButtonProps> = ({
             className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${paddings[size]} ${widthClass} ${className}`}
         >
             {isLoading ? (
-                <div className="flex items-center gap-4">
+                <>
                     <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
                     Загрузка...
-                </div>
+                </>
             ) : (
                 children
             )}

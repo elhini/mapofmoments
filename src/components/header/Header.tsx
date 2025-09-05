@@ -2,16 +2,9 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/button/Button';
-import { useRouter } from 'next/navigation';
 
 export const Header = () => {
     const { user, logout } = useAuth();
-    const router = useRouter();
-
-    const onLogout = async () => {
-        await logout();
-        router.push('/login');
-    };
 
     return (
         <header className="flex items-center justify-between bg-gray-800 p-4 text-white">
@@ -27,7 +20,7 @@ export const Header = () => {
                         <p>Loading user...</p>
                     )}
                 </div>
-                <Button onClick={onLogout} size="small">
+                <Button onClick={logout} size="small">
                     Logout
                 </Button>
             </div>
