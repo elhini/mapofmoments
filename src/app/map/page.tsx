@@ -6,9 +6,9 @@ import React from 'react';
 export default function MapPage() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-            Some inspiring text
+            Вдохновляющий текст
             <div className="flex items-center">
-                <Button variant="primary">Add moment</Button>
+                <Button variant="primary">Добавить момент</Button>
             </div>
         </div>
     );

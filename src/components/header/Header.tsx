@@ -12,12 +12,10 @@ export const Header = () => {
             <div>Map of Moments</div>
             <div className="flex items-center gap-4">
                 <div className="w-50 overflow-hidden text-right text-ellipsis whitespace-nowrap">
-                    {user
-                        ? user.email + (username ? ' (' + username + ')' : '')
-                        : 'Loading user...'}
+                    {user ? user.email + (username ? ' (' + username + ')' : '') : 'Загрузка...'}
                 </div>
                 <Button onClick={logout} size="small">
-                    Logout
+                    Выйти
                 </Button>
             </div>
         </header>

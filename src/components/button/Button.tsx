@@ -33,7 +33,7 @@ export const Button: React.FC<ButtonProps> = ({
     };
     const widthClass = width === 'full' ? 'w-full' : 'w-auto';
     const tag = props.href ? 'a' : 'button';
-    const Component = (props: ButtonProps) => createElement(tag, props, children);
+    const Component = (p: ButtonProps) => createElement(tag, p, p.children);
 
     return (
         <Component
