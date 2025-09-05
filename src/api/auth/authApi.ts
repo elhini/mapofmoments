@@ -12,7 +12,17 @@ export type RegisterRequest = {
 };
 
 // You can refine these once the server contracts are defined
-export type AuthResponse = unknown;
+export type AuthResponse = {
+    user: User;
+};
+
+export type User = {
+    id: string;
+    email: string;
+    user_metadata: {
+        display_name?: string;
+    };
+};
 
 export async function login(req: LoginRequest) {
     return api.post<AuthResponse>('api/login', req);
@@ -24,4 +34,8 @@ export async function register(req: RegisterRequest) {
 
 export async function logout() {
     return api.post<AuthResponse>('api/logout', {});
+}
+
+export async function me() {
+    return api.get<User>('api/users/me');
 }

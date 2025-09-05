@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export const buildSignUpOptions = (username: string) => ({
@@ -5,6 +6,11 @@ export const buildSignUpOptions = (username: string) => ({
 });
 
 export const SUPABASE_COOKIE_KEY = 'sb-access-token';
+
+export const getToken = (req: NextRequest) => {
+    const tokenFromHeader = req.headers.get('Authorization')?.replace('Bearer ', '');
+    return tokenFromHeader || req.cookies.get(SUPABASE_COOKIE_KEY)?.value;
+};
 
 export const handleAuthorizedRequest = (accessToken: string, reqUrl: string) => {
     const response = NextResponse.redirect(new URL('/map', reqUrl), 303);

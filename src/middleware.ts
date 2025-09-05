@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getSupabaseServiceClient } from '@/api/supabaseClient';
-import { handleUnauthorizedRequest, SUPABASE_COOKIE_KEY } from '@/api/auth/authUtils';
+import { getToken, handleUnauthorizedRequest } from '@/api/auth/authUtils';
 
 const supabase = getSupabaseServiceClient();
 
@@ -11,9 +11,7 @@ export const config = {
 
 export async function middleware(req: NextRequest) {
     const isRegisterOrLogin = ['/register', '/login'].includes(req.nextUrl.pathname);
-    // Get token from Authorization header or Supabase cookie
-    const tokenFromHeader = req.headers.get('Authorization')?.replace('Bearer ', '');
-    const token = tokenFromHeader || req.cookies.get(SUPABASE_COOKIE_KEY)?.value;
+    const token = getToken(req);
     // Check token existence
     if (!token) {
         if (isRegisterOrLogin) {

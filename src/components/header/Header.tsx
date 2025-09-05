@@ -14,7 +14,9 @@ export const Header = () => {
                     {user ? (
                         <div>
                             <p>{user.email}</p>
-                            {user.user_metadata.name && <p>{user.user_metadata.name}</p>}
+                            {user.user_metadata.display_name && (
+                                <p>{user.user_metadata.display_name}</p>
+                            )}
                         </div>
                     ) : (
                         <p>Loading user...</p>

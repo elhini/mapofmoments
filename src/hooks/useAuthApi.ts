@@ -1,11 +1,13 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
     login,
     logout,
     register,
+    me,
     type LoginRequest,
     type RegisterRequest,
     type AuthResponse,
+    type User,
 } from '@/api/auth/authApi';
 import type { ApiError } from '@/api/apiClient';
 
@@ -24,5 +26,12 @@ export function useLogoutMutation() {
 export function useRegisterMutation() {
     return useMutation<AuthResponse, ApiError, RegisterRequest>({
         mutationFn: register,
+    });
+}
+
+export function useMeQuery() {
+    return useQuery<User, ApiError>({
+        queryKey: ['me'],
+        queryFn: me,
     });
 }
