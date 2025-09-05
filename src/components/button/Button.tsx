@@ -21,7 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
     ...props
 }) => {
     const baseClasses =
-        'rounded-md font-medium transition-colors hover:cursor-pointer flex justify-center items-center gap-4';
+        'rounded-md transition-colors hover:cursor-pointer flex justify-center items-center gap-4';
     const variants = {
         primary: 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400',
         secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 disabled:bg-gray-100',
@@ -34,11 +34,12 @@ export const Button: React.FC<ButtonProps> = ({
     const widthClass = width === 'full' ? 'w-full' : 'w-auto';
     const tag = props.href ? 'a' : 'button';
     const Component = (p: ButtonProps) => createElement(tag, p, p.children);
+    const disabledForButton = props.href ? undefined : disabled || isLoading;
 
     return (
         <Component
             {...props}
-            disabled={disabled || isLoading}
+            disabled={disabledForButton}
             className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${widthClass} ${className}`}
         >
             {isLoading ? (
