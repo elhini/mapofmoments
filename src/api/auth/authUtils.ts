@@ -1,10 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export const buildSignUpOptions = (username: string) => ({
-    data: { display_name: username },
-});
-
 export const SUPABASE_COOKIE_KEY = 'sb-access-token';
 
 export const getToken = (req: NextRequest) => {

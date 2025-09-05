@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from '@/api/supabaseClient';
-import { buildSignUpOptions, handleAuthorizedRequest } from '@/api/auth/authUtils';
+import { handleAuthorizedRequest } from '@/api/auth/authUtils';
 
 // api/register
 export async function POST(req: NextRequest) {
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = getSupabaseServiceClient();
-    const params = { email, password, options: buildSignUpOptions(username || email) };
+    const params = { email, password, options: { data: { username } } };
     const { data, error } = await supabase.auth.signUp(params);
 
     if (error) {

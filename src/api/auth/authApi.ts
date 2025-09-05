@@ -20,7 +20,7 @@ export type User = {
     id: string;
     email: string;
     user_metadata: {
-        display_name?: string;
+        username?: string;
     };
 };
 
