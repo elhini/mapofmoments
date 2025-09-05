@@ -21,3 +21,7 @@ export async function login(req: LoginRequest) {
 export async function register(req: RegisterRequest) {
     return api.post<AuthResponse>('api/register', req);
 }
+
+export async function logout() {
+    return api.post<AuthResponse>('api/logout', {});
+}

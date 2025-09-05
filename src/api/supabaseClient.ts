@@ -10,9 +10,6 @@ if (!supabaseUrl) {
 
 // Browser-only client for public operations
 export const getSupabaseBrowserClient = () => {
-    if (typeof window === 'undefined') {
-        throw new Error('getSupabaseBrowserClient must not be used on the server');
-    }
     if (!supabaseAnonKey) {
         throw new Error('Missing NEXT_PUBLIC_SUPABASE_ANON_KEY');
     }

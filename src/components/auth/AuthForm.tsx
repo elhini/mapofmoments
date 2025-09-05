@@ -73,7 +73,7 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                         />
                     </div>
 
-                    <Button type="submit" isLoading={isLoading}>
+                    <Button type="submit" variant="primary" isLoading={isLoading}>
                         {submitText}
                     </Button>
 
