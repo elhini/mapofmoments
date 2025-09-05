@@ -10,7 +10,7 @@ export const config = {
 };
 
 export async function middleware(req: NextRequest) {
-    const isRegisterOrLogin = ['/register', '/login'].includes(req.nextUrl.pathname);
+    const isRegisterOrLogin = ['/', '/register', '/login'].includes(req.nextUrl.pathname);
     const token = getToken(req);
     // Check token existence
     if (!token) {

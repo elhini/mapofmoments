@@ -1,20 +1,23 @@
-import React from 'react';
+'use client';
+
+import React, { createElement } from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     isLoading?: boolean;
     variant?: 'primary' | 'secondary';
     size?: 'small' | 'medium' | 'large';
     width?: 'full' | 'auto';
+    href?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
     children,
+    className,
+    disabled,
     isLoading,
     variant = 'secondary',
     size = 'medium',
     width = 'auto',
-    className = '',
-    disabled,
     ...props
 }) => {
     const baseClasses =
@@ -24,22 +27,19 @@ export const Button: React.FC<ButtonProps> = ({
         secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 disabled:bg-gray-100',
     };
     const sizes = {
-        small: 'text-sm',
-        medium: 'text-base',
-        large: 'text-lg',
-    };
-    const paddings = {
-        small: 'p-2',
-        medium: 'p-3',
-        large: 'p-4',
+        small: 'text-sm p-2',
+        medium: 'text-base p-3',
+        large: 'text-lg p-4',
     };
     const widthClass = width === 'full' ? 'w-full' : 'w-auto';
+    const tag = props.href ? 'a' : 'button';
+    const Component = (props: ButtonProps) => createElement(tag, props, children);
 
     return (
-        <button
+        <Component
             {...props}
             disabled={disabled || isLoading}
-            className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${paddings[size]} ${widthClass} ${className}`}
+            className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${widthClass} ${className}`}
         >
             {isLoading ? (
                 <>
@@ -49,6 +49,6 @@ export const Button: React.FC<ButtonProps> = ({
             ) : (
                 children
             )}
-        </button>
+        </Component>
     );
 };

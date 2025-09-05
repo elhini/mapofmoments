@@ -8,7 +8,7 @@ export const Header = () => {
     const username = user?.user_metadata.username;
 
     return (
-        <header className="flex items-center justify-between bg-gray-800 p-4 text-white">
+        <header className="top-0 flex items-center justify-between p-4">
             <div>Map of Moments</div>
             <div className="flex items-center gap-4">
                 <div className="w-50 overflow-hidden text-right text-ellipsis whitespace-nowrap">
