@@ -17,15 +17,16 @@ export default function MapPage() {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
-    const { data: moments = [] } = useGetAllMomentsQuery();
+    const { data: moments = [], refetch } = useGetAllMomentsQuery();
 
-    const { mutate } = useCreateMomentMutation();
-    const createMoment = () => {
-        mutate({
+    const { mutateAsync: create } = useCreateMomentMutation();
+    const createMoment = async () => {
+        await create({
             title: 'My point #' + (moments.length + 1),
             description: 'Awesome moment!',
             location: { lng: Math.random() * 360 - 180, lat: Math.random() * 180 - 90 },
         });
+        await refetch();
     };
 
     useEffect(() => {
@@ -38,11 +39,14 @@ export default function MapPage() {
     }, []);
 
     useEffect(() => {
-        const lastMoment = moments.at(-1);
-        if (!mapRef.current || !lastMoment) return;
-        const coords = lastMoment.location.coordinates || [0, 0];
-        new mapboxgl.Marker().setLngLat(coords).addTo(mapRef.current);
-        mapRef.current.panTo(coords);
+        moments.forEach((moment, i) => {
+            if (!mapRef.current) return;
+            const coords = moment.location.coordinates || [0, 0];
+            new mapboxgl.Marker().setLngLat(coords).addTo(mapRef.current);
+            if (i === 0) {
+                mapRef.current?.panTo(coords);
+            }
+        });
     }, [moments]);
 
     return (
