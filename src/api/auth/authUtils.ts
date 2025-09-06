@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { getSupabaseServiceClient } from '@/api/supabaseClient';
 
 export const SUPABASE_COOKIE_KEY = 'sb-access-token';
 
@@ -27,4 +28,12 @@ export const handleUnauthorizedRequest = (pathname: string, reqUrl: string) => {
     const response = NextResponse.redirect(new URL('/login', reqUrl));
     response.cookies.delete(SUPABASE_COOKIE_KEY);
     return response;
+};
+
+export const getCurrentUser = async (req: NextRequest) => {
+    const supabase = getSupabaseServiceClient();
+    const token = getToken(req);
+    const { data } = await supabase.auth.getUser(token);
+
+    return data?.user;
 };

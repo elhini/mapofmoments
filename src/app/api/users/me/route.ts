@@ -1,16 +1,13 @@
-import { getToken } from '@/api/auth/authUtils';
-import { getSupabaseServiceClient } from '@/api/supabaseClient';
+import { getCurrentUser } from '@/api/auth/authUtils';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-    const supabase = getSupabaseServiceClient();
-    const token = getToken(req);
-    const { data, error } = await supabase.auth.getUser(token);
+    const user = await getCurrentUser(req);
 
-    if (error || !data?.user) {
+    if (!user) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    return NextResponse.json(data.user);
+    return NextResponse.json(user);
 }
