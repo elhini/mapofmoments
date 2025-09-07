@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import type { Map } from 'mapbox-gl';
+import type { LngLat, Map } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 
 import { MomentForm } from '@/components/moment-form/MomentForm';
@@ -17,14 +17,16 @@ const accessToken =
 export default function MapPage() {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    const [location, setLocation] = useState({ lng: 0, lat: 0 });
+    const [location, setLocation] = useState<LngLat>();
+    const [momentId, setMomentId] = useState<string>();
 
     const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
+    const moment = moments.find((m) => m.id === momentId);
 
     const { mutateAsync: create } = useCreateMomentMutation();
     const createMoment = async (formData: MomentFormData) => {
-        await create({ ...formData, location });
-        setLocation({ lng: 0, lat: 0 });
+        await create({ ...formData, location: location || { lng: 0, lat: 0 } });
+        setLocation(undefined);
         await refetch();
     };
 
@@ -47,7 +49,11 @@ export default function MapPage() {
         moments.forEach((moment, i) => {
             if (!mapRef.current) return;
             const coords = moment.location.coordinates || [0, 0];
-            new mapboxgl.Marker().setLngLat(coords).addTo(mapRef.current);
+            const marker = new mapboxgl.Marker().setLngLat(coords).addTo(mapRef.current);
+            marker.getElement().addEventListener('click', (e) => {
+                e.stopPropagation();
+                setMomentId(moment.id);
+            });
             if (i === 0) {
                 mapRef.current?.panTo(coords);
             }
@@ -57,8 +63,8 @@ export default function MapPage() {
     return (
         <>
             <div id="map-container" ref={mapContainerRef} />
-            {location.lng ? (
-                <MomentForm mode="create" onSubmit={createMoment} />
+            {location || moment ? (
+                <MomentForm data={moment} onSubmit={createMoment} />
             ) : (
                 <div
                     id="call-to-action"

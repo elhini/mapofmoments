@@ -1,16 +1,14 @@
-import { useState } from 'react';
-import type { MomentFormData, MomentFormMode } from '@/types/moment';
+import { useEffect, useState } from 'react';
+import type { MomentFormData } from '@/types/moment';
 
 interface UseMomentFormProps {
-    mode: MomentFormMode;
+    data?: MomentFormData;
     onSubmit: (data: MomentFormData) => void;
 }
 
-export const useMomentForm = ({ onSubmit }: UseMomentFormProps) => {
-    const [formData, setFormData] = useState<MomentFormData>({
-        title: '',
-        description: '',
-    });
+export const useMomentForm = ({ data, onSubmit }: UseMomentFormProps) => {
+    const [formData, setFormData] = useState<MomentFormData>(data || { title: '' });
+    useEffect(() => setFormData(data || { title: '' }), [data]);
     const [errors, setErrors] = useState<Partial<MomentFormData>>({});
     const [isLoading, setIsLoading] = useState(false);
 

@@ -7,7 +7,7 @@ header {
     position: fixed;
     width: 100%;
     z-index: 1;
-    background: linear-gradient(#000, #07172a);
+    background: linear-gradient(rgb(0 0 0), rgb(0 0 0 / 0%));
 }
 
 #map-container {

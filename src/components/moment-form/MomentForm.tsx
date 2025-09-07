@@ -4,14 +4,14 @@ import React from 'react';
 import { Input } from '../input/Input';
 import { Button } from '../button/Button';
 import { useMomentForm } from '@/hooks/useMomentForm';
-import type { MomentFormProps, MomentFormMode } from '@/types/moment';
+import type { MomentFormProps, MomentFormData } from '@/types/moment';
 
 interface MomentFormComponentProps extends MomentFormProps {
-    mode: MomentFormMode;
+    data?: MomentFormData;
 }
 
 export const MomentForm: React.FC<MomentFormComponentProps> = ({
-    mode,
+    data,
     onSubmit,
     isLoading: externalLoading,
     error: externalError,
@@ -22,10 +22,10 @@ export const MomentForm: React.FC<MomentFormComponentProps> = ({
         isLoading: internalLoading,
         handleChange,
         handleSubmit,
-    } = useMomentForm({ mode, onSubmit });
+    } = useMomentForm({ data, onSubmit });
 
     const isLoading = externalLoading || internalLoading;
-    const submitText = mode === 'create' ? 'Создать' : 'Изменить';
+    const submitText = data ? 'Изменить' : 'Создать';
 
     return (
         <div className="fixed top-20 left-5 flex flex-col items-center justify-center gap-8">
