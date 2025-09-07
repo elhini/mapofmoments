@@ -10,4 +10,4 @@ export interface AuthFormProps {
     error?: string;
 }
 
-export type AuthMode = 'login' | 'register';
+export type AuthFormMode = 'login' | 'register';

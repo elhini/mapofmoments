@@ -3,7 +3,7 @@ import { api } from '@/api/apiClient';
 export type Moment = {
     id: string;
     title: string;
-    description: string;
+    description?: string;
     location: { coordinates: [number, number] };
 };
 

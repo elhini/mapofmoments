@@ -4,10 +4,10 @@ import React from 'react';
 import { Input } from '../input/Input';
 import { Button } from '../button/Button';
 import { useAuthForm } from '@/hooks/useAuthForm';
-import type { AuthFormProps, AuthMode } from '@/types/auth';
+import type { AuthFormProps, AuthFormMode } from '@/types/auth';
 
 interface AuthFormComponentProps extends AuthFormProps {
-    mode: AuthMode;
+    mode: AuthFormMode;
 }
 
 export const AuthForm: React.FC<AuthFormComponentProps> = ({

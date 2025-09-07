@@ -1,11 +1,12 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import type { Map } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 
-import { Button } from '@/components/button/Button';
+import { MomentForm } from '@/components/moment-form/MomentForm';
 import { useCreateMomentMutation, useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
+import type { MomentFormData } from '@/types/moment';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './page.css';
@@ -16,24 +17,28 @@ const accessToken =
 export default function MapPage() {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
+    const [location, setLocation] = useState({ lng: 0, lat: 0 });
 
-    const { data: moments = [], refetch } = useGetAllMomentsQuery();
+    const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
 
     const { mutateAsync: create } = useCreateMomentMutation();
-    const createMoment = async () => {
-        await create({
-            title: 'My point #' + (moments.length + 1),
-            description: 'Awesome moment!',
-            location: { lng: Math.random() * 360 - 180, lat: Math.random() * 180 - 90 },
-        });
+    const createMoment = async (formData: MomentFormData) => {
+        await create({ ...formData, location });
+        setLocation({ lng: 0, lat: 0 });
         await refetch();
     };
 
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
-        mapRef.current = new mapboxgl.Map({
-            container: mapContainerRef.current || document.body,
+        const map = new mapboxgl.Map({ container: mapContainerRef.current || document.body });
+        map.addInteraction('click-to-create', {
+            type: 'click',
+            handler: (e) => {
+                setLocation(e.lngLat);
+                new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
+            },
         });
+        mapRef.current = map;
 
         return () => mapRef.current?.remove();
     }, []);
@@ -52,14 +57,18 @@ export default function MapPage() {
     return (
         <>
             <div id="map-container" ref={mapContainerRef} />
-            <div id="call-to-action" className="flex flex-col items-center gap-4 rounded-xl p-4">
-                Моментов в базе: {moments.length}
-                <div className="flex items-center">
-                    <Button variant="primary" onClick={createMoment}>
-                        Добавить момент
-                    </Button>
+            {location.lng ? (
+                <MomentForm mode="create" onSubmit={createMoment} />
+            ) : (
+                <div
+                    id="call-to-action"
+                    className="flex flex-col items-center gap-4 rounded-xl p-4"
+                >
+                    Моментов в базе: {isPending ? '...' : moments.length}
+                    <br />
+                    Чтобы добавить ещё один, выберите точку на карте
                 </div>
-            </div>
+            )}
         </>
     );
 }

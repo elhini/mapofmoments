@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import type { AuthFormData, AuthMode } from '@/types/auth';
+import type { AuthFormData, AuthFormMode } from '@/types/auth';
 
 interface UseAuthFormProps {
-    mode: AuthMode;
+    mode: AuthFormMode;
     onSubmit: (data: AuthFormData) => void;
 }
 
