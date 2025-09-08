@@ -3,10 +3,10 @@ import { getSupabaseServiceClient } from '@/api/supabaseClient';
 import { getCurrentUser } from '@/api/auth/authUtils';
 
 // Изменение существующей точки
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
-
+    const { id } = await context.params;
     const body = await req.json();
     const { title, description, location } = body;
     if (!title || !location?.lng || !location?.lat) {
@@ -20,7 +20,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
             description,
             location: `SRID=4326;POINT(${location.lng} ${location.lat})`,
         })
-        .eq('id', params.id)
+        .eq('id', id)
         .eq('user_id', user?.id)
         .select()
         .single();
