@@ -33,7 +33,7 @@ export default function MapPage() {
     const { mutateAsync: update } = useUpdateMomentMutation(momentId);
     const submitMoment = async (formData: MomentFormData) => {
         const submit = momentId ? update : create;
-        await submit({ ...formData, location: formData ? formData.location : location });
+        await submit({ ...formData, location: momentId ? formData.location : location });
         setLocation(undefined);
         await refetch();
     };
