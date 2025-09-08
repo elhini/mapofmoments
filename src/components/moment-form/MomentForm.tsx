@@ -31,7 +31,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     const submitText = data ? 'Изменить' : 'Создать';
 
     return (
-        <div className="fixed top-20 left-5 flex flex-col items-center justify-center gap-8">
+        <div className="fixed top-0 bottom-0 left-5 flex flex-col items-center justify-center gap-8">
             <form className="w-[220px]" onSubmit={handleSubmit}>
                 <Input
                     label="Заголовок"

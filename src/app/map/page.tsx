@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import type { LngLat, Map } from 'mapbox-gl';
+import type { LngLat, Map, Marker } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 
 import { MomentForm } from '@/components/moment-form/MomentForm';
@@ -21,6 +21,7 @@ const accessToken =
 
 export default function MapPage() {
     const mapRef = useRef<Map>(null);
+    const markerRef = useRef<Marker>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const [location, setLocation] = useState<LngLat>();
     const [momentId, setMomentId] = useState<string>('');
@@ -47,10 +48,12 @@ export default function MapPage() {
         map.addInteraction('click-to-create', {
             type: 'click',
             handler: (e) => {
+                markerRef.current?.remove();
                 setLocation(e.lngLat);
                 setMomentId('');
                 const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
                 mapRef.current?.panTo(marker.getLngLat());
+                markerRef.current = marker;
             },
         });
         mapRef.current = map;
@@ -87,7 +90,9 @@ export default function MapPage() {
                 >
                     {isPending ? 'Загрузка моментов...' : 'Сохранено моментов: ' + moments.length}
                     <br />
-                    Чтобы добавить ещё один, выберите точку на карте
+                    Чтобы добавить ещё один,
+                    <br />
+                    выберите точку на карте
                 </div>
             )}
         </>
