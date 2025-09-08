@@ -10,6 +10,7 @@ import {
     useUpdateMomentMutation,
     useGetAllMomentsQuery,
 } from '@/hooks/useMomentsApi';
+import { buildMomentForForm } from '@/utils/buildMomentForForm';
 import type { MomentFormData } from '@/types/moment';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -26,10 +27,7 @@ export default function MapPage() {
 
     const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
     const moment = moments.find((m) => m.id === momentId);
-    const locationForForm = moment
-        ? { lng: moment.location.coordinates[0], lat: moment.location.coordinates[1] }
-        : undefined;
-    const momentForForm = { ...moment, title: moment?.title || '', location: locationForForm };
+    const momentForForm = moment ? buildMomentForForm(moment) : undefined;
 
     const { mutateAsync: create } = useCreateMomentMutation();
     const { mutateAsync: update } = useUpdateMomentMutation(momentId);
@@ -42,11 +40,15 @@ export default function MapPage() {
 
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
-        const map = new mapboxgl.Map({ container: mapContainerRef.current || document.body });
+        const map = new mapboxgl.Map({
+            container: mapContainerRef.current || document.body,
+            zoom: 2.3,
+        });
         map.addInteraction('click-to-create', {
             type: 'click',
             handler: (e) => {
                 setLocation(e.lngLat);
+                setMomentId('');
                 new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
             },
         });
@@ -62,6 +64,7 @@ export default function MapPage() {
             const marker = new mapboxgl.Marker().setLngLat(coords).addTo(mapRef.current);
             marker.getElement().addEventListener('click', (e) => {
                 e.stopPropagation();
+                setLocation(undefined);
                 setMomentId(moment.id);
             });
             if (i === 0) {
@@ -80,7 +83,7 @@ export default function MapPage() {
                     id="call-to-action"
                     className="flex flex-col items-center gap-4 rounded-xl p-4"
                 >
-                    Моментов в базе: {isPending ? '...' : moments.length}
+                    {isPending ? 'Загрузка моментов...' : 'Сохранено моментов: ' + moments.length}
                     <br />
                     Чтобы добавить ещё один, выберите точку на карте
                 </div>
