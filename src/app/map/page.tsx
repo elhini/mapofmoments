@@ -5,7 +5,11 @@ import type { LngLat, Map } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 
 import { MomentForm } from '@/components/moment-form/MomentForm';
-import { useCreateMomentMutation, useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
+import {
+    useCreateMomentMutation,
+    useUpdateMomentMutation,
+    useGetAllMomentsQuery,
+} from '@/hooks/useMomentsApi';
 import type { MomentFormData } from '@/types/moment';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -18,14 +22,20 @@ export default function MapPage() {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const [location, setLocation] = useState<LngLat>();
-    const [momentId, setMomentId] = useState<string>();
+    const [momentId, setMomentId] = useState<string>('');
 
     const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
     const moment = moments.find((m) => m.id === momentId);
+    const locationForForm = moment
+        ? { lng: moment.location.coordinates[0], lat: moment.location.coordinates[1] }
+        : undefined;
+    const momentForForm = { ...moment, title: moment?.title || '', location: locationForForm };
 
     const { mutateAsync: create } = useCreateMomentMutation();
-    const createMoment = async (formData: MomentFormData) => {
-        await create({ ...formData, location: location || { lng: 0, lat: 0 } });
+    const { mutateAsync: update } = useUpdateMomentMutation(momentId);
+    const submitMoment = async (formData: MomentFormData) => {
+        const submit = momentId ? update : create;
+        await submit({ ...formData, location: formData ? formData.location : location });
         setLocation(undefined);
         await refetch();
     };
@@ -64,7 +74,7 @@ export default function MapPage() {
         <>
             <div id="map-container" ref={mapContainerRef} />
             {location || moment ? (
-                <MomentForm data={moment} onSubmit={createMoment} />
+                <MomentForm data={momentForForm} onSubmit={submitMoment} />
             ) : (
                 <div
                     id="call-to-action"

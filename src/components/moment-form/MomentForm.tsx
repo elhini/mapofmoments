@@ -4,13 +4,16 @@ import React from 'react';
 import { Input } from '../input/Input';
 import { Button } from '../button/Button';
 import { useMomentForm } from '@/hooks/useMomentForm';
-import type { MomentFormProps, MomentFormData } from '@/types/moment';
+import type { MomentFormData } from '@/types/moment';
 
-interface MomentFormComponentProps extends MomentFormProps {
+export type MomentFormProps = {
+    onSubmit: (data: MomentFormData) => void;
     data?: MomentFormData;
-}
+    isLoading?: boolean;
+    error?: string;
+};
 
-export const MomentForm: React.FC<MomentFormComponentProps> = ({
+export const MomentForm: React.FC<MomentFormProps> = ({
     data,
     onSubmit,
     isLoading: externalLoading,

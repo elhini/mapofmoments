@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
     const { title, description, location } = body;
-    if (!title || !location.lng || !location.lat) {
+    if (!title || !location?.lng || !location?.lat) {
         return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 

@@ -1,12 +1,5 @@
-export interface MomentFormData {
-    title: string;
-    description?: string;
-}
+import type { MomentFormRequest } from '@/api/moments/momentsApi';
 
-export interface MomentFormProps {
-    onSubmit: (data: MomentFormData) => void;
-    isLoading?: boolean;
-    error?: string;
-}
+export type MomentFormData = MomentFormRequest;
 
 export type MomentFormMode = 'create' | 'update';
