@@ -49,7 +49,8 @@ export default function MapPage() {
             handler: (e) => {
                 setLocation(e.lngLat);
                 setMomentId('');
-                new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
+                const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
+                mapRef.current?.panTo(marker.getLngLat());
             },
         });
         mapRef.current = map;
@@ -66,6 +67,7 @@ export default function MapPage() {
                 e.stopPropagation();
                 setLocation(undefined);
                 setMomentId(moment.id);
+                mapRef.current?.panTo(marker.getLngLat());
             });
             if (i === 0) {
                 mapRef.current?.panTo(coords);
