@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { SUPABASE_COOKIE_KEY } from '@/app/api/authUtils';
-import { getSupabaseServiceClient } from '@/app/api/supabaseServiceClient';
+import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {

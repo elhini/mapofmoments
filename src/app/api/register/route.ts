@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getSupabaseServiceClient } from '@/app/api/supabaseServiceClient';
+import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { handleAuthorizedRequest } from '@/app/api/authUtils';
 
 // api/register

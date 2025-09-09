@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getSupabaseServiceClient } from '@/app/api/supabaseServiceClient';
+import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getToken, handleUnauthorizedRequest } from '@/app/api/authUtils';
 
 const supabase = getSupabaseServiceClient();
