@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import type { LngLat, Map, Marker } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
+import { Card } from '@heroui/card';
 
 import { MomentForm } from '@/components/moment-form/MomentForm';
 import {
@@ -25,7 +26,10 @@ export default function MapPage() {
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const [location, setLocation] = useState<LngLat>();
     const [momentId, setMomentId] = useState<string>('');
-    const closeForm = () => setMomentId('');
+    const closeForm = () => {
+        setLocation(undefined);
+        setMomentId('');
+    };
 
     const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
     const moment = moments.find((m) => m.id === momentId);
@@ -91,16 +95,13 @@ export default function MapPage() {
                     isLoading={isSubmitting}
                 />
             ) : (
-                <div
-                    id="call-to-action"
-                    className="flex flex-col items-center gap-4 rounded-xl p-4"
-                >
-                    {isPending ? 'Загрузка моментов...' : 'Сохранено моментов: ' + moments.length}
+                <Card id="call-to-action" className="p-3">
+                    {isPending ? 'Загрузка моментов... ' : 'Сохранено моментов: ' + moments.length}
                     <br />
                     Чтобы добавить ещё один,
                     <br />
                     выберите точку на карте
-                </div>
+                </Card>
             )}
         </>
     );

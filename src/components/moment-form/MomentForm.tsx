@@ -4,6 +4,7 @@ import React from 'react';
 import { Form } from '@heroui/form';
 import { Input, Textarea } from '@heroui/input';
 import { Button } from '@heroui/button';
+import { Modal, ModalContent } from '@heroui/modal';
 import { useMomentForm } from '@/hooks/useMomentForm';
 import type { MomentFormData } from '@/types/moment';
 
@@ -34,41 +35,43 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     const submitText = data ? 'Изменить' : 'Создать';
 
     return (
-        <div className="fixed top-0 bottom-0 left-5 flex flex-col items-center justify-center gap-8">
-            <Form className="w-[220px]" onSubmit={handleSubmit} validationErrors={errors}>
-                <Input
-                    label="Заголовок"
-                    name="title"
-                    type="text"
-                    value={formData.title || ''}
-                    onChange={handleChange}
-                    isRequired
-                    errorMessage="Заголовок обязателен"
-                />
+        <Modal className="fixed top-[50%] left-[50%] w-[240px] p-3 sm:m-0" isOpen onClose={onClose}>
+            <ModalContent>
+                <Form onSubmit={handleSubmit} validationErrors={errors}>
+                    <Input
+                        label="Заголовок"
+                        name="title"
+                        type="text"
+                        value={formData.title || ''}
+                        onChange={handleChange}
+                        isRequired
+                        errorMessage="Заголовок обязателен"
+                    />
 
-                <Textarea
-                    label="Описание"
-                    name="description"
-                    type="text"
-                    value={formData.description || ''}
-                    onChange={handleChange}
-                />
+                    <Textarea
+                        label="Описание"
+                        name="description"
+                        type="text"
+                        value={formData.description || ''}
+                        onChange={handleChange}
+                    />
 
-                <div className="flex w-full justify-between gap-2">
-                    <Button type="submit" color="primary" isLoading={isLoading}>
-                        {submitText}
-                    </Button>
-                    <Button type="button" onPress={onClose}>
-                        Закрыть
-                    </Button>
-                </div>
-
-                {externalError && (
-                    <div className="rounded-md bg-red-50 p-3 font-medium text-red-800">
-                        {externalError}
+                    <div className="flex w-full justify-between gap-2">
+                        <Button type="submit" color="primary" isLoading={isLoading}>
+                            {submitText}
+                        </Button>
+                        <Button type="button" onPress={onClose}>
+                            Закрыть
+                        </Button>
                     </div>
-                )}
-            </Form>
-        </div>
+
+                    {externalError && (
+                        <div className="rounded-md bg-red-50 p-3 font-medium text-red-800">
+                            {externalError}
+                        </div>
+                    )}
+                </Form>
+            </ModalContent>
+        </Modal>
     );
 };
