@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AuthForm } from '@/components/auth/AuthForm';
+import { AuthForm } from '@/components/auth-form/AuthForm';
 import type { AuthFormData } from '@/types/auth';
 import { useLoginMutation } from '@/hooks/useAuthApi';
 

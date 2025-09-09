@@ -1,10 +1,11 @@
 'use client';
 
-import { useAuth } from '@/hooks/useAuth';
+import { useLogoutMutation, useMeQuery } from '@/hooks/useAuthApi';
 import { Button } from '@heroui/button';
 
 export const Header = () => {
-    const { user, logout } = useAuth();
+    const { data: user } = useMeQuery();
+    const { mutate: logout } = useLogoutMutation();
     const username = user?.user_metadata.username;
 
     return (
@@ -14,7 +15,7 @@ export const Header = () => {
                 <div className="w-50 overflow-hidden text-right text-ellipsis whitespace-nowrap">
                     {user ? user.email + (username ? ' (' + username + ')' : '') : 'Загрузка...'}
                 </div>
-                <Button onPress={logout} size="sm">
+                <Button onPress={() => logout()} size="sm">
                     Выйти
                 </Button>
             </div>
