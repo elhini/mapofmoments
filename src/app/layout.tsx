@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
+import { HeroUIProvider } from '@heroui/system';
 import { Providers } from './providers';
 import { AppLayout } from './AppLayout';
+
+import './globals.css';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -26,12 +28,14 @@ export default function RootLayout({
     children: ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <Providers>
-                    <AppLayout>{children}</AppLayout>
-                </Providers>
-            </body>
-        </html>
+        <HeroUIProvider>
+            <html lang="en">
+                <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+                    <Providers>
+                        <AppLayout>{children}</AppLayout>
+                    </Providers>
+                </body>
+            </html>
+        </HeroUIProvider>
     );
 }

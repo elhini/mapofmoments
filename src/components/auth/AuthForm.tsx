@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Input } from '../input/Input';
-import { Button } from '../button/Button';
+import { Form } from '@heroui/form';
+import { Input } from '@heroui/input';
+import { Button } from '@heroui/button';
 import { useAuthForm } from '@/hooks/useAuthForm';
 import type { AuthFormProps, AuthFormMode } from '@/types/auth';
 
@@ -32,7 +33,7 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
         <div className="flex min-h-screen w-full flex-col items-center justify-center gap-8">
             <h2 className="text-center text-3xl">{title}</h2>
 
-            <form className="w-60" onSubmit={handleSubmit}>
+            <Form className="w-60" onSubmit={handleSubmit} validationErrors={errors}>
                 {mode === 'register' && (
                     <Input
                         label="Логин"
@@ -40,9 +41,8 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                         type="text"
                         value={formData.username}
                         onChange={handleChange}
-                        error={errors.username}
-                        placeholder="Введите ваш логин"
-                        required
+                        isRequired
+                        errorMessage="Логин обязателен"
                     />
                 )}
 
@@ -52,9 +52,8 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    error={errors.email}
-                    placeholder="Введите ваш email"
-                    required
+                    isRequired
+                    errorMessage="Email не корректный"
                 />
 
                 <Input
@@ -63,12 +62,11 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                     type="password"
                     value={formData.password}
                     onChange={handleChange}
-                    error={errors.password}
-                    placeholder="Введите ваш пароль"
-                    required
+                    isRequired
+                    errorMessage="Пароль не корректный"
                 />
 
-                <Button type="submit" variant="primary" width="full" isLoading={isLoading}>
+                <Button type="submit" color="primary" fullWidth isLoading={isLoading}>
                     {submitText}
                 </Button>
 
@@ -97,7 +95,7 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                         )}
                     </p>
                 </div>
-            </form>
+            </Form>
         </div>
     );
 };

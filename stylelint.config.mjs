@@ -6,20 +6,9 @@ export default {
         'at-rule-no-unknown': [
             true,
             {
-                ignoreAtRules: [
-                    'tailwind',
-                    'apply',
-                    'layer',
-                    'config',
-                    'screen',
-                    'theme',
-                    'variants',
-                    'responsive',
-                    'utility',
-                ],
+                ignoreAtRules: ['theme', 'plugin', 'source'],
             },
         ],
-        // This can be noisy with utility-first CSS
-        'no-descending-specificity': null,
+        'import-notation': 'string',
     },
 };

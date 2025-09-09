@@ -6,17 +6,19 @@ interface UseAuthFormProps {
     onSubmit: (data: AuthFormData) => void;
 }
 
+type FormErrors = Partial<AuthFormData>;
+
 export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
     const [formData, setFormData] = useState<AuthFormData>({
         email: '',
         password: '',
         username: '',
     });
-    const [errors, setErrors] = useState<Partial<AuthFormData>>({});
+    const [errors, setErrors] = useState<FormErrors>({});
     const [isLoading, setIsLoading] = useState(false);
 
     const validateForm = (): boolean => {
-        const newErrors: Partial<AuthFormData> = {};
+        const newErrors: FormErrors = {};
 
         if (!formData.email) {
             newErrors.email = 'Email обязателен';
@@ -31,17 +33,19 @@ export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
         }
 
         if (mode === 'register' && !formData.username) {
-            newErrors.username = 'Имя пользователя обязательно';
+            newErrors.username = 'Логин обязателен';
         }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!validateForm()) return;
+
+        // const data = Object.fromEntries(new FormData(e.currentTarget));
 
         setIsLoading(true);
         try {

@@ -25,19 +25,21 @@ export default function MapPage() {
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const [location, setLocation] = useState<LngLat>();
     const [momentId, setMomentId] = useState<string>('');
+    const closeForm = () => setMomentId('');
 
     const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
     const moment = moments.find((m) => m.id === momentId);
     const momentForForm = moment ? buildMomentForForm(moment) : undefined;
 
-    const { mutateAsync: create } = useCreateMomentMutation();
-    const { mutateAsync: update } = useUpdateMomentMutation(momentId);
+    const { mutateAsync: create, isPending: isCreating } = useCreateMomentMutation();
+    const { mutateAsync: update, isPending: isUpdating } = useUpdateMomentMutation(momentId);
     const submitMoment = async (formData: MomentFormData) => {
         const submit = momentId ? update : create;
         await submit({ ...formData, location: momentId ? formData.location : location });
         setLocation(undefined);
         await refetch();
     };
+    const isSubmitting = isCreating || isUpdating;
 
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
@@ -82,7 +84,12 @@ export default function MapPage() {
         <>
             <div id="map-container" ref={mapContainerRef} />
             {location || moment ? (
-                <MomentForm data={momentForForm} onSubmit={submitMoment} />
+                <MomentForm
+                    data={momentForForm}
+                    onSubmit={submitMoment}
+                    onClose={closeForm}
+                    isLoading={isSubmitting}
+                />
             ) : (
                 <div
                     id="call-to-action"

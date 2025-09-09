@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/button/Button';
+import { Button } from '@heroui/button';
 
 export const Header = () => {
     const { user, logout } = useAuth();
@@ -14,7 +14,7 @@ export const Header = () => {
                 <div className="w-50 overflow-hidden text-right text-ellipsis whitespace-nowrap">
                     {user ? user.email + (username ? ' (' + username + ')' : '') : 'Загрузка...'}
                 </div>
-                <Button onClick={logout} size="small">
+                <Button onPress={logout} size="sm">
                     Выйти
                 </Button>
             </div>

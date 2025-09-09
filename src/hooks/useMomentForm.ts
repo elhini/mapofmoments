@@ -6,14 +6,16 @@ interface UseMomentFormProps {
     onSubmit: (data: MomentFormData) => void;
 }
 
+type FormErrors = Partial<MomentFormData>;
+
 export const useMomentForm = ({ data, onSubmit }: UseMomentFormProps) => {
     const [formData, setFormData] = useState<MomentFormData>(data || { title: '' });
     useEffect(() => setFormData(data || { title: '' }), [data]);
-    const [errors, setErrors] = useState<Partial<MomentFormData>>({});
+    const [errors, setErrors] = useState<FormErrors>({});
     const [isLoading, setIsLoading] = useState(false);
 
     const validateForm = (): boolean => {
-        const newErrors: Partial<MomentFormData> = {};
+        const newErrors: FormErrors = {};
 
         if (!formData.title) {
             newErrors.title = 'Заголовок обязателен';
@@ -23,10 +25,12 @@ export const useMomentForm = ({ data, onSubmit }: UseMomentFormProps) => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!validateForm()) return;
+
+        // const data = Object.fromEntries(new FormData(e.currentTarget));
 
         setIsLoading(true);
         try {

@@ -1,4 +1,5 @@
-import { Button } from '@/components/button/Button';
+import { Button } from '@heroui/button';
+import { Link } from '@heroui/link';
 
 export default function HomePage() {
     return (
@@ -6,8 +7,12 @@ export default function HomePage() {
             <h2 className="text-center text-3xl">Map of Moments</h2>
 
             <div className="flex gap-4">
-                <Button href="/register">Регистрация</Button>
-                <Button href="/login">Вход</Button>
+                <Button as={Link} href="/register">
+                    Регистрация
+                </Button>
+                <Button as={Link} href="/login">
+                    Вход
+                </Button>
             </div>
         </div>
     );
