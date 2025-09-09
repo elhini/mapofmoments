@@ -1,13 +1,13 @@
-export interface AuthFormData {
+export type AuthFormData = {
     email: string;
     password: string;
-    username?: string;
-}
+    username: string;
+};
 
-export interface AuthFormProps {
+export type AuthFormProps = {
     onSubmit: (data: AuthFormData) => void;
     isLoading?: boolean;
     error?: string;
-}
+};
 
 export type AuthFormMode = 'login' | 'register';
