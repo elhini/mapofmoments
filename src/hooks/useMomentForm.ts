@@ -6,7 +6,7 @@ interface UseMomentFormProps {
     onSubmit: (data: MomentFormData) => void;
 }
 
-type FormErrors = Partial<MomentFormData>;
+type FormErrors = Partial<Omit<MomentFormData, 'location'>>;
 
 export const useMomentForm = ({ data, onSubmit }: UseMomentFormProps) => {
     const [formData, setFormData] = useState<MomentFormData>(data || { title: '' });
@@ -50,7 +50,7 @@ export const useMomentForm = ({ data, onSubmit }: UseMomentFormProps) => {
         }));
 
         // Clear error when user starts typing
-        if (errors[name as keyof MomentFormData]) {
+        if (errors[name as keyof FormErrors]) {
             setErrors((prev) => ({
                 ...prev,
                 [name]: undefined,

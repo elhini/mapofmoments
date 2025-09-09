@@ -65,7 +65,7 @@ export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
         }));
 
         // Clear error when user starts typing
-        if (errors[name as keyof AuthFormData]) {
+        if (errors[name as keyof FormErrors]) {
             setErrors((prev) => ({
                 ...prev,
                 [name]: undefined,
