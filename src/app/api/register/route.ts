@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getSupabaseServiceClient } from '@/api/supabaseClient';
-import { handleAuthorizedRequest } from '@/api/auth/authUtils';
+import { getSupabaseServiceClient } from '@/app/api/supabaseServiceClient';
+import { handleAuthorizedRequest } from '@/app/api/authUtils';
 
 // api/register
 export async function POST(req: NextRequest) {

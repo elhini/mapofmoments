@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServiceClient } from '@/api/supabaseClient';
-import { getCurrentUser } from '@/api/auth/authUtils';
+import { getSupabaseServiceClient } from '@/app/api/supabaseServiceClient';
+import { getCurrentUser } from '@/app/api/authUtils';
 
 // Добавление новой точки
 export async function POST(req: NextRequest) {

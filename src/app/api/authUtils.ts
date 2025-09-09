@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getSupabaseServiceClient } from '@/api/supabaseClient';
+import { getSupabaseServiceClient } from './supabaseServiceClient';
 
 export const SUPABASE_COOKIE_KEY = 'sb-access-token';
 

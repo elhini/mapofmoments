@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServiceClient } from '@/api/supabaseClient';
-import { getCurrentUser } from '@/api/auth/authUtils';
+import { getSupabaseServiceClient } from '@/app/api/supabaseServiceClient';
+import { getCurrentUser } from '@/app/api/authUtils';
 
 // Изменение существующей точки
 export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {

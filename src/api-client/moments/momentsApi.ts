@@ -1,4 +1,4 @@
-import { api } from '@/api/apiClient';
+import { api } from '@/api-client/apiClient';
 
 export type Moment = {
     id: string;
