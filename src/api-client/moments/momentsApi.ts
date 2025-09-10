@@ -1,10 +1,12 @@
 import { api } from '@/api-client/apiClient';
 
+export type Coordinates = [number, number];
+
 export type Moment = {
     id: string;
     title: string;
     description?: string;
-    location: { coordinates: [number, number] };
+    location: { coordinates: Coordinates };
 };
 
 export async function create(data: Moment) {

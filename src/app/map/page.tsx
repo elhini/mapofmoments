@@ -5,6 +5,7 @@ import type { LngLat, Map, Marker } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 import { Card } from '@heroui/card';
 
+import type { Coordinates } from '@/api-client/moments/momentsApi';
 import { MomentForm } from '@/components/moment-form/MomentForm';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
@@ -30,6 +31,8 @@ export default function MapPage() {
 
     const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
     const moment = moments.find((m) => m.id === momentId);
+    const coordinates: Coordinates = [location?.lng || 0, location?.lat || 0];
+    const newMoment = { id: '', title: '', location: { coordinates } };
 
     const onSubmit = async () => {
         closeForm();
@@ -37,6 +40,7 @@ export default function MapPage() {
     };
     const onDelete = async () => {
         markerIdsRef.current.delete(momentId);
+        markerRef.current?.remove();
         closeForm();
         await refetch();
     };
@@ -88,7 +92,7 @@ export default function MapPage() {
             <div id="map-container" className="h-[100%] bg-[#04152b]" ref={mapContainerRef} />
             {location || moment ? (
                 <MomentForm
-                    data={moment}
+                    data={moment || newMoment}
                     onSubmit={onSubmit}
                     onDelete={onDelete}
                     onClose={closeForm}
