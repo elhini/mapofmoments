@@ -34,7 +34,11 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     const deleteBtn = data ? <DeleteButton onPress={handleDelete} isLoading={isDeleting} /> : null;
 
     return (
-        <Modal className="fixed top-[50%] left-[50%] w-[280px] p-3 sm:m-0" isOpen onClose={onClose}>
+        <Modal
+            className="fixed top-[50%] w-[280px] p-3 sm:left-[50%] sm:m-0"
+            isOpen
+            onClose={onClose}
+        >
             <ModalContent>
                 <Form onSubmit={handleSubmit} validationErrors={errors}>
                     <Input
