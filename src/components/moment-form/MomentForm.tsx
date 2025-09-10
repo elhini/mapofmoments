@@ -30,8 +30,10 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     const { formData, errors, handleChange, handleSubmit, handleDelete, isSubmitting, isDeleting } =
         useMomentForm({ data, onSubmit, onDelete });
 
-    const submitText = data ? 'Изменить' : 'Создать';
-    const deleteBtn = data ? <DeleteButton onPress={handleDelete} isLoading={isDeleting} /> : null;
+    const submitText = data?.id ? 'Изменить' : 'Добавить';
+    const deleteBtn = data?.id ? (
+        <DeleteButton onPress={handleDelete} isLoading={isDeleting} />
+    ) : null;
 
     return (
         <Modal
