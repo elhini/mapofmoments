@@ -96,7 +96,6 @@ export default function MapPage() {
                     onSubmit={onSubmit}
                     onDelete={onDelete}
                     onClose={closeForm}
-                    // error={createError || updateError}
                 />
             ) : (
                 <Card className="fixed bottom-[50px] left-[50%] z-1 w-[225px] translate-x-[-50%] p-3">

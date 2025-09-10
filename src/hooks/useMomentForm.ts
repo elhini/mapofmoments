@@ -20,7 +20,7 @@ const emptyMoment: Moment = { id: '', title: '', location: { coordinates: [0, 0]
 export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) => {
     const [formData, setFormData] = useState<Moment | undefined>(data);
     useEffect(() => setFormData(data), [data]);
-    const [errors, setErrors] = useState<FormErrors>({});
+    const [validationErrors, setValidationErrors] = useState<FormErrors>({});
 
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
@@ -29,26 +29,28 @@ export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) 
             newErrors.title = 'Заголовок обязателен';
         }
 
-        setErrors(newErrors);
+        setValidationErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const id = data?.id || '';
-    const { mutateAsync: create, isPending: isCreating } = useCreateMomentMutation();
-    const { mutateAsync: update, isPending: isUpdating } = useUpdateMomentMutation(id);
-    const { mutateAsync: deleteFn, isPending: isDeleting } = useDeleteMomentMutation(id);
-    const isSubmitting = isCreating || isUpdating;
+    const createMutation = useCreateMomentMutation();
+    const updateMutation = useUpdateMomentMutation(id);
+    const deleteMutation = useDeleteMomentMutation(id);
+    const isSubmitting = createMutation.isPending || updateMutation.isPending;
+    const isDeleting = deleteMutation.isPending;
+    const mutationError = createMutation.error || updateMutation.error || deleteMutation.error;
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!formData || !validateForm()) return;
-        const submit = id ? update : create;
+        const submit = id ? updateMutation.mutateAsync : createMutation.mutateAsync;
         await submit(formData);
         onSubmit();
     };
 
     const handleDelete = async () => {
-        await deleteFn();
+        await deleteMutation.mutateAsync();
         onDelete();
     };
 
@@ -61,8 +63,8 @@ export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) 
         });
 
         // Clear error when user starts typing
-        if (errors[name as keyof FormErrors]) {
-            setErrors((prev) => ({
+        if (validationErrors[name as keyof FormErrors]) {
+            setValidationErrors((prev) => ({
                 ...prev,
                 [name]: undefined,
             }));
@@ -71,7 +73,8 @@ export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) 
 
     return {
         formData,
-        errors,
+        validationErrors,
+        mutationError,
         handleChange,
         handleSubmit,
         handleDelete,
