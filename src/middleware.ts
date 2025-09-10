@@ -3,8 +3,6 @@ import type { NextRequest } from 'next/server';
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getToken, handleUnauthorizedRequest } from '@/app/api/authUtils';
 
-const supabase = getSupabaseServiceClient();
-
 export const config = {
     matcher: ['/((?!_next|favicon.ico|public|api/login|api/register|verify-email).*)'],
 };
@@ -20,6 +18,7 @@ export async function middleware(req: NextRequest) {
         return handleUnauthorizedRequest(req.nextUrl.pathname, req.url);
     }
     // Check token validity
+    const supabase = getSupabaseServiceClient();
     const { error } = await supabase.auth.getUser(token);
     if (error) {
         if (isRegisterOrLogin) {
@@ -27,11 +26,11 @@ export async function middleware(req: NextRequest) {
         }
         return handleUnauthorizedRequest(req.nextUrl.pathname, req.url);
     }
-    // Redirect to /map if authenticated
+    // Redirect to /map if just authenticated
     if (isRegisterOrLogin) {
         return NextResponse.redirect(new URL('/map', req.url));
     }
 
-    // Pass through if authenticated
+    // Pass through if already authenticated
     return NextResponse.next();
 }
