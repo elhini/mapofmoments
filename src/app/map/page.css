@@ -6,3 +6,9 @@ body {
 header {
     background: linear-gradient(rgb(0 0 0), rgb(0 0 0 / 0%));
 }
+
+.mapboxgl-control-container .mapboxgl-ctrl-geocoder {
+    position: fixed;
+    left: 15px;
+    top: 65px;
+}

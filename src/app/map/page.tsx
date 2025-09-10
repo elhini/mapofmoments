@@ -1,8 +1,11 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+
 import type { LngLat, Map, Marker } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+
 import { Card } from '@heroui/card';
 
 import type { Coordinates } from '@/api-client/moments/momentsApi';
@@ -10,6 +13,8 @@ import { MomentForm } from '@/components/moment-form/MomentForm';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+
 import './page.css';
 
 const accessToken =
@@ -51,6 +56,13 @@ export default function MapPage() {
             container: mapContainerRef.current || document.body,
             zoom: 2.3,
         });
+        map.addControl(
+            new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                // @ts-expect-error -- geocoder types are outdated
+                mapboxgl: mapboxgl,
+            }),
+        );
         map.addInteraction('click-to-create', {
             type: 'click',
             handler: (e) => {
