@@ -110,7 +110,7 @@ export default function MapPage() {
                     onClose={closeForm}
                 />
             ) : (
-                <Card className="fixed bottom-[50px] left-[50%] z-1 w-[225px] translate-x-[-50%] p-3">
+                <Card className="fixed bottom-[50px] left-[50%] z-1 w-[230px] translate-x-[-50%] p-3">
                     {isPending ? 'Загрузка моментов... ' : 'Сохранено моментов: ' + moments.length}
                     <br />
                     Чтобы добавить ещё один,
