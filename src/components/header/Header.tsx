@@ -6,7 +6,7 @@ import { Button } from '@heroui/button';
 export const Header = () => {
     const { data: user } = useMeQuery();
     const { mutate: logout } = useLogoutMutation();
-    const username = user?.user_metadata.username;
+    const username = user?.username;
 
     return (
         <header className="fixed top-0 z-1 flex w-full items-center justify-between bg-black p-4 text-white">

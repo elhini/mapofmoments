@@ -11,28 +11,21 @@ export type LoginRequest = {
     password: string;
 };
 
-export type AuthResponse = {
-    user: User;
-};
-
 export type User = {
-    id: string;
     email: string;
-    user_metadata: {
-        username?: string;
-    };
+    username?: string;
 };
 
 export async function register(req: RegisterRequest) {
-    return api.post<AuthResponse>('api/register', req);
+    return api.post('api/register', req);
 }
 
 export async function login(req: LoginRequest) {
-    return api.post<AuthResponse>('api/login', req);
+    return api.post('api/login', req);
 }
 
 export async function logout() {
-    return api.post<AuthResponse>('api/logout', {});
+    return api.post('api/logout', {});
 }
 
 export async function me() {
