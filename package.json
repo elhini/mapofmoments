@@ -26,6 +26,7 @@
         "@heroui/input": "^2.4.26",
         "@heroui/link": "^2.2.22",
         "@heroui/modal": "^2.2.22",
+        "@heroui/popover": "^2.3.26",
         "@heroui/system": "^2.4.22",
         "@heroui/theme": "^2.4.22",
         "@supabase/supabase-js": "^2.56.1",

@@ -67,7 +67,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({ data, onSubmit, onDelete
                     <div className="flex w-full justify-between gap-2">
                         <SubmitButton text={submitText} isLoading={isSubmitting} />
                         <div className="flex gap-2">
-                            <Button type="button" onPress={onClose} isIconOnly>
+                            <Button onPress={onClose} isIconOnly>
                                 <X />
                             </Button>
                             {deleteBtn}
