@@ -7,16 +7,16 @@ export type Moment = {
     location: { coordinates: [number, number] };
 };
 
-export type MomentFormRequest = Omit<Moment, 'id' | 'location'> & {
-    location?: { lng: number; lat: number };
-};
-
-export async function create(data: MomentFormRequest) {
+export async function create(data: Moment) {
     return api.post<Moment>('api/moments', data);
 }
 
-export async function update(id: string, data: MomentFormRequest) {
+export async function update(id: string, data: Moment) {
     return api.put<Moment>(`api/moments/${id}`, data);
+}
+
+export async function deleteMoment(id: string) {
+    return api.delete<Moment>(`api/moments/${id}`);
 }
 
 export async function getAll() {

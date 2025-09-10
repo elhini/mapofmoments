@@ -1,23 +1,31 @@
+import type { ChangeEvent, FormEvent } from 'react';
 import { useEffect, useState } from 'react';
-import type { MomentFormData } from '@/types/moment';
+import type { Moment } from '@/api-client/moments/momentsApi';
+import {
+    useCreateMomentMutation,
+    useDeleteMomentMutation,
+    useUpdateMomentMutation,
+} from '@/hooks/useMomentsApi';
 
 interface UseMomentFormProps {
-    data?: MomentFormData;
-    onSubmit: (data: MomentFormData) => void;
+    data?: Moment;
+    onSubmit: () => void;
+    onDelete: () => void;
 }
 
-type FormErrors = Partial<Omit<MomentFormData, 'location'>>;
+type FormErrors = Partial<Omit<Moment, 'id' | 'location'>>;
 
-export const useMomentForm = ({ data, onSubmit }: UseMomentFormProps) => {
-    const [formData, setFormData] = useState<MomentFormData>(data || { title: '' });
-    useEffect(() => setFormData(data || { title: '' }), [data]);
+const emptyMoment: Moment = { id: '', title: '', location: { coordinates: [0, 0] } };
+
+export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) => {
+    const [formData, setFormData] = useState<Moment | undefined>(data);
+    useEffect(() => setFormData(data), [data]);
     const [errors, setErrors] = useState<FormErrors>({});
-    const [isLoading, setIsLoading] = useState(false);
 
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
 
-        if (!formData.title) {
+        if (!formData?.title) {
             newErrors.title = 'Заголовок обязателен';
         }
 
@@ -25,29 +33,32 @@ export const useMomentForm = ({ data, onSubmit }: UseMomentFormProps) => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const id = data?.id || '';
+    const { mutateAsync: create, isPending: isCreating } = useCreateMomentMutation();
+    const { mutateAsync: update, isPending: isUpdating } = useUpdateMomentMutation(id);
+    const { mutateAsync: deleteFn, isPending: isDeleting } = useDeleteMomentMutation(id);
+    const isSubmitting = isCreating || isUpdating;
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        if (!validateForm()) return;
-
-        // const data = Object.fromEntries(new FormData(e.currentTarget));
-
-        setIsLoading(true);
-        try {
-            onSubmit(formData);
-        } catch (error) {
-            console.error('Moment error:', error);
-        } finally {
-            setIsLoading(false);
-        }
+        if (!formData || !validateForm()) return;
+        const submit = id ? update : create;
+        await submit(formData);
+        onSubmit();
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDelete = async () => {
+        await deleteFn();
+        onDelete();
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        if (value === undefined) return;
+        setFormData((prev) => {
+            const prevData = prev || emptyMoment;
+            return { ...prevData, [name]: value };
+        });
 
         // Clear error when user starts typing
         if (errors[name as keyof FormErrors]) {
@@ -61,8 +72,10 @@ export const useMomentForm = ({ data, onSubmit }: UseMomentFormProps) => {
     return {
         formData,
         errors,
-        isLoading,
         handleChange,
         handleSubmit,
+        handleDelete,
+        isSubmitting,
+        isDeleting,
     };
 };

@@ -1,3 +1,1 @@
-import type { MomentFormRequest } from '@/api-client/moments/momentsApi';
-
-export type MomentFormData = MomentFormRequest;
+// TODO: move Moment type here

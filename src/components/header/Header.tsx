@@ -9,10 +9,10 @@ export const Header = () => {
     const username = user?.user_metadata.username;
 
     return (
-        <header className="top-0 flex items-center justify-between p-4">
+        <header className="fixed top-0 z-1 flex w-full items-center justify-between bg-black p-4 text-white">
             <div>Map of Moments</div>
-            <div className="flex items-center gap-4">
-                <div className="w-50 overflow-hidden text-right text-ellipsis whitespace-nowrap">
+            <div className="flex w-[50%] items-center justify-end gap-4">
+                <div className="overflow-hidden text-right text-ellipsis whitespace-nowrap">
                     {user ? user.email + (username ? ' (' + username + ')' : '') : 'Загрузка...'}
                 </div>
                 <Button onPress={() => logout()} size="sm">

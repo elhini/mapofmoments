@@ -1,15 +1,16 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
+import type { Moment } from '@/api-client/moments/momentsApi';
 
 // Добавление новой точки
 export async function POST(req: NextRequest) {
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
 
-    const body = await req.json();
+    const body: Moment = await req.json();
     const { title, description, location } = body;
-    if (!title || !location?.lng || !location?.lat) {
+    if (!title || !location?.coordinates) {
         return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
             created_at: new Date().toISOString(),
             title,
             description,
-            location: `SRID=4326;POINT(${location.lng} ${location.lat})`,
+            location: `SRID=4326;POINT(${location.coordinates[0]} ${location.coordinates[1]})`,
         })
         .select()
         .single();

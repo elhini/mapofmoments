@@ -6,13 +6,7 @@ import mapboxgl from 'mapbox-gl';
 import { Card } from '@heroui/card';
 
 import { MomentForm } from '@/components/moment-form/MomentForm';
-import {
-    useCreateMomentMutation,
-    useUpdateMomentMutation,
-    useGetAllMomentsQuery,
-} from '@/hooks/useMomentsApi';
-import { buildMomentForForm } from '@/utils/buildMomentForForm';
-import type { MomentFormData } from '@/types/moment';
+import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './page.css';
@@ -24,26 +18,28 @@ export default function MapPage() {
     const mapRef = useRef<Map>(null);
     const markerRef = useRef<Marker>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
+    const markerIdsRef = useRef<Set<string>>(new Set());
     const [location, setLocation] = useState<LngLat>();
     const [momentId, setMomentId] = useState<string>('');
     const closeForm = () => {
+        if (!momentId) markerRef.current?.remove();
+        markerRef.current = null;
         setLocation(undefined);
         setMomentId('');
     };
 
     const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
     const moment = moments.find((m) => m.id === momentId);
-    const momentForForm = moment ? buildMomentForForm(moment) : undefined;
 
-    const { mutateAsync: create, isPending: isCreating } = useCreateMomentMutation();
-    const { mutateAsync: update, isPending: isUpdating } = useUpdateMomentMutation(momentId);
-    const submitMoment = async (formData: MomentFormData) => {
-        const submit = momentId ? update : create;
-        await submit({ ...formData, location: momentId ? formData.location : location });
-        setLocation(undefined);
+    const onSubmit = async () => {
+        closeForm();
         await refetch();
     };
-    const isSubmitting = isCreating || isUpdating;
+    const onDelete = async () => {
+        markerIdsRef.current.delete(momentId);
+        closeForm();
+        await refetch();
+    };
 
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
@@ -70,12 +66,15 @@ export default function MapPage() {
     useEffect(() => {
         moments.forEach((moment, i) => {
             if (!mapRef.current) return;
+            if (markerIdsRef.current.has(moment.id)) return;
             const coords = moment.location.coordinates || [0, 0];
             const marker = new mapboxgl.Marker().setLngLat(coords).addTo(mapRef.current);
+            markerIdsRef.current.add(moment.id);
             marker.getElement().addEventListener('click', (e) => {
                 e.stopPropagation();
                 setLocation(undefined);
                 setMomentId(moment.id);
+                markerRef.current = marker;
                 mapRef.current?.panTo(marker.getLngLat());
             });
             if (i === 0) {
@@ -86,16 +85,17 @@ export default function MapPage() {
 
     return (
         <>
-            <div id="map-container" ref={mapContainerRef} />
+            <div id="map-container" className="h-[100%] bg-[#04152b]" ref={mapContainerRef} />
             {location || moment ? (
                 <MomentForm
-                    data={momentForForm}
-                    onSubmit={submitMoment}
+                    data={moment}
+                    onSubmit={onSubmit}
+                    onDelete={onDelete}
                     onClose={closeForm}
-                    isLoading={isSubmitting}
+                    // error={createError || updateError}
                 />
             ) : (
-                <Card id="call-to-action" className="p-3">
+                <Card className="fixed bottom-[50px] left-[50%] z-1 w-[225px] translate-x-[-50%] p-3">
                     {isPending ? 'Загрузка моментов... ' : 'Сохранено моментов: ' + moments.length}
                     <br />
                     Чтобы добавить ещё один,

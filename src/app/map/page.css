@@ -4,22 +4,5 @@ body {
 }
 
 header {
-    position: fixed;
-    width: 100%;
-    z-index: 1;
     background: linear-gradient(rgb(0 0 0), rgb(0 0 0 / 0%));
-}
-
-#map-container {
-    height: 100%;
-    background: #07172a; /* mapbox open space */
-}
-
-#call-to-action {
-    position: absolute;
-    left: 50%;
-    bottom: 10%;
-    transform: translate(-50%, 0);
-    color: #000;
-    background: #fff;
 }
