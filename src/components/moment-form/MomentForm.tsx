@@ -5,13 +5,13 @@ import { Modal, ModalContent } from '@heroui/modal';
 import { Form } from '@heroui/form';
 import { Input, Textarea } from '@heroui/input';
 import { Button } from '@heroui/button';
-import { Alert } from '@heroui/alert';
 import { X } from 'lucide-react';
 
 import type { Moment } from '@/api-client/moments/momentsApi';
 import { useMomentForm } from '@/hooks/useMomentForm';
-import { DeleteButton } from '@/components/moment-form/DeleteButton';
 import { SubmitButton } from '@/components/moment-form/SubmitButton';
+import { DeleteButton } from '@/components/moment-form/DeleteButton';
+import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
 
 export type MomentFormProps = {
     data?: Moment;
@@ -74,7 +74,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({ data, onSubmit, onDelete
                         </div>
                     </div>
 
-                    {mutationError && <Alert color="danger" title={mutationError.statusText} />}
+                    {mutationError && <ErrorAlert title={mutationError.statusText} />}
                 </Form>
             </ModalContent>
         </Modal>

@@ -6,6 +6,7 @@ import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
 import { useAuthForm } from '@/hooks/useAuthForm';
 import type { AuthFormProps, AuthFormMode } from '@/types/auth';
+import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
 
 interface AuthFormComponentProps extends AuthFormProps {
     mode: AuthFormMode;
@@ -66,15 +67,11 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                     errorMessage="Пароль не корректный"
                 />
 
-                <Button type="submit" color="primary" fullWidth isLoading={isLoading}>
+                <Button type="submit" color="primary" size="lg" fullWidth isLoading={isLoading}>
                     {submitText}
                 </Button>
 
-                {externalError && (
-                    <div className="rounded-md bg-red-50 p-3 font-medium text-red-800">
-                        {externalError}
-                    </div>
-                )}
+                {externalError && <ErrorAlert title={externalError} />}
 
                 <div className="mt-4 text-center">
                     <p className="text-sm text-gray-600">
