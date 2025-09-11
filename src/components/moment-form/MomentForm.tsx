@@ -32,6 +32,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({ data, onSubmit, onDelete
         isDeleting,
     } = useMomentForm({ data, onSubmit, onDelete });
 
+    const coordsText = formData?.location.coordinates.map((c) => c.toFixed(6)).join(', ');
     const submitText = data?.id ? 'Изменить' : 'Добавить';
     const deleteBtn = data?.id ? (
         <DeleteButton onPress={handleDelete} isLoading={isDeleting} />
@@ -56,13 +57,18 @@ export const MomentForm: React.FC<MomentFormProps> = ({ data, onSubmit, onDelete
                         errorMessage="Заголовок обязателен"
                     />
 
-                    <Textarea
-                        label="Описание"
-                        name="description"
-                        type="text"
-                        value={formData?.description || ''}
-                        onChange={handleChange}
-                    />
+                    <div className="relative w-full">
+                        <Textarea
+                            label="Описание"
+                            name="description"
+                            type="text"
+                            value={formData?.description || ''}
+                            onChange={handleChange}
+                        />
+                        <div className="text-foreground-500 absolute top-2 right-3 text-xs">
+                            {coordsText}
+                        </div>
+                    </div>
 
                     <div className="flex w-full justify-between gap-2">
                         <SubmitButton text={submitText} isLoading={isSubmitting} />
