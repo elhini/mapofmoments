@@ -1,16 +1,27 @@
-'use client';
-
 import React from 'react';
+import { Button } from '@heroui/button';
 
-import './auth-with-google.css';
+import { getSupabaseBrowserClient } from '@/api-client/getSupabaseBrowserClient';
 
-export const AuthWithGoogle = () => (
-    <>
-        <script src="https://apis.google.com/js/platform.js" async defer></script>
-        <meta
-            name="google-signin-client_id"
-            content="866807611590-uurgiioausauk1t3lftf04cvjo6ed4pe.apps.googleusercontent.com"
-        />
-        <div className="g-signin2 mt-4 w-full" data-onsuccess="onSignIn"></div>
-    </>
-);
+export const AuthWithGoogle = () => {
+    const supabase = getSupabaseBrowserClient();
+
+    const signIn = () => {
+        supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: { redirectTo: `${window.location.origin}/auth/callback` },
+        });
+    };
+
+    return (
+        <Button
+            onPress={signIn}
+            // like Google colors
+            className="mt-4 w-full border-t-red-500 border-r-blue-500 border-b-green-500 border-l-yellow-500 text-white"
+            variant="bordered"
+            size="lg"
+        >
+            Войти через Google
+        </Button>
+    );
+};
