@@ -4,10 +4,13 @@ import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getToken, handleUnauthorizedRequest } from '@/app/api/authUtils';
 
 export const config = {
-    matcher: ['/((?!_next|favicon.ico|public|api/login|api/register|verify-email).*)'],
+    matcher: [
+        '/((?!_next|favicon.ico|public|api/login|api/register|verify-email|auth/callback).*)',
+    ],
 };
 
 export async function middleware(req: NextRequest) {
+    // TODO: use publicRoutes
     const isRegisterOrLogin = ['/', '/register', '/login'].includes(req.nextUrl.pathname);
     const token = getToken(req);
     // Check token existence
