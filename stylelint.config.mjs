@@ -10,5 +10,6 @@ export default {
             },
         ],
         'import-notation': 'string',
+        'selector-class-pattern': null,
     },
 };

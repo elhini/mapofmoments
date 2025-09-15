@@ -7,6 +7,7 @@ import { Button } from '@heroui/button';
 import { useAuthForm } from '@/hooks/useAuthForm';
 import type { AuthFormProps, AuthFormMode } from '@/types/auth';
 import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
+import { AuthWithGoogle } from '@/components/auth-form/AuthWithGoogle';
 
 interface AuthFormComponentProps extends AuthFormProps {
     mode: AuthFormMode;
@@ -33,7 +34,6 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
     return (
         <div className="flex min-h-screen w-full flex-col items-center justify-center gap-8">
             <h2 className="text-center text-3xl">{title}</h2>
-
             <Form className="w-60" onSubmit={handleSubmit} validationErrors={errors}>
                 {mode === 'register' && (
                     <Input
@@ -92,6 +92,8 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                         )}
                     </p>
                 </div>
+
+                <AuthWithGoogle />
             </Form>
         </div>
     );

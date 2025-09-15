@@ -1,0 +1,15 @@
+.g-signin2 .abcRioButton {
+    border-radius: 14px;
+    width: 100% !important;
+    height: 48px !important;
+}
+
+.g-signin2 .abcRioButtonContentWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.g-signin2 .abcRioButtonContents {
+    font-size: 1rem !important;
+}
