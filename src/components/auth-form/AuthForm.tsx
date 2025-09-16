@@ -73,24 +73,22 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
 
                 {externalError && <ErrorAlert title={externalError} />}
 
-                <div className="mt-4 text-center">
-                    <p className="text-sm text-gray-600">
-                        {mode === 'login' ? (
-                            <>
-                                Нет аккаунта?{' '}
-                                <a href="/register" className="text-blue-600 hover:text-blue-500">
-                                    Зарегистрироваться
-                                </a>
-                            </>
-                        ) : (
-                            <>
-                                Уже есть аккаунт?{' '}
-                                <a href="/login" className="text-blue-600 hover:text-blue-500">
-                                    Войти
-                                </a>
-                            </>
-                        )}
-                    </p>
+                <div className="mt-4 w-full text-center text-sm text-gray-600">
+                    {mode === 'login' ? (
+                        <>
+                            Нет аккаунта?{' '}
+                            <a href="/register" className="text-blue-600 hover:text-blue-500">
+                                Зарегистрироваться
+                            </a>
+                        </>
+                    ) : (
+                        <>
+                            Уже есть аккаунт?{' '}
+                            <a href="/login" className="text-blue-600 hover:text-blue-500">
+                                Войти
+                            </a>
+                        </>
+                    )}
                 </div>
 
                 <AuthWithGoogle />
