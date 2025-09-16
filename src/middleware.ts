@@ -5,7 +5,8 @@ import { getToken, handleUnauthorizedRequest } from '@/app/api/authUtils';
 
 export const config = {
     matcher: [
-        '/((?!_next|favicon.ico|public|api/login|api/register|verify-email|auth/callback).*)',
+        // TODO: move custom paths from regexp to array of strings
+        '/((?!_next|favicon.ico|public|api/login|api/register|verify-email|auth/callback|api/auth/callback).*)',
     ],
 };
 
