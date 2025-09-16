@@ -6,7 +6,7 @@ import { Card } from '@heroui/card';
 
 export default function AuthCallbackPage() {
     useEffect(() => {
-        const params = new URLSearchParams(window.location.hash.slice(1)); // TODO: check how to avoid hash parsing
+        const params = new URLSearchParams(window.location.hash.slice(1)); // Implicit OAuth flow
         const accessToken = params.get('access_token') || '';
 
         window.location.href = '/api/auth/callback?accessToken=' + accessToken;

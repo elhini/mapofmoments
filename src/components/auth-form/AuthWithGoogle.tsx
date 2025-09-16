@@ -7,6 +7,7 @@ export const AuthWithGoogle = () => {
     const supabase = getSupabaseBrowserClient();
 
     const signIn = () => {
+        // https://supabase.com/docs/guides/auth/social-login/auth-google
         supabase.auth.signInWithOAuth({
             provider: 'google',
             options: { redirectTo: `${window.location.origin}/auth/callback` },
