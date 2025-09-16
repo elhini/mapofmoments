@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { I18nProvider } from '@react-aria/i18n';
 
 import { Modal, ModalContent } from '@heroui/modal';
 import { Form } from '@heroui/form';
@@ -75,13 +76,15 @@ export const MomentForm: React.FC<MomentFormProps> = ({ data, onSubmit, onDelete
                         </div>
                     </div>
 
-                    <DatePicker
-                        label="Дата"
-                        name="date"
-                        firstDayOfWeek="mon"
-                        value={calendarDate}
-                        onChange={(v) => handleChange({ name: 'date', value: v?.toString() })}
-                    />
+                    <I18nProvider locale="en-CA">
+                        <DatePicker
+                            label="Дата"
+                            name="date"
+                            firstDayOfWeek="mon"
+                            value={calendarDate}
+                            onChange={(v) => handleChange({ name: 'date', value: v?.toString() })}
+                        />
+                    </I18nProvider>
 
                     <div className="flex w-full justify-between gap-2">
                         <SubmitButton text={submitText} isLoading={isSubmitting} />
