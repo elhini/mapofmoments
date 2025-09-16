@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 
+import { Card } from '@heroui/card';
+
 import { getSupabaseBrowserClient } from '@/api-client/getSupabaseBrowserClient';
 
 export default function AuthCallbackPage() {
@@ -14,5 +16,7 @@ export default function AuthCallbackPage() {
         window.location.href = '/api/auth/callback?accessToken=' + accessToken;
     }, [supabase.auth]);
 
-    return 'Redirecting...';
+    return (
+        <Card className="fixed top-[50%] left-[50%] translate-x-[-50%] p-3">Redirecting...</Card>
+    );
 }
