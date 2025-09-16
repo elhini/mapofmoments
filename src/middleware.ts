@@ -9,6 +9,7 @@ const authStartPages = ['/register', '/login'];
 
 const authProcessPages = ['/verify-email', '/auth/callback'];
 const authProcessRoutes = ['/api/login', '/api/register', '/api/auth/callback'];
+
 const publicPaths = ['/', ...authProcessRoutes, ...authProcessPages];
 
 export async function middleware(req: NextRequest) {
@@ -16,8 +17,8 @@ export async function middleware(req: NextRequest) {
     // Pass through if public
     if (isPublicPath) return NextResponse.next();
 
-    const isAuthStart = authStartPages.includes(req.nextUrl.pathname);
     const token = getToken(req);
+    const isAuthStart = authStartPages.includes(req.nextUrl.pathname);
 
     // Check token existence
     if (!token) {
