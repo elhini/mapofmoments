@@ -1,5 +1,6 @@
-import type { ChangeEvent, FormEvent } from 'react';
+import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
+
 import type { Moment } from '@/api-client/moments/momentsApi';
 import {
     useCreateMomentMutation,
@@ -15,7 +16,14 @@ interface UseMomentFormProps {
 
 type FormErrors = Partial<Omit<Moment, 'id' | 'location'>>;
 
-const emptyMoment: Moment = { id: '', title: '', location: { coordinates: [0, 0] } };
+type ChangeArgs = { name: string; value?: string };
+
+const emptyMoment: Moment = {
+    id: '',
+    title: '',
+    date: '',
+    location: { coordinates: [0, 0] },
+};
 
 export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) => {
     const [formData, setFormData] = useState<Moment | undefined>(data);
@@ -54,8 +62,7 @@ export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) 
         onDelete();
     };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+    const handleChange = ({ name, value }: ChangeArgs) => {
         if (value === undefined) return;
         setFormData((prev) => {
             const prevData = prev || emptyMoment;

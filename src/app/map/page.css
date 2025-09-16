@@ -3,7 +3,7 @@ body {
     height: 100%;
 }
 
-header {
+.header {
     background: linear-gradient(rgb(0 0 0), rgb(0 0 0 / 0%));
 }
 

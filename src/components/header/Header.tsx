@@ -9,7 +9,7 @@ export const Header = () => {
     const username = user?.username;
 
     return (
-        <header className="fixed top-0 z-1 flex w-full items-center justify-between bg-black p-4 text-white">
+        <header className="header fixed top-0 z-1 flex w-full items-center justify-between bg-black p-4 text-white">
             <div>Map of Moments</div>
             <div className="flex w-[50%] items-center justify-end gap-4">
                 <div className="overflow-hidden text-right text-ellipsis whitespace-nowrap">

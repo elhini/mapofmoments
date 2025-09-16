@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const user = await getCurrentUser(req);
 
     const body: Moment = await req.json();
-    const { title, description, location } = body;
+    const { title, description, date, location } = body;
     if (!title || !location?.coordinates) {
         return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
@@ -17,11 +17,12 @@ export async function POST(req: NextRequest) {
     const { data, error } = await supabase
         .from('moments')
         .insert({
-            user_id: user?.id,
-            created_at: new Date().toISOString(),
             title,
             description,
+            date,
             location: `SRID=4326;POINT(${location.coordinates[0]} ${location.coordinates[1]})`,
+            user_id: user?.id,
+            created_at: new Date().toISOString(),
         })
         .select()
         .single();

@@ -1,9 +1,11 @@
 'use client';
 
 import React from 'react';
+
 import { Modal, ModalContent } from '@heroui/modal';
 import { Form } from '@heroui/form';
 import { Input, Textarea } from '@heroui/input';
+import { DatePicker } from '@heroui/date-picker';
 import { Button } from '@heroui/button';
 import { X } from 'lucide-react';
 
@@ -12,6 +14,7 @@ import { useMomentForm } from '@/hooks/useMomentForm';
 import { SubmitButton } from '@/components/moment-form/SubmitButton';
 import { DeleteButton } from '@/components/moment-form/DeleteButton';
 import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
+import { getCalendarDate } from '@/utils/getCalendarDate';
 
 export type MomentFormProps = {
     data?: Moment;
@@ -33,6 +36,8 @@ export const MomentForm: React.FC<MomentFormProps> = ({ data, onSubmit, onDelete
     } = useMomentForm({ data, onSubmit, onDelete });
 
     const coordsText = formData?.location.coordinates.map((c) => c.toFixed(6)).join(', ');
+    const calendarDate = getCalendarDate(formData?.date);
+
     const submitText = data?.id ? 'Изменить' : 'Добавить';
     const deleteBtn = data?.id ? (
         <DeleteButton onPress={handleDelete} isLoading={isDeleting} />
@@ -51,7 +56,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({ data, onSubmit, onDelete
                         name="title"
                         type="text"
                         value={formData?.title || ''}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange(e.target)}
                         autoFocus
                         isRequired
                         errorMessage="Заголовок обязателен"
@@ -63,12 +68,20 @@ export const MomentForm: React.FC<MomentFormProps> = ({ data, onSubmit, onDelete
                             name="description"
                             type="text"
                             value={formData?.description || ''}
-                            onChange={handleChange}
+                            onChange={(e) => handleChange(e.target)}
                         />
                         <div className="text-foreground-500 absolute top-2 right-3 text-xs">
                             {coordsText}
                         </div>
                     </div>
+
+                    <DatePicker
+                        label="Дата"
+                        name="date"
+                        firstDayOfWeek="mon"
+                        value={calendarDate}
+                        onChange={(v) => handleChange({ name: 'date', value: v?.toString() })}
+                    />
 
                     <div className="flex w-full justify-between gap-2">
                         <SubmitButton text={submitText} isLoading={isSubmitting} />

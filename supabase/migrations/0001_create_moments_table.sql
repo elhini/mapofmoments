@@ -1,4 +1,4 @@
-create table moments (
+create table if not exists moments (
      id uuid primary key default gen_random_uuid(),
      created_at timestamptz default now(),
      user_id uuid not null,

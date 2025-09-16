@@ -9,7 +9,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
     const user = await getCurrentUser(req);
     const { id } = await context.params;
     const body: Moment = await req.json();
-    const { title, description, location } = body;
+    const { title, description, date, location } = body;
     if (!title || !location?.coordinates) {
         return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
@@ -19,6 +19,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
         .update({
             title,
             description,
+            date,
             location: `SRID=4326;POINT(${location.coordinates[0]} ${location.coordinates[1]})`,
         })
         .eq('id', id)
