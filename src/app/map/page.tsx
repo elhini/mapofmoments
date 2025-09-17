@@ -10,6 +10,8 @@ import { Card } from '@heroui/card';
 
 import type { Coordinates } from '@/api-client/moments/momentsApi';
 import { MomentForm } from '@/components/moment-form/MomentForm';
+import { DraggingForm } from '@/components/moment-form/DraggingForm';
+import { useDragging } from '@/components/moment-form/useDragging';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -27,6 +29,7 @@ export default function MapPage() {
     const markerIdsRef = useRef<Set<string>>(new Set());
     const [location, setLocation] = useState<LngLat>();
     const [momentId, setMomentId] = useState<string>('');
+
     const closeForm = () => {
         if (!momentId) markerRef.current?.remove();
         markerRef.current = null;
@@ -38,6 +41,11 @@ export default function MapPage() {
     const moment = moments.find((m) => m.id === momentId);
     const coordinates: Coordinates = [location?.lng || 0, location?.lat || 0];
     const newMoment = { id: '', title: '', location: { coordinates } };
+
+    const { draggingEnabled, enableDragging, applyNewCoords, rollbackCoords } = useDragging(
+        markerRef.current,
+        moment,
+    );
 
     const onSubmit = async () => {
         closeForm();
@@ -103,12 +111,17 @@ export default function MapPage() {
         <>
             <div id="map-container" className="h-[100%] bg-[#04152b]" ref={mapContainerRef} />
             {location || moment ? (
-                <MomentForm
-                    data={moment || newMoment}
-                    onSubmit={onSubmit}
-                    onDelete={onDelete}
-                    onClose={closeForm}
-                />
+                draggingEnabled ? (
+                    <DraggingForm submit={applyNewCoords} cancel={rollbackCoords} />
+                ) : (
+                    <MomentForm
+                        data={moment || newMoment}
+                        onSubmit={onSubmit}
+                        onDelete={onDelete}
+                        onClose={closeForm}
+                        onEnableDragging={enableDragging}
+                    />
+                )
             ) : (
                 <Card className="fixed bottom-[50px] left-[50%] z-1 w-[230px] translate-x-[-50%] p-3">
                     {isPending ? 'Загрузка моментов... ' : 'Сохранено моментов: ' + moments.length}
