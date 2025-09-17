@@ -7,6 +7,7 @@ import { Modal, ModalContent } from '@heroui/modal';
 import { Form } from '@heroui/form';
 import { Input, Textarea } from '@heroui/input';
 import { DatePicker } from '@heroui/date-picker';
+import { Checkbox } from '@heroui/checkbox';
 
 import type { Moment } from '@/api-client/moments/momentsApi';
 import { useMomentForm } from '@/hooks/useMomentForm';
@@ -42,9 +43,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
         isSubmitting,
         isDeleting,
     } = useMomentForm({ data, onSubmit, onDelete });
-
     const coordsText = formData?.location.coordinates.map((c) => c.toFixed(6)).join(', ');
-    const calendarDate = getCalendarDate(formData?.date);
 
     const submitText = data?.id ? 'Изменить' : 'Добавить';
     const enableDraggingBtn = data?.id && <EnableDraggingButton onPress={onEnableDragging} />;
@@ -53,7 +52,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
 
     return (
         <Modal
-            className="fixed top-[50%] w-[280px] p-3 sm:left-[50%] sm:m-0"
+            className="fixed top-[50%] w-[300px] p-3 sm:left-[50%] sm:m-0"
             isOpen
             onClose={onClose}
             hideCloseButton
@@ -84,15 +83,30 @@ export const MomentForm: React.FC<MomentFormProps> = ({
                         onChange={(e) => handleChange(e.target)}
                     />
 
-                    <I18nProvider locale="en-CA">
-                        <DatePicker
-                            label="Дата"
-                            name="date"
-                            firstDayOfWeek="mon"
-                            value={calendarDate}
-                            onChange={(v) => handleChange({ name: 'date', value: v?.toString() })}
-                        />
-                    </I18nProvider>
+                    <div className="flex w-full justify-between gap-2">
+                        <I18nProvider locale="en-CA">
+                            <DatePicker
+                                label="Дата"
+                                name="date"
+                                firstDayOfWeek="mon"
+                                value={getCalendarDate(formData?.date)}
+                                onChange={(v) =>
+                                    handleChange({ name: 'date', value: v?.toString() })
+                                }
+                                className="w-34"
+                            />
+                        </I18nProvider>
+                        <Checkbox
+                            name="not_exact_date"
+                            isSelected={formData?.not_exact_date}
+                            onValueChange={(v) =>
+                                handleChange({ name: 'not_exact_date', value: v })
+                            }
+                            size="sm"
+                        >
+                            Примерная дата
+                        </Checkbox>
+                    </div>
 
                     <div className="flex w-full justify-between gap-2">
                         <SubmitButton text={submitText} isLoading={isSubmitting} />

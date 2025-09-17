@@ -1,2 +1,2 @@
 alter table if exists moments
-add column date date null;
+add column `date` date default null;

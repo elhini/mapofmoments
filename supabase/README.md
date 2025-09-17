@@ -1,11 +1,15 @@
-# Supabase Migrations
+## Install and connect Supabase CLI
 
-This directory contains the database migrations for the project.
+Run `brew install supabase/tap/supabase` to install package
 
-## How to apply migrations
+Run `supabase login` to authenticate with your account
 
-1.  Go to your Supabase project's "Database" -> "Migrations" section.
-2.  Connect to your project using the Supabase CLI.
-3.  Run `supabase db push` to push all migrations to the remote database.
+Run `supabase link` to connect to your project
+
+## Apply migrations
+
+Run `supabase db push` to apply all migrations to the remote database
+
+All applied migrations: https://supabase.com/dashboard/project/mduigtlmzuzjcaezvhpn/database/migrations
 
 Alternatively, you can copy the content of the migration files and run them directly in the Supabase SQL editor.

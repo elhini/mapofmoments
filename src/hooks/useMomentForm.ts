@@ -14,14 +14,15 @@ interface UseMomentFormProps {
     onDelete: () => void;
 }
 
-type FormErrors = Partial<Omit<Moment, 'id' | 'location'>>;
+type FormErrors = Partial<Omit<Moment, 'id' | 'location' | 'not_exact_date'>>;
 
-type ChangeArgs = { name: string; value?: string };
+type ChangeArgs = { name: string; value?: string | boolean };
 
 const emptyMoment: Moment = {
     id: '',
     title: '',
     date: '',
+    not_exact_date: false,
     location: { coordinates: [0, 0] },
 };
 
