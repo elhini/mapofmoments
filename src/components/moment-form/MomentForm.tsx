@@ -84,7 +84,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
                     />
 
                     <div className="flex w-full justify-between gap-2">
-                        <I18nProvider locale="en-CA">
+                        <I18nProvider locale="ru">
                             <DatePicker
                                 label="Дата"
                                 name="date"

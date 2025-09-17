@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@heroui/button';
-import { MapPinPen } from 'lucide-react';
+import { Move } from 'lucide-react';
 
 type Props = {
     onPress: () => void;
@@ -8,6 +8,6 @@ type Props = {
 
 export const EnableDraggingButton = ({ onPress }: Props) => (
     <Button onPress={onPress} isIconOnly>
-        <MapPinPen />
+        <Move />
     </Button>
 );

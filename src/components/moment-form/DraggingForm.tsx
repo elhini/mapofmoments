@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Modal, ModalContent } from '@heroui/modal';
 import { Button } from '@heroui/button';
-import { Check, X } from 'lucide-react';
+import { Check, Move, X } from 'lucide-react';
 
 export type DraggingFormProps = {
     submit: () => void;
@@ -24,7 +24,9 @@ export const DraggingForm: React.FC<DraggingFormProps> = ({ submit, cancel }) =>
         >
             <ModalContent>
                 <div className="flex gap-2">
-                    <div className="text-foreground flex w-full p-2">Перетащите точку</div>
+                    <div className="text-foreground flex w-full gap-2 text-sm leading-10">
+                        <Move className="text-foreground-500 self-center" /> Перетащите точку
+                    </div>
                     <Button onPress={submit} isIconOnly color="primary">
                         <Check />
                     </Button>
