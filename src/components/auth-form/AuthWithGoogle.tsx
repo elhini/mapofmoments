@@ -18,7 +18,7 @@ export const AuthWithGoogle = () => {
         <Button
             onPress={signIn}
             // like Google colors
-            className="mt-4 w-full border-t-red-500 border-r-blue-500 border-b-green-500 border-l-yellow-500 text-white"
+            className="mt-4 w-full border-t-red-500 border-r-blue-500 border-b-green-500 border-l-yellow-500 text-gray-600"
             variant="bordered"
             size="lg"
         >

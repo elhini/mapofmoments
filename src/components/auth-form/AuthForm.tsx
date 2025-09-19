@@ -28,71 +28,83 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
     } = useAuthForm({ mode, onSubmit });
 
     const isLoading = externalLoading || internalLoading;
-    const title = mode === 'login' ? 'Вход' : 'Регистрация';
     const submitText = mode === 'login' ? 'Войти' : 'Зарегистрироваться';
 
     return (
-        <div className="flex min-h-screen w-full flex-col items-center justify-center gap-8">
-            <h2 className="text-center text-3xl">{title}</h2>
-            <Form className="w-60" onSubmit={handleSubmit} validationErrors={errors}>
-                {mode === 'register' && (
+        <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100 px-4 dark:from-slate-800 dark:via-slate-900 dark:to-black">
+            <div className="animate-fade-in flex max-w-3xl flex-col items-center gap-8 rounded-2xl bg-white/70 p-10 text-center shadow-xl backdrop-blur-md dark:bg-slate-800/70">
+                <h2 className="bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-3xl font-extrabold text-transparent">
+                    Map of Moments
+                </h2>
+                <Form className="w-60" onSubmit={handleSubmit} validationErrors={errors}>
+                    {mode === 'register' && (
+                        <Input
+                            label="Логин"
+                            name="username"
+                            type="text"
+                            value={formData.username}
+                            onChange={handleChange}
+                            isRequired
+                            errorMessage="Логин обязателен"
+                            autoFocus={mode === 'register'}
+                        />
+                    )}
+
                     <Input
-                        label="Логин"
-                        name="username"
-                        type="text"
-                        value={formData.username}
+                        label="Email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
                         onChange={handleChange}
                         isRequired
-                        errorMessage="Логин обязателен"
+                        errorMessage="Email не корректный"
+                        autoFocus={mode === 'login'}
                     />
-                )}
 
-                <Input
-                    label="Email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    isRequired
-                    errorMessage="Email не корректный"
-                />
+                    <Input
+                        label="Пароль"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        isRequired
+                        errorMessage="Пароль не корректный"
+                    />
 
-                <Input
-                    label="Пароль"
-                    name="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    isRequired
-                    errorMessage="Пароль не корректный"
-                />
+                    <Button
+                        type="submit"
+                        color="primary"
+                        size="lg"
+                        fullWidth
+                        isLoading={isLoading}
+                        className="rounded-xl bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 text-white shadow-md"
+                    >
+                        {submitText}
+                    </Button>
 
-                <Button type="submit" color="primary" size="lg" fullWidth isLoading={isLoading}>
-                    {submitText}
-                </Button>
+                    {externalError && <ErrorAlert title={externalError} />}
 
-                {externalError && <ErrorAlert title={externalError} />}
+                    <div className="mt-4 w-full text-center text-sm text-gray-600">
+                        {mode === 'login' ? (
+                            <>
+                                Нет аккаунта?{' '}
+                                <a href="/register" className="text-blue-600 hover:text-blue-500">
+                                    Зарегистрироваться
+                                </a>
+                            </>
+                        ) : (
+                            <>
+                                Уже есть аккаунт?{' '}
+                                <a href="/login" className="text-blue-600 hover:text-blue-500">
+                                    Войти
+                                </a>
+                            </>
+                        )}
+                    </div>
 
-                <div className="mt-4 w-full text-center text-sm text-gray-600">
-                    {mode === 'login' ? (
-                        <>
-                            Нет аккаунта?{' '}
-                            <a href="/register" className="text-blue-600 hover:text-blue-500">
-                                Зарегистрироваться
-                            </a>
-                        </>
-                    ) : (
-                        <>
-                            Уже есть аккаунт?{' '}
-                            <a href="/login" className="text-blue-600 hover:text-blue-500">
-                                Войти
-                            </a>
-                        </>
-                    )}
-                </div>
-
-                <AuthWithGoogle />
-            </Form>
+                    <AuthWithGoogle />
+                </Form>
+            </div>
         </div>
     );
 };
