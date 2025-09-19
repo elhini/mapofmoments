@@ -10,10 +10,9 @@ export const useDragging = (marker: Marker | null, moment?: Moment) => {
         marker?.setDraggable(enabled);
     }, [enabled, marker]);
 
-    const applyNewCoords = () => {
+    const applyCoords = () => {
         const { lng = 0, lat = 0 } = marker?.getLngLat() || {};
         if (moment) moment.location = { coordinates: [lng, lat] };
-        setEnabled(false);
     };
     const rollbackCoords = () => {
         marker?.setLngLat(moment?.location.coordinates || [0, 0]);
@@ -23,7 +22,8 @@ export const useDragging = (marker: Marker | null, moment?: Moment) => {
     return {
         draggingEnabled: enabled,
         enableDragging: () => setEnabled(true),
-        applyNewCoords,
+        disableDragging: () => setEnabled(false),
+        applyCoords,
         rollbackCoords,
     };
 };

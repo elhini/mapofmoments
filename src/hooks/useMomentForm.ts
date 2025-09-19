@@ -9,7 +9,7 @@ import {
 } from '@/hooks/useMomentsApi';
 
 interface UseMomentFormProps {
-    data?: Moment;
+    moment?: Moment;
     onSubmit: () => void;
     onDelete: () => void;
 }
@@ -26,9 +26,9 @@ const emptyMoment: Moment = {
     location: { coordinates: [0, 0] },
 };
 
-export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) => {
-    const [formData, setFormData] = useState<Moment | undefined>(data);
-    useEffect(() => setFormData(data), [data]);
+export const useMomentForm = ({ moment, onSubmit, onDelete }: UseMomentFormProps) => {
+    const [formData, setFormData] = useState<Moment | undefined>(moment);
+    useEffect(() => setFormData(moment), [moment]);
     const [validationErrors, setValidationErrors] = useState<FormErrors>({});
 
     const validateForm = (): boolean => {
@@ -42,7 +42,7 @@ export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) 
         return Object.keys(newErrors).length === 0;
     };
 
-    const id = data?.id || '';
+    const id = moment?.id || '';
     const createMutation = useCreateMomentMutation();
     const updateMutation = useUpdateMomentMutation(id);
     const deleteMutation = useDeleteMomentMutation(id);
@@ -50,8 +50,8 @@ export const useMomentForm = ({ data, onSubmit, onDelete }: UseMomentFormProps) 
     const isDeleting = deleteMutation.isPending;
     const mutationError = createMutation.error || updateMutation.error || deleteMutation.error;
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleSubmit = async (e?: FormEvent<HTMLFormElement>) => {
+        e?.preventDefault();
         if (!formData || !validateForm()) return;
         const submit = id ? updateMutation.mutateAsync : createMutation.mutateAsync;
         await submit(formData);

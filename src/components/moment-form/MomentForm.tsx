@@ -3,6 +3,8 @@
 import React from 'react';
 import { I18nProvider } from '@react-aria/i18n';
 
+import type { Marker } from 'mapbox-gl';
+
 import { Modal, ModalContent } from '@heroui/modal';
 import { Form } from '@heroui/form';
 import { Input, Textarea } from '@heroui/input';
@@ -15,23 +17,25 @@ import { SubmitButton } from '@/components/moment-form/SubmitButton';
 import { DeleteButton } from '@/components/moment-form/DeleteButton';
 import { CloseBtn } from '@/components/moment-form/CloseButton';
 import { EnableDraggingButton } from '@/components/moment-form/EnableDraggingButton';
+import { DraggingForm } from '@/components/moment-form/DraggingForm';
+import { useDragging } from '@/components/moment-form/useDragging';
 import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
 import { getCalendarDate } from '@/utils/getCalendarDate';
 
 export type MomentFormProps = {
-    data?: Moment;
+    moment?: Moment;
     onSubmit: () => void;
     onDelete: () => void;
     onClose: () => void;
-    onEnableDragging: () => void;
+    marker: Marker | null;
 };
 
 export const MomentForm: React.FC<MomentFormProps> = ({
-    data,
+    moment,
     onSubmit,
     onDelete,
     onClose,
-    onEnableDragging,
+    marker,
 }) => {
     const {
         formData,
@@ -42,15 +46,27 @@ export const MomentForm: React.FC<MomentFormProps> = ({
         handleDelete,
         isSubmitting,
         isDeleting,
-    } = useMomentForm({ data, onSubmit, onDelete });
+    } = useMomentForm({ moment, onSubmit, onDelete });
+
+    const { draggingEnabled, enableDragging, disableDragging, applyCoords, rollbackCoords } =
+        useDragging(marker, moment);
+
+    const submitCoords = async () => {
+        applyCoords();
+        await handleSubmit();
+        disableDragging();
+    };
+
     const coordsText = formData?.location.coordinates.map((c) => c.toFixed(6)).join(', ');
 
-    const submitText = data?.id ? 'Изменить' : 'Добавить';
-    const enableDraggingBtn = data?.id && <EnableDraggingButton onPress={onEnableDragging} />;
-    const deleteBtn = data?.id && <DeleteButton onPress={handleDelete} isLoading={isDeleting} />;
+    const submitText = moment?.id ? 'Изменить' : 'Добавить';
+    const enableDraggingBtn = moment?.id && <EnableDraggingButton onPress={enableDragging} />;
+    const deleteBtn = moment?.id && <DeleteButton onPress={handleDelete} isLoading={isDeleting} />;
     const closeBtn = <CloseBtn onPress={onClose} />;
 
-    return (
+    return draggingEnabled ? (
+        <DraggingForm submit={submitCoords} isSubmitting={isSubmitting} cancel={rollbackCoords} />
+    ) : (
         <Modal
             className="fixed top-[50%] w-[300px] p-3 sm:left-[50%] sm:m-0"
             isOpen
