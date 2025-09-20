@@ -1,7 +1,10 @@
 import type { ReactNode } from 'react';
+
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+
 import { HeroUIProvider } from '@heroui/system';
+
 import { Providers } from './providers';
 import { AppLayout } from './AppLayout';
 
