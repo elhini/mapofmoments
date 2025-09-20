@@ -1,15 +1,11 @@
 'use client';
 
 import React from 'react';
-import { I18nProvider } from '@react-aria/i18n';
 
 import type { Marker } from 'mapbox-gl';
 
 import { Modal, ModalContent } from '@heroui/modal';
 import { Form } from '@heroui/form';
-import { Input, Textarea } from '@heroui/input';
-import { DatePicker } from '@heroui/date-picker';
-import { Checkbox } from '@heroui/checkbox';
 
 import type { Moment } from '@/api-client/moments/momentsApi';
 import { useMomentForm } from '@/hooks/useMomentForm';
@@ -20,7 +16,10 @@ import { EnableDraggingButton } from '@/components/moment-form/buttons/EnableDra
 import { DraggingForm } from '@/components/moment-form/DraggingForm';
 import { useDragging } from '@/components/moment-form/useDragging';
 import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
-import { getCalendarDate } from '@/utils/getCalendarDate';
+import { TextField } from '@/components/moment-form/fields/TextField';
+import { DescriptionField } from '@/components/moment-form/fields/DescriptionField';
+import { DateField } from '@/components/moment-form/fields/DateField';
+import { NotExactDateField } from '@/components/moment-form/fields/NotExactDateField';
 
 export type MomentFormProps = {
     moment?: Moment;
@@ -76,52 +75,20 @@ export const MomentForm: React.FC<MomentFormProps> = ({
             <ModalContent className="overflow-visible">
                 <Form onSubmit={handleSubmit} validationErrors={validationErrors}>
                     <div className="relative w-full">
-                        <Input
-                            label="Заголовок"
-                            name="title"
-                            type="text"
-                            value={formData?.title || ''}
-                            onChange={(e) => handleChange(e.target)}
-                            autoFocus
-                            isRequired
-                            errorMessage="Заголовок обязателен"
-                        />
+                        <TextField value={formData?.title} onChange={handleChange} />
                         <div className="text-foreground-500 absolute top-2 right-3 text-xs">
                             {coordsText}
                         </div>
                     </div>
 
-                    <Textarea
-                        label="Описание"
-                        name="description"
-                        type="text"
-                        value={formData?.description || ''}
-                        onChange={(e) => handleChange(e.target)}
-                    />
+                    <DescriptionField value={formData?.description} onChange={handleChange} />
 
                     <div className="flex w-full justify-between gap-2">
-                        <I18nProvider locale="ru">
-                            <DatePicker
-                                label="Дата"
-                                name="date"
-                                firstDayOfWeek="mon"
-                                value={getCalendarDate(formData?.date)}
-                                onChange={(v) =>
-                                    handleChange({ name: 'date', value: v?.toString() })
-                                }
-                                className="w-34"
-                            />
-                        </I18nProvider>
-                        <Checkbox
-                            name="not_exact_date"
-                            isSelected={formData?.not_exact_date}
-                            onValueChange={(v) =>
-                                handleChange({ name: 'not_exact_date', value: v })
-                            }
-                            size="sm"
-                        >
-                            Примерная дата
-                        </Checkbox>
+                        <DateField value={formData?.date} onChange={handleChange} />
+                        <NotExactDateField
+                            value={formData?.not_exact_date}
+                            onChange={handleChange}
+                        />
                     </div>
 
                     <div className="flex w-full justify-between gap-2">
