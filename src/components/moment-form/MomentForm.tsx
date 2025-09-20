@@ -13,10 +13,10 @@ import { Checkbox } from '@heroui/checkbox';
 
 import type { Moment } from '@/api-client/moments/momentsApi';
 import { useMomentForm } from '@/hooks/useMomentForm';
-import { SubmitButton } from '@/components/moment-form/SubmitButton';
-import { DeleteButton } from '@/components/moment-form/DeleteButton';
-import { CloseBtn } from '@/components/moment-form/CloseButton';
-import { EnableDraggingButton } from '@/components/moment-form/EnableDraggingButton';
+import { SubmitButton } from '@/components/moment-form/buttons/SubmitButton';
+import { DeleteButton } from '@/components/moment-form/buttons/DeleteButton';
+import { CloseBtn } from '@/components/moment-form/buttons/CloseButton';
+import { EnableDraggingButton } from '@/components/moment-form/buttons/EnableDraggingButton';
 import { DraggingForm } from '@/components/moment-form/DraggingForm';
 import { useDragging } from '@/components/moment-form/useDragging';
 import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
