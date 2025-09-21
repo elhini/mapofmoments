@@ -1,7 +1,7 @@
 import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
 
-import type { Moment } from '@/api-client/moments/momentsApi';
+import type { Moment } from '@/types/moment';
 import {
     useCreateMomentMutation,
     useDeleteMomentMutation,

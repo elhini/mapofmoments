@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Marker } from 'mapbox-gl';
 
-import type { Moment } from '@/api-client/moments/momentsApi';
+import type { Moment } from '@/types/moment';
 
 export const useDragging = (marker: Marker | null, moment?: Moment) => {
     const [enabled, setEnabled] = useState(false);

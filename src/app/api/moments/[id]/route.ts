@@ -1,8 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server';
+
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
 import { buildLocationString } from '@/app/api/coordUtils';
-import type { Moment } from '@/api-client/moments/momentsApi';
+
+import type { Moment } from '@/types/moment';
 
 // Изменение существующей точки
 export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {

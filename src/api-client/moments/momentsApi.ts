@@ -1,14 +1,5 @@
 import { api } from '@/api-client/apiClient';
-import type { Coordinates } from '@/types/coordinates';
-
-export type Moment = {
-    id: string;
-    title: string;
-    description?: string;
-    date?: string;
-    not_exact_date?: boolean;
-    location: { coordinates: Coordinates };
-};
+import type { Moment } from '@/types/moment';
 
 export async function create(data: Moment) {
     return api.post<Moment>('api/moments', data);

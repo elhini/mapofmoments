@@ -7,15 +7,18 @@ import type { Marker } from 'mapbox-gl';
 import { Modal, ModalContent } from '@heroui/modal';
 import { Form } from '@heroui/form';
 
-import type { Moment } from '@/api-client/moments/momentsApi';
+import type { Moment } from '@/types/moment';
 import { useMomentForm } from '@/hooks/useMomentForm';
+
 import { SubmitButton } from '@/components/moment-form/buttons/SubmitButton';
 import { DeleteButton } from '@/components/moment-form/buttons/DeleteButton';
 import { CloseBtn } from '@/components/moment-form/buttons/CloseButton';
 import { EnableDraggingButton } from '@/components/moment-form/buttons/EnableDraggingButton';
+
 import { DraggingForm } from '@/components/moment-form/DraggingForm';
 import { useDragging } from '@/components/moment-form/useDragging';
 import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
+
 import { TextField } from '@/components/moment-form/fields/TextField';
 import { DescriptionField } from '@/components/moment-form/fields/DescriptionField';
 import { DateField } from '@/components/moment-form/fields/DateField';
