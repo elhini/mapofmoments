@@ -8,7 +8,7 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 import { Card } from '@heroui/card';
 
-import type { Coordinates } from '@/api-client/moments/momentsApi';
+import type { Coordinates } from '@/types/coordinates';
 import { MomentForm } from '@/components/moment-form/MomentForm';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
