@@ -26,8 +26,8 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
     return (
-        <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100 px-4 dark:from-slate-800 dark:via-slate-900 dark:to-black">
-            <div className="animate-fade-in relative flex max-w-3xl flex-col items-center gap-4 rounded-2xl bg-white/70 p-5 text-center shadow-xl backdrop-blur-md sm:gap-8 sm:p-10 dark:bg-slate-800/70">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100 px-4 dark:from-slate-800 dark:via-slate-900 dark:to-black">
+            <div className="animate-fade-in flex flex-col gap-4 rounded-2xl bg-white/70 p-5 text-center shadow-xl sm:gap-8 sm:p-10 dark:bg-slate-800/70">
                 <h2 className="bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-4xl font-extrabold text-transparent">
                     Map of Moments
                 </h2>
