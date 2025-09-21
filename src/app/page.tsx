@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100 px-4 dark:from-slate-800 dark:via-slate-900 dark:to-black">
-            <div className="animate-fade-in flex max-w-3xl flex-col items-center gap-4 rounded-2xl bg-white/70 p-5 text-center shadow-xl backdrop-blur-md sm:gap-8 sm:p-10 dark:bg-slate-800/70">
+            <div className="animate-fade-in relative flex max-w-3xl flex-col items-center gap-4 rounded-2xl bg-white/70 p-5 text-center shadow-xl backdrop-blur-md sm:gap-8 sm:p-10 dark:bg-slate-800/70">
                 <h2 className="bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-4xl font-extrabold text-transparent">
                     Map of Moments
                 </h2>
@@ -69,24 +69,26 @@ export default function HomePage() {
                     Отмечай места, добавляй впечатления&nbsp;— и&nbsp;делись ими с&nbsp;друзьями
                 </h4>
 
-                <div className="flex gap-4">
-                    <Button
-                        as={Link}
-                        size="lg"
-                        href="/register"
-                        className="rounded-xl bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 text-white shadow-md"
-                    >
-                        Начать
-                    </Button>
-                    <Button
-                        as={Link}
-                        size="lg"
-                        href="/login"
-                        variant="bordered"
-                        className="rounded-xl border-1 border-sky-400 text-sky-600 transition-colors hover:bg-sky-50 dark:text-sky-300 dark:hover:bg-slate-700"
-                    >
-                        Продолжить
-                    </Button>
+                <div className="sticky bottom-0 w-full rounded-2xl bg-white p-5 shadow-[0_0_20px_20px_white]">
+                    <div className="flex justify-center gap-4">
+                        <Button
+                            as={Link}
+                            size="lg"
+                            href="/register"
+                            className="rounded-xl bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 text-white shadow-md"
+                        >
+                            Начать
+                        </Button>
+                        <Button
+                            as={Link}
+                            size="lg"
+                            href="/login"
+                            variant="bordered"
+                            className="rounded-xl border-1 border-sky-400 text-sky-600 transition-colors hover:bg-sky-50 dark:text-sky-300 dark:hover:bg-slate-700"
+                        >
+                            Продолжить
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
