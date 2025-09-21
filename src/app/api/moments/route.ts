@@ -8,6 +8,9 @@ import type { Moment } from '@/api-client/moments/momentsApi';
 export async function POST(req: NextRequest) {
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
+    if (!user) {
+        return NextResponse.json({ error: 'User not authorized' }, { status: 401 });
+    }
 
     const body: Moment = await req.json();
     const { title, description, date, not_exact_date, location } = body;

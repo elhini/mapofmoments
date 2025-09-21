@@ -8,7 +8,10 @@ import type { Moment } from '@/api-client/moments/momentsApi';
 export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
-    const { id } = await context.params;
+    if (!user) {
+        return NextResponse.json({ error: 'User not authorized' }, { status: 401 });
+    }
+
     const body: Moment = await req.json();
     const { title, description, date, not_exact_date, location } = body;
     if (!title || !location?.coordinates) {
@@ -24,7 +27,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
             not_exact_date,
             location: buildLocationString(location),
         })
-        .eq('id', id)
+        .eq('id', (await context.params).id)
         .eq('user_id', user?.id)
         .select()
         .single();
@@ -34,10 +37,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
     }
 
     if (!data) {
-        return NextResponse.json(
-            { error: 'Moment not found or user not authorized' },
-            { status: 404 },
-        );
+        return NextResponse.json({ error: 'Moment not found' }, { status: 404 });
     }
 
     return NextResponse.json(data);
