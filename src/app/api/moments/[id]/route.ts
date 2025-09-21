@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
+import { buildLocationString } from '@/app/api/coordUtils';
 import type { Moment } from '@/api-client/moments/momentsApi';
 
 // Изменение существующей точки
@@ -21,7 +22,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
             description,
             date,
             not_exact_date,
-            location: `SRID=4326;POINT(${location.coordinates[0]} ${location.coordinates[1]})`,
+            location: buildLocationString(location),
         })
         .eq('id', id)
         .eq('user_id', user?.id)

@@ -1,6 +1,5 @@
 import { api } from '@/api-client/apiClient';
-
-export type Coordinates = [number, number];
+import type { Coordinates } from '@/types/coordinates';
 
 export type Moment = {
     id: string;
