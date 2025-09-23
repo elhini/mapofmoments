@@ -6,6 +6,8 @@ import { buildLocationString } from '@/app/api/coordUtils';
 
 import type { Moment } from '@/types/moment';
 
+type TagObject = { name: string };
+
 // Добавление новой точки
 export async function POST(req: NextRequest) {
     const supabase = getSupabaseServiceClient();
@@ -28,7 +30,7 @@ export async function POST(req: NextRequest) {
             date,
             not_exact_date,
             location: buildLocationString(location),
-            user_id: user?.id,
+            user_id: user.id,
             created_at: new Date().toISOString(),
         })
         .select()
@@ -48,13 +50,20 @@ export async function GET(req: NextRequest) {
 
     const { data: moments, error } = await supabase
         .from('moments')
-        .select('*')
+        .select(
+            `*,
+            tags ( name )`,
+        )
         .eq('user_id', user?.id)
         .order('created_at', { ascending: false });
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    moments.forEach((moment) => {
+        moment.tags = moment.tags.map((tag: TagObject) => tag.name);
+    });
 
     return NextResponse.json(moments);
 }

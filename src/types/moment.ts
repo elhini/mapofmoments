@@ -7,4 +7,5 @@ export type Moment = {
     date?: string;
     not_exact_date?: boolean;
     location: { coordinates: Coordinates };
+    tags: string[];
 };

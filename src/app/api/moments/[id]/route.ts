@@ -30,7 +30,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
             location: buildLocationString(location),
         })
         .eq('id', (await context.params).id)
-        .eq('user_id', user?.id)
+        .eq('user_id', user.id)
         .select()
         .single();
 
