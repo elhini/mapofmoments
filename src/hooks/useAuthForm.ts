@@ -19,20 +19,8 @@ export const useAuthForm = ({ mode }: UseAuthFormProps) => {
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
 
-        if (!formData.email) {
-            newErrors.email = 'Email обязателен';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'Некорректный email';
-        }
-
-        if (!formData.password) {
-            newErrors.password = 'Пароль обязателен';
-        } else if (formData.password.length < 6) {
+        if (formData.password.length < 6) {
             newErrors.password = 'Пароль должен быть не менее 6 символов';
-        }
-
-        if (mode === 'register' && !formData.username) {
-            newErrors.username = 'Логин обязателен';
         }
 
         setValidationErrors(newErrors);

@@ -42,7 +42,6 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
                             value={formData.username}
                             onChange={handleChange}
                             isRequired
-                            errorMessage="Логин обязателен"
                             autoFocus={mode === 'register'}
                         />
                     )}
@@ -54,7 +53,6 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
                         value={formData.email}
                         onChange={handleChange}
                         isRequired
-                        errorMessage="Email не корректный"
                         autoFocus={mode === 'login'}
                     />
 
@@ -65,7 +63,6 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
                         value={formData.password}
                         onChange={handleChange}
                         isRequired
-                        errorMessage="Пароль не корректный"
                     />
 
                     <Button
