@@ -10,12 +10,10 @@ interface UseAuthFormProps {
 
 type FormErrors = Partial<AuthFormData>;
 
+const emptyData: AuthFormData = { email: '', password: '', username: '' };
+
 export const useAuthForm = ({ mode }: UseAuthFormProps) => {
-    const [formData, setFormData] = useState<AuthFormData>({
-        email: '',
-        password: '',
-        username: '',
-    });
+    const [formData, setFormData] = useState<AuthFormData>(emptyData);
     const [validationErrors, setValidationErrors] = useState<FormErrors>({});
 
     const validateForm = (): boolean => {
