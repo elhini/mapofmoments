@@ -16,8 +16,8 @@ export default function AuthCallbackPage() {
     }, []);
 
     return (
-        <div className="flex min-h-screen items-center justify-center">
-            {redirecting ? 'Redirecting...' : 'No access token'}
+        <div className="text-foreground flex min-h-screen items-center justify-center bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100">
+            {redirecting ? 'Перенаправление...' : 'Нет токена доступа'}
         </div>
     );
 }
