@@ -38,7 +38,7 @@ export default function MapPage() {
     const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
     const moment = moments.find((m) => m.id === momentId);
     const coordinates: Coordinates = [location?.lng || 0, location?.lat || 0];
-    const newMoment = { id: '', title: '', location: { coordinates } };
+    const newMoment = { id: '', title: '', tags: [], location: { coordinates } };
 
     const onSubmit = async () => {
         closeForm();
