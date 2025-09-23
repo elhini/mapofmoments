@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: error.message }, { status: 401 });
     }
 
-    const response = NextResponse.redirect(new URL('/login', req.url));
+    const response = NextResponse.redirect(new URL('/login', req.url), 303);
     response.cookies.delete(SUPABASE_COOKIE_KEY);
     return response;
 }

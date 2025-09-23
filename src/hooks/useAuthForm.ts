@@ -1,21 +1,22 @@
+import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
+
 import type { AuthFormData, AuthFormMode } from '@/types/auth';
+import { useLoginMutation, useRegisterMutation } from '@/hooks/useAuthApi';
 
 interface UseAuthFormProps {
     mode: AuthFormMode;
-    onSubmit: (data: AuthFormData) => void;
 }
 
 type FormErrors = Partial<AuthFormData>;
 
-export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
+export const useAuthForm = ({ mode }: UseAuthFormProps) => {
     const [formData, setFormData] = useState<AuthFormData>({
         email: '',
         password: '',
         username: '',
     });
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [isLoading, setIsLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState<FormErrors>({});
 
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
@@ -36,28 +37,25 @@ export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
             newErrors.username = 'Логин обязателен';
         }
 
-        setErrors(newErrors);
+        setValidationErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const registerMutation = useRegisterMutation();
+    const loginMutation = useLoginMutation();
+    const isSubmitting = registerMutation.isPending || loginMutation.isPending;
+    const mutationError = registerMutation.error || loginMutation.error;
+    const mutationErrorText = mutationError ? mutationError?.statusText || 'Что-то сломалось' : '';
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         if (!validateForm()) return;
-
-        // const data = Object.fromEntries(new FormData(e.currentTarget));
-
-        setIsLoading(true);
-        try {
-            onSubmit(formData);
-        } catch (error) {
-            console.error('Auth error:', error);
-        } finally {
-            setIsLoading(false);
-        }
+        const submit =
+            mode === 'register' ? registerMutation.mutateAsync : loginMutation.mutateAsync;
+        await submit(formData);
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -65,8 +63,8 @@ export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
         }));
 
         // Clear error when user starts typing
-        if (errors[name as keyof FormErrors]) {
-            setErrors((prev) => ({
+        if (validationErrors[name as keyof FormErrors]) {
+            setValidationErrors((prev) => ({
                 ...prev,
                 [name]: undefined,
             }));
@@ -75,9 +73,10 @@ export const useAuthForm = ({ mode, onSubmit }: UseAuthFormProps) => {
 
     return {
         formData,
-        errors,
-        isLoading,
+        validationErrors,
+        submitErrorText: mutationErrorText,
         handleChange,
         handleSubmit,
+        isSubmitting,
     };
 };

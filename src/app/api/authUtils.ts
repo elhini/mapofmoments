@@ -25,7 +25,7 @@ export const handleUnauthorizedRequest = (pathname: string, reqUrl: string) => {
     if (pathname.startsWith('/api')) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const response = NextResponse.redirect(new URL('/login', reqUrl));
+    const response = NextResponse.redirect(new URL('/login', reqUrl), 303);
     response.cookies.delete(SUPABASE_COOKIE_KEY);
     return response;
 };

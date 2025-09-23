@@ -1,29 +1,11 @@
-'use client';
-
 import React from 'react';
+import type { Metadata } from 'next';
+
 import { AuthForm } from '@/components/auth-form/AuthForm';
-import type { AuthFormData } from '@/types/auth';
-import { useRegisterMutation } from '@/hooks/useAuthApi';
+import { baseMetadata } from '@/app/metadata';
+
+export const metadata: Metadata = { ...baseMetadata, title: 'Регистрация в Map of Moments' };
 
 export default function RegisterPage() {
-    const mutation = useRegisterMutation();
-
-    const handleRegister = async (data: AuthFormData) => {
-        await mutation.mutateAsync({
-            email: data.email,
-            password: data.password,
-            username: data.username,
-        });
-    };
-
-    const errorMessage = mutation.error ? mutation.error.statusText || 'Registration failed' : '';
-
-    return (
-        <AuthForm
-            mode="register"
-            onSubmit={handleRegister}
-            isLoading={mutation.isPending}
-            error={errorMessage}
-        />
-    );
+    return <AuthForm mode="register" />;
 }

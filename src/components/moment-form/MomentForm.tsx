@@ -42,7 +42,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     const {
         formData,
         validationErrors,
-        mutationError,
+        submitErrorText,
         handleChange,
         handleSubmit,
         handleDelete,
@@ -102,7 +102,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
                         </div>
                     </div>
 
-                    {mutationError && <ErrorAlert title={mutationError.statusText} />}
+                    {submitErrorText && <ErrorAlert title={submitErrorText} />}
                 </Form>
                 {closeBtn}
             </ModalContent>

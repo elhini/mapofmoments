@@ -4,10 +4,4 @@ export type AuthFormData = {
     username: string;
 };
 
-export type AuthFormProps = {
-    onSubmit: (data: AuthFormData) => void;
-    isLoading?: boolean;
-    error?: string;
-};
-
 export type AuthFormMode = 'login' | 'register';

@@ -1,25 +1,11 @@
-'use client';
-
 import React from 'react';
+import type { Metadata } from 'next';
+
 import { AuthForm } from '@/components/auth-form/AuthForm';
-import type { AuthFormData } from '@/types/auth';
-import { useLoginMutation } from '@/hooks/useAuthApi';
+import { baseMetadata } from '@/app/metadata';
+
+export const metadata: Metadata = { ...baseMetadata, title: 'Вход в Map of Moments' };
 
 export default function LoginPage() {
-    const mutation = useLoginMutation();
-
-    const handleLogin = async (data: AuthFormData) => {
-        await mutation.mutateAsync({ email: data.email, password: data.password });
-    };
-
-    const errorMessage = mutation.error ? mutation.error.statusText || 'Login failed' : '';
-
-    return (
-        <AuthForm
-            mode="login"
-            onSubmit={handleLogin}
-            isLoading={mutation.isPending}
-            error={errorMessage}
-        />
-    );
+    return <AuthForm mode="login" />;
 }

@@ -49,6 +49,7 @@ export const useMomentForm = ({ moment, onSubmit, onDelete }: UseMomentFormProps
     const isSubmitting = createMutation.isPending || updateMutation.isPending;
     const isDeleting = deleteMutation.isPending;
     const mutationError = createMutation.error || updateMutation.error || deleteMutation.error;
+    const mutationErrorText = mutationError ? mutationError?.statusText || 'Что-то сломалось' : '';
 
     const handleSubmit = async (e?: FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
@@ -82,7 +83,7 @@ export const useMomentForm = ({ moment, onSubmit, onDelete }: UseMomentFormProps
     return {
         formData,
         validationErrors,
-        mutationError,
+        submitErrorText: mutationErrorText,
         handleChange,
         handleSubmit,
         handleDelete,

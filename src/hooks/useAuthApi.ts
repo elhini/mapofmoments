@@ -28,9 +28,10 @@ export function useLogoutMutation() {
     });
 }
 
-export function useMeQuery() {
+export function useMeQuery(enabled: boolean) {
     return useQuery<User, ApiError>({
         queryKey: ['me'],
         queryFn: me,
+        enabled,
     });
 }

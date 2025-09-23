@@ -1,33 +1,30 @@
 'use client';
 
 import React from 'react';
+
 import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
+
 import { useAuthForm } from '@/hooks/useAuthForm';
-import type { AuthFormProps, AuthFormMode } from '@/types/auth';
+import type { AuthFormMode } from '@/types/auth';
 import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
 import { AuthWithGoogle } from '@/components/auth-form/AuthWithGoogle';
 
-interface AuthFormComponentProps extends AuthFormProps {
+interface AuthFormComponentProps {
     mode: AuthFormMode;
 }
 
-export const AuthForm: React.FC<AuthFormComponentProps> = ({
-    mode,
-    onSubmit,
-    isLoading: externalLoading,
-    error: externalError,
-}) => {
+export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
     const {
         formData,
-        errors,
-        isLoading: internalLoading,
+        validationErrors,
+        submitErrorText,
         handleChange,
         handleSubmit,
-    } = useAuthForm({ mode, onSubmit });
+        isSubmitting,
+    } = useAuthForm({ mode });
 
-    const isLoading = externalLoading || internalLoading;
     const submitText = mode === 'login' ? 'Войти' : 'Зарегистрироваться';
 
     return (
@@ -36,7 +33,7 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                 <h2 className="bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-3xl font-extrabold text-transparent">
                     Map of Moments
                 </h2>
-                <Form className="w-60" onSubmit={handleSubmit} validationErrors={errors}>
+                <Form className="w-60" onSubmit={handleSubmit} validationErrors={validationErrors}>
                     {mode === 'register' && (
                         <Input
                             label="Логин"
@@ -76,13 +73,13 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({
                         color="primary"
                         size="lg"
                         fullWidth
-                        isLoading={isLoading}
+                        isLoading={isSubmitting}
                         className="rounded-xl bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 text-white shadow-md"
                     >
                         {submitText}
                     </Button>
 
-                    {externalError && <ErrorAlert title={externalError} />}
+                    {submitErrorText && <ErrorAlert title={submitErrorText} />}
 
                     <div className="mt-4 w-full text-center text-sm text-gray-600">
                         {mode === 'login' ? (

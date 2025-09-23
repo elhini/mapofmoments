@@ -1,14 +1,21 @@
 'use client';
 
-import { useLogoutMutation, useMeQuery } from '@/hooks/useAuthApi';
+import { usePathname } from 'next/navigation';
+
 import { Button } from '@heroui/button';
 
+import { publicRoutes } from '@/constants/public-routes';
+import { useLogoutMutation, useMeQuery } from '@/hooks/useAuthApi';
+
 export const Header = () => {
-    const { data: user } = useMeQuery();
+    const pathname = usePathname();
+    const isPublicPage = publicRoutes.includes(pathname);
+
+    const { data: user } = useMeQuery(!isPublicPage);
     const { mutate: logout } = useLogoutMutation();
     const username = user?.username;
 
-    return (
+    return isPublicPage ? null : (
         <header className="header fixed top-0 z-1 flex w-full items-center justify-between bg-black p-4 text-white">
             <div>Map of Moments</div>
             <div className="flex w-[50%] items-center justify-end gap-4">
