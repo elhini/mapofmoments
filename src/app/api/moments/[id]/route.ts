@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
 import { buildLocationString } from '@/app/api/coordUtils';
+import { upsertTags } from '@/app/api/tags/upsertTags';
 
 import type { Moment } from '@/types/moment';
 
@@ -18,6 +19,11 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
     const { title, description, date, not_exact_date, location } = body;
     if (!title || !location?.coordinates) {
         return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    }
+
+    const { tags, tagsError } = await upsertTags(user.id, body.id, body.tags);
+    if (tagsError) {
+        return NextResponse.json({ error: tagsError }, { status: 500 });
     }
 
     const { data, error } = await supabase
@@ -42,7 +48,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
         return NextResponse.json({ error: 'Moment not found' }, { status: 404 });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json({ ...data, tags });
 }
 
 // Удаление существующей точки

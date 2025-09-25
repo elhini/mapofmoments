@@ -23,6 +23,7 @@ import { TextField } from '@/components/moment-form/fields/TextField';
 import { DescriptionField } from '@/components/moment-form/fields/DescriptionField';
 import { DateField } from '@/components/moment-form/fields/DateField';
 import { NotExactDateField } from '@/components/moment-form/fields/NotExactDateField';
+import { TagsField } from '@/components/moment-form/fields/TagsField';
 
 export type MomentFormProps = {
     moment?: Moment;
@@ -93,6 +94,8 @@ export const MomentForm: React.FC<MomentFormProps> = ({
                             onChange={handleChange}
                         />
                     </div>
+
+                    <TagsField value={formData?.tags} onChange={handleChange} />
 
                     <div className="flex w-full justify-between gap-2">
                         <SubmitButton text={submitText} isLoading={isSubmitting} />

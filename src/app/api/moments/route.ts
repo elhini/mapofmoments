@@ -3,10 +3,10 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
 import { buildLocationString } from '@/app/api/coordUtils';
+import { upsertTags } from '@/app/api/tags/upsertTags';
 
+import type { TagObject } from '@/types/tag';
 import type { Moment } from '@/types/moment';
-
-type TagObject = { name: string };
 
 // Добавление новой точки
 export async function POST(req: NextRequest) {
@@ -20,6 +20,11 @@ export async function POST(req: NextRequest) {
     const { title, description, date, not_exact_date, location } = body;
     if (!title || !location?.coordinates) {
         return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    }
+
+    const { tags, tagsError } = await upsertTags(user.id, body.id, body.tags);
+    if (tagsError) {
+        return NextResponse.json({ error: tagsError }, { status: 500 });
     }
 
     const { data, error } = await supabase
@@ -40,7 +45,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json({ ...data, tags });
 }
 
 // Получение всех точек пользователя

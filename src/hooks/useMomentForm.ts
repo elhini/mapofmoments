@@ -1,4 +1,5 @@
 import type { FormEvent } from 'react';
+import { useCallback } from 'react';
 import { useEffect, useState } from 'react';
 
 import type { Moment } from '@/types/moment';
@@ -65,21 +66,24 @@ export const useMomentForm = ({ moment, onSubmit, onDelete }: UseMomentFormProps
         onDelete();
     };
 
-    const handleChange = ({ name, value }: ChangeArgs) => {
-        if (value === undefined) return;
-        setFormData((prev) => {
-            const prevData = prev || emptyMoment;
-            return { ...prevData, [name]: value };
-        });
+    const handleChange = useCallback(
+        ({ name, value }: ChangeArgs) => {
+            if (value === undefined) return;
+            setFormData((prev) => {
+                const prevData = prev || emptyMoment;
+                return { ...prevData, [name]: value };
+            });
 
-        // Clear error when user starts typing
-        if (validationErrors[name as keyof FormErrors]) {
-            setValidationErrors((prev) => ({
-                ...prev,
-                [name]: undefined,
-            }));
-        }
-    };
+            // Clear error when user starts typing
+            if (validationErrors[name as keyof FormErrors]) {
+                setValidationErrors((prev) => ({
+                    ...prev,
+                    [name]: undefined,
+                }));
+            }
+        },
+        [validationErrors],
+    );
 
     return {
         formData,

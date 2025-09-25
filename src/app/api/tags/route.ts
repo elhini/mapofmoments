@@ -1,0 +1,24 @@
+import { type NextRequest, NextResponse } from 'next/server';
+
+import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
+import { getCurrentUser } from '@/app/api/authUtils';
+
+// Получение всех тэгов пользователя
+export async function GET(req: NextRequest) {
+    const supabase = getSupabaseServiceClient();
+    const user = await getCurrentUser(req);
+
+    const { data: tagObjects, error } = await supabase
+        .from('tags')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('created_at');
+
+    if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const tags = tagObjects.map((tagObject) => tagObject.name);
+
+    return NextResponse.json(tags);
+}
