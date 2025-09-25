@@ -1,14 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-    register,
-    login,
-    logout,
-    me,
-    type RegisterRequest,
-    type LoginRequest,
-    type User,
-} from '@/api-client/auth/authApi';
+
+import type { RegisterRequest, LoginRequest, User } from '@/api-client/auth/authApi';
 import type { ApiError } from '@/api-client/apiClient';
+import { register, login, logout, me } from '@/api-client/auth/authApi';
 
 export function useRegisterMutation() {
     return useMutation<unknown, ApiError, RegisterRequest>({

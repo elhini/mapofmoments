@@ -1,5 +1,6 @@
 import { api } from '@/api-client/apiClient';
 
+// TODO: move to types
 export type RegisterRequest = {
     email: string;
     password: string;

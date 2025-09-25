@@ -1,9 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
+import type { Moment } from '@/types/moment';
 import type { ApiError } from '@/api-client/apiClient';
 import { create, update, deleteMoment, getAll } from '@/api-client/moments/momentsApi';
-
-import type { Moment } from '@/types/moment';
 
 export function useCreateMomentMutation() {
     return useMutation<Moment, ApiError, Moment>({
