@@ -7,7 +7,7 @@ export const config = { matcher: ['/((?!_next|favicon.ico|og-image.png|public).*
 
 const authStartPages = ['/register', '/login'];
 
-const authProcessPages = ['/verify-email', '/auth/callback'];
+const authProcessPages = ['/verify-email', '/auth/callback', '/reset-password', '/update-password'];
 const authProcessRoutes = ['/api/login', '/api/register', '/api/auth/callback'];
 
 const publicPaths = ['/', ...authProcessRoutes, ...authProcessPages];
