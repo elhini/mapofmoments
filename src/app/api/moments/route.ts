@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
-    const { tags, tagsError } = await upsertTags(user.id, body.id, body.tags);
+    const { tags, error: tagsError } = await upsertTags(user.id, body.id, body.tags);
     if (tagsError) {
         return NextResponse.json({ error: tagsError }, { status: 500 });
     }
