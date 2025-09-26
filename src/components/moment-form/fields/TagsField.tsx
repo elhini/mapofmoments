@@ -17,8 +17,9 @@ export const TagsField = ({ value = [], onChange }: Props) => {
     const { data: existingTags = [] } = useGetAllTagsQuery();
     const [options, setOptions] = useState(existingTags);
     const [selected, setSelected] = useState<string[]>(value);
+    const [inputValue, setInputValue] = useState('');
 
-    useEffect(() => setOptions(existingTags), [existingTags]);
+    useEffect(() => (existingTags.length ? setOptions(existingTags) : undefined), [existingTags]);
 
     useEffect(() => onChange({ name: 'tags', value: selected }), [onChange, selected]);
 
@@ -29,6 +30,7 @@ export const TagsField = ({ value = [], onChange }: Props) => {
         if (!selected.includes(value)) {
             setSelected((prev) => [...prev, value]);
         }
+        setInputValue('');
     };
 
     const handleRemove = (value: string) => {
@@ -40,13 +42,15 @@ export const TagsField = ({ value = [], onChange }: Props) => {
             <Autocomplete
                 label="Тэги"
                 allowsCustomValue
+                inputValue={inputValue}
+                onInputChange={setInputValue}
                 onSelectionChange={(key) => {
                     if (key) handleAdd(key.toString());
                 }}
                 inputProps={{
                     onKeyUp: (e) => {
                         if (e.key === 'Enter') {
-                            handleAdd(e.currentTarget.value.trim());
+                            handleAdd(inputValue.trim());
                         }
                     },
                 }}
