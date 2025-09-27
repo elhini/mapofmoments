@@ -56,7 +56,7 @@ export const TagsField = ({ value = [], onChange }: Props) => {
                 }}
             >
                 {options.map((option) => (
-                    <AutocompleteItem key={option} className="text-foreground">
+                    <AutocompleteItem key={option} className="text-foreground text-left">
                         {option}
                     </AutocompleteItem>
                 ))}

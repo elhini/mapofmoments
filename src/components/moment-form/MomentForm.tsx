@@ -87,7 +87,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
 
                     <DescriptionField value={formData?.description} onChange={handleChange} />
 
-                    <div className="flex w-full justify-between gap-2">
+                    <div className="flex w-full justify-between gap-2 text-left">
                         <DateField value={formData?.date} onChange={handleChange} />
                         <NotExactDateField
                             value={formData?.not_exact_date}
