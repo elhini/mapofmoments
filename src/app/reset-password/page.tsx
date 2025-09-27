@@ -29,27 +29,25 @@ export default function ResetPasswordPage() {
     };
 
     return (
-        <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100 px-4 dark:from-slate-800 dark:via-slate-900 dark:to-black">
-            <Form
-                className="animate-fade-in flex w-80 max-w-3xl flex-col items-center gap-2 rounded-2xl bg-white/70 p-10 text-center shadow-xl backdrop-blur-md dark:bg-slate-800/70"
-                onSubmit={handleSubmit}
-            >
-                <h2 className="text-foreground mb-3 text-xl">Сброс пароля, шаг 1</h2>
+        <Form
+            className="animate-fade-in flex w-80 max-w-3xl flex-col items-center gap-2 rounded-2xl bg-white/70 p-10 text-center shadow-xl backdrop-blur-md dark:bg-slate-800/70"
+            onSubmit={handleSubmit}
+        >
+            <h2 className="text-foreground mb-3 text-xl">Сброс пароля, шаг 1</h2>
 
-                <Input
-                    label="Email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+            <Input
+                label="Email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
 
-                <Button type="submit" color="primary" size="lg" fullWidth isLoading={isSending}>
-                    Отправить письмо
-                </Button>
+            <Button type="submit" color="primary" size="lg" fullWidth isLoading={isSending}>
+                Отправить письмо
+            </Button>
 
-                {status && <p className="text-center text-sm text-gray-600">{status}</p>}
-            </Form>
-        </div>
+            {status && <p className="text-center text-sm text-gray-600">{status}</p>}
+        </Form>
     );
 }
