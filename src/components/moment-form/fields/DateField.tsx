@@ -20,7 +20,7 @@ export const DateField = ({ value = '', onChange }: Props) => (
             firstDayOfWeek="mon"
             value={getCalendarDate(value)}
             onChange={(v) => onChange({ name: 'date', value: v?.toString() })}
-            className="w-34"
+            className="w-34 text-left"
         />
     </I18nProvider>
 );

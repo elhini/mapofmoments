@@ -15,6 +15,7 @@ export const NotExactDateField = ({ value = false, onChange }: Props) => (
         name="not_exact_date"
         isSelected={value}
         onValueChange={(v) => onChange({ name: 'not_exact_date', value: v })}
+        className="m-0 h-5 self-center p-0"
         size="sm"
     >
         Примерная дата

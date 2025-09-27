@@ -60,12 +60,11 @@ export const MomentForm: React.FC<MomentFormProps> = ({
         disableDragging();
     };
 
-    const coordsText = formData?.location.coordinates.map((c) => c.toFixed(6)).join(', ');
+    const coordsText = moment?.location.coordinates.map((c) => c.toFixed(6)).join(', ');
 
     const submitText = moment?.id ? 'Изменить' : 'Добавить';
     const enableDraggingBtn = moment?.id && <EnableDraggingButton onPress={enableDragging} />;
     const deleteBtn = moment?.id && <DeleteButton onPress={handleDelete} isLoading={isDeleting} />;
-    const closeBtn = <CloseBtn onPress={onClose} />;
 
     return draggingEnabled ? (
         <DraggingForm submit={submitCoords} isSubmitting={isSubmitting} cancel={rollbackCoords} />
@@ -80,14 +79,14 @@ export const MomentForm: React.FC<MomentFormProps> = ({
                 <Form onSubmit={handleSubmit} validationErrors={validationErrors}>
                     <div className="relative w-full">
                         <TextField value={formData?.title} onChange={handleChange} />
-                        <div className="text-foreground-500 absolute top-2 right-3 text-xs">
+                        <div className="text-foreground-500 absolute top-2 right-3 z-10 text-xs">
                             {coordsText}
                         </div>
                     </div>
 
                     <DescriptionField value={formData?.description} onChange={handleChange} />
 
-                    <div className="flex w-full justify-between gap-2 text-left">
+                    <div className="flex w-full justify-between gap-2">
                         <DateField value={formData?.date} onChange={handleChange} />
                         <NotExactDateField
                             value={formData?.not_exact_date}
@@ -107,7 +106,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
 
                     {submitErrorText && <ErrorAlert title={submitErrorText} />}
                 </Form>
-                {closeBtn}
+                <CloseBtn onPress={onClose} />
             </ModalContent>
         </Modal>
     );
