@@ -19,7 +19,7 @@ export default function RootLayout({
     return (
         <Providers>
             <html lang="ru">
-                <body className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100 px-4 text-center antialiased dark:from-slate-800 dark:via-slate-900 dark:to-black">
+                <body className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100 text-center antialiased dark:from-slate-800 dark:via-slate-900 dark:to-black">
                     <Header />
                     {children}
                 </body>

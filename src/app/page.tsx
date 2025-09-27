@@ -3,7 +3,7 @@ import { Link } from '@heroui/link';
 
 export default function HomePage() {
     return (
-        <div className="animate-fade-in flex flex-col gap-4 rounded-2xl bg-white/70 p-5 text-center shadow-xl sm:gap-8 sm:p-10 dark:bg-slate-800/70">
+        <div className="animate-fade-in m-4 flex flex-col gap-4 rounded-2xl bg-white/70 p-5 text-center shadow-xl sm:gap-8 sm:p-10 dark:bg-slate-800/70">
             <h2 className="bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-4xl font-extrabold text-transparent">
                 Map of Moments
             </h2>
