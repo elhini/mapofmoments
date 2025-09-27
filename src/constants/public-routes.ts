@@ -3,7 +3,7 @@ export const publicRoutes = [
     '/register',
     '/login',
     '/verify-email',
-    '/auth/callback',
+    '/auth-callback',
     '/reset-password',
     '/update-password',
 ];
