@@ -29,7 +29,7 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
 
     return (
         <Form
-            className="animate-fade-in flex w-80 max-w-3xl flex-col items-center gap-2 rounded-2xl bg-white/70 p-10 text-center shadow-xl backdrop-blur-md dark:bg-slate-800/70"
+            className="animate-fade-in m-5 flex w-80 max-w-3xl flex-col items-center gap-4 rounded-2xl bg-white/70 p-5 text-center shadow-xl backdrop-blur-md sm:gap-8 sm:p-10 dark:bg-slate-800/70"
             onSubmit={handleSubmit}
             validationErrors={validationErrors}
         >
