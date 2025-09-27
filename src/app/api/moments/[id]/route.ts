@@ -21,11 +21,6 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
         return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
-    const { tags, error: tagsError } = await upsertTags(user.id, body.id, body.tags);
-    if (tagsError) {
-        return NextResponse.json({ error: tagsError }, { status: 500 });
-    }
-
     const { data, error } = await supabase
         .from('moments')
         .update({
@@ -46,6 +41,11 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 
     if (!data) {
         return NextResponse.json({ error: 'Moment not found' }, { status: 404 });
+    }
+
+    const { tags, error: tagsError } = await upsertTags(user.id, data.id, body.tags);
+    if (tagsError) {
+        return NextResponse.json({ error: 'Tags error, ' + tagsError }, { status: 500 });
     }
 
     return NextResponse.json({ ...data, tags });

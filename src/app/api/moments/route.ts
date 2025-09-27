@@ -22,11 +22,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
-    const { tags, error: tagsError } = await upsertTags(user.id, body.id, body.tags);
-    if (tagsError) {
-        return NextResponse.json({ error: tagsError }, { status: 500 });
-    }
-
     const { data, error } = await supabase
         .from('moments')
         .insert({
@@ -43,6 +38,11 @@ export async function POST(req: NextRequest) {
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const { tags, error: tagsError } = await upsertTags(user.id, data.id, body.tags);
+    if (tagsError) {
+        return NextResponse.json({ error: 'Tags error, ' + tagsError }, { status: 500 });
     }
 
     return NextResponse.json({ ...data, tags });
