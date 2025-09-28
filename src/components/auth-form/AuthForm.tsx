@@ -33,9 +33,12 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
             onSubmit={handleSubmit}
             validationErrors={validationErrors}
         >
-            <h2 className="mb-6 bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-3xl font-extrabold text-transparent">
+            <a
+                href="/"
+                className="mb-6 bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-3xl font-extrabold text-transparent"
+            >
                 Map of Moments
-            </h2>
+            </a>
             {mode === 'register' && (
                 <Input
                     label="Логин"
