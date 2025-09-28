@@ -1,6 +1,8 @@
 'use client';
 
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/table';
+import { Spinner } from '@heroui/spinner';
+
 import { useGetAllTagsQuery } from '@/hooks/useTagsApi';
 
 export default function TagsPage() {
@@ -15,7 +17,7 @@ export default function TagsPage() {
                     <TableColumn>Тэг</TableColumn>
                     <TableColumn>Кол-во</TableColumn>
                 </TableHeader>
-                <TableBody isLoading={isLoading}>
+                <TableBody isLoading={isLoading} loadingContent={<Spinner label="Загрузка..." />}>
                     {tags.map((tag) => (
                         <TableRow key={tag.id}>
                             <TableCell>{tag.name}</TableCell>
