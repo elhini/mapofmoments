@@ -5,6 +5,7 @@ import React from 'react';
 import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
+import { Link } from '@heroui/link';
 
 import { useAuthForm } from '@/hooks/useAuthForm';
 import type { AuthFormMode } from '@/types/auth';
@@ -87,16 +88,16 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
                 {mode === 'login' ? (
                     <>
                         Нет аккаунта?{' '}
-                        <a href="/register" className="text-blue-600 hover:text-blue-500">
+                        <Link href="/register" className="text-sm">
                             Зарегистрироваться
-                        </a>
+                        </Link>
                     </>
                 ) : (
                     <>
                         Уже есть аккаунт?{' '}
-                        <a href="/login" className="text-blue-600 hover:text-blue-500">
+                        <Link href="/login" className="text-sm">
                             Войти
-                        </a>
+                        </Link>
                     </>
                 )}
             </div>
