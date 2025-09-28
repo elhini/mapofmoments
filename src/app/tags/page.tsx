@@ -10,9 +10,9 @@ export default function TagsPage() {
 
     return (
         <div className="max-w-2xl">
-            <h2 className="text-foreground mb-3 text-xl">Теги</h2>
+            <h2 className="text-foreground mb-3 text-xl">Тэги</h2>
 
-            <Table>
+            <Table aria-label="Тэги">
                 <TableHeader>
                     <TableColumn>Тэг</TableColumn>
                     <TableColumn>Кол-во</TableColumn>
