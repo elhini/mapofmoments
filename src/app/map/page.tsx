@@ -101,7 +101,11 @@ export default function MapPage() {
 
     return (
         <>
-            <div id="map-container" className="h-full bg-[#04152b]" ref={mapContainerRef} />
+            <div
+                id="map-container"
+                className="h-screen w-full bg-[#04152b]"
+                ref={mapContainerRef}
+            />
             {location || moment ? (
                 <MomentForm
                     moment={moment || newMoment}
