@@ -5,10 +5,6 @@
     inset: 0;
 }
 
-.header {
-    background: linear-gradient(rgb(0 0 0), rgb(0 0 0 / 0%));
-}
-
 .mapboxgl-control-container .mapboxgl-ctrl-geocoder {
     position: fixed;
     top: 65px;

@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation';
 
 import { Button } from '@heroui/button';
+import { Link } from '@heroui/link';
+import { TagIcon } from 'lucide-react';
 
 import { publicRoutes } from '@/constants/public-routes';
 import { useLogoutMutation, useMeQuery } from '@/hooks/useAuthApi';
@@ -16,8 +18,13 @@ export const Header = () => {
     const username = user?.username;
 
     return isPublicPage ? null : (
-        <header className="header fixed top-0 z-1 flex w-full items-center justify-between bg-black p-4 text-white">
-            <div>Map of Moments</div>
+        <header className="header fixed top-0 left-0 z-1 flex w-full items-center justify-between bg-gradient-to-b from-black to-transparent p-4 text-white">
+            <div className="flex w-[50%] gap-4">
+                Map of Moments
+                <Link href="/tags" className="gap-1 text-white" underline="hover">
+                    <TagIcon size={16} /> Тэги
+                </Link>
+            </div>
             <div className="flex w-[50%] items-center justify-end gap-4">
                 <div className="overflow-hidden text-right text-ellipsis whitespace-nowrap">
                     {user ? user.email + (username ? ' (' + username + ')' : '') : 'Загрузка...'}
