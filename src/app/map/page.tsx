@@ -6,10 +6,9 @@ import type { LngLat, Map, Marker } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
-import { Card } from '@heroui/card';
-
 import type { Coordinates } from '@/types/coordinates';
 import { MomentForm } from '@/components/moment-form/MomentForm';
+import { MapOverview } from '@/components/map-overview/MapOverview';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -112,13 +111,7 @@ export default function MapPage() {
                     marker={markerRef.current}
                 />
             ) : (
-                <Card className="fixed bottom-[50px] left-[50%] z-1 w-[230px] translate-x-[-50%] p-3">
-                    {isPending ? 'Загрузка моментов... ' : 'Сохранено моментов: ' + moments.length}
-                    <br />
-                    Чтобы добавить ещё один,
-                    <br />
-                    выберите точку на карте
-                </Card>
+                <MapOverview isPending={isPending} momentsCount={moments.length} />
             )}
         </>
     );
