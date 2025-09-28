@@ -5,7 +5,6 @@ import { getCurrentUser } from '@/app/api/authUtils';
 import { buildLocationString } from '@/app/api/coordUtils';
 import { upsertTags } from '@/app/api/tags/upsertTags';
 
-import type { TagObject } from '@/types/tag';
 import type { Moment } from '@/types/moment';
 
 // Добавление новой точки
@@ -57,7 +56,7 @@ export async function GET(req: NextRequest) {
         .from('moments')
         .select(
             `*,
-            tags ( name )`,
+            tags ( id,name )`,
         )
         .eq('user_id', user?.id)
         .order('created_at', { ascending: false });
@@ -65,10 +64,6 @@ export async function GET(req: NextRequest) {
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
-
-    moments.forEach((moment) => {
-        moment.tags = moment.tags.map((tag: TagObject) => tag.name);
-    });
 
     return NextResponse.json(moments);
 }

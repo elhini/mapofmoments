@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useEffect, useState } from 'react';
 
 import type { Moment } from '@/types/moment';
+import type { Tag } from '@/types/tag';
 import {
     useCreateMomentMutation,
     useDeleteMomentMutation,
@@ -15,9 +16,9 @@ interface UseMomentFormProps {
     onDelete: () => void;
 }
 
-type FormErrors = Partial<Omit<Moment, 'id' | 'location' | 'not_exact_date'>>;
+type FormErrors = Partial<Omit<Moment, 'id' | 'location' | 'not_exact_date' | 'tags'>>;
 
-type ChangeArgs = { name: string; value?: string | boolean | string[] };
+type ChangeArgs = { name: string; value?: string | boolean | Tag[] };
 
 const emptyMoment: Moment = {
     id: '',

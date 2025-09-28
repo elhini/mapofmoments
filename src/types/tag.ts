@@ -1,2 +1,1 @@
-export type TagObject = { name: string };
-export type Tag = string;
+export type Tag = { id: string; name: string; momentsCount?: number };

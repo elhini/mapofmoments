@@ -1,33 +1,28 @@
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
+import type { Tag } from '@/types/tag';
 
-export const upsertTags = async (userId: string, id?: string, tags?: string[]) => {
+export const upsertTags = async (userId: string, id?: string, tags?: Tag[]) => {
     const supabase = getSupabaseServiceClient();
+
     if (!tags) {
         return { error: 'missing field: `tags`' };
     }
 
-    const { error: insertionError } = await supabase
+    const oldTags = tags.filter((tag) => tag.id);
+    const newTags = tags.filter((tag) => !tag.id);
+
+    const { data: createdTags, error: insertionError } = await supabase
         .from('tags')
-        .upsert(
-            tags.map((name: string) => ({
+        .insert(
+            newTags.map((tag) => ({
                 user_id: userId,
-                name,
+                name: tag.name,
             })),
-            { onConflict: 'user_id,name', ignoreDuplicates: true },
         )
         .select();
 
     if (insertionError) {
         return { error: 'insertion failed: ' + insertionError.message };
-    }
-
-    const { data: existingTags, error: existingTagsError } = await supabase
-        .from('tags')
-        .select('id,name')
-        .eq('user_id', userId);
-
-    if (existingTagsError) {
-        return { error: 'selection failed: ' + existingTagsError.message };
     }
 
     const { error: deletionError } = await supabase
@@ -39,20 +34,14 @@ export const upsertTags = async (userId: string, id?: string, tags?: string[]) =
         return { error: 'deletion failed: ' + deletionError.message };
     }
 
-    const mapNameToId = existingTags.reduce(
-        (acc, tag) => {
-            acc[tag.name] = tag.id;
-            return acc;
-        },
-        {} as Record<string, string>,
-    );
+    const allTags = [...oldTags, ...createdTags];
 
     const { error: relationError } = await supabase
         .from('moment_tags')
         .insert(
-            tags.map((tag) => ({
+            allTags.map((tag) => ({
                 moment_id: id,
-                tag_id: mapNameToId[tag],
+                tag_id: tag.id,
             })),
         )
         .select();
@@ -61,5 +50,5 @@ export const upsertTags = async (userId: string, id?: string, tags?: string[]) =
         return { error: 'relation failed: ' + relationError.message };
     }
 
-    return { tags };
+    return { tags: allTags };
 };

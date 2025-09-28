@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
+import type { Tag } from '@/types/tag';
 
 // Получение всех тэгов пользователя
 export async function GET(req: NextRequest) {
@@ -10,7 +11,7 @@ export async function GET(req: NextRequest) {
 
     const { data: tagObjects, error } = await supabase
         .from('tags')
-        .select('*')
+        .select('id, name, moment_tags(count)')
         .eq('user_id', user?.id)
         .order('created_at');
 
@@ -18,7 +19,13 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const tags = tagObjects.map((tagObject) => tagObject.name);
+    const tags = tagObjects.map(
+        (t): Tag => ({
+            id: t.id,
+            name: t.name,
+            momentsCount: t.moment_tags[0].count,
+        }),
+    );
 
     return NextResponse.json(tags);
 }
