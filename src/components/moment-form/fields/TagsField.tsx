@@ -12,14 +12,14 @@ type Props = {
     value?: Tag[];
     onChange: ({ name, value }: Value) => void;
 };
-type Option = { label: string; value: string };
+type Option = { label: string; value: string; __isNew__?: boolean };
 type Options = OnChangeValue<Option, true>;
 
 const createOptions = (tags: Tag[]): Options => {
     return tags.map((t) => ({ label: t.name, value: t.id }));
 };
 const createTags = (options: Options) => {
-    return options.map((o) => ({ name: o.label, id: o.value }));
+    return options.map((o) => ({ name: o.label, id: o.__isNew__ ? '' : o.value }));
 };
 
 export const TagsField = ({ value = [], onChange }: Props) => {
