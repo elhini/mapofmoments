@@ -12,7 +12,7 @@ export default function TagsPage() {
         <div className="max-w-2xl">
             <h2 className="text-foreground mb-3 text-xl">Тэги</h2>
 
-            <Table aria-label="Тэги">
+            <Table aria-label="Тэги" className="min-w-[150px]">
                 <TableHeader>
                     <TableColumn>Тэг</TableColumn>
                     <TableColumn>Кол-во</TableColumn>
