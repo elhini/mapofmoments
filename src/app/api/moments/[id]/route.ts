@@ -12,7 +12,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
     if (!user) {
-        return NextResponse.json({ error: 'User not authorized' }, { status: 401 });
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body: Moment = await req.json();
