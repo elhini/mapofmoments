@@ -4,6 +4,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import { Spinner } from '@heroui/spinner';
 
 import { useGetAllTagsQuery } from '@/hooks/useTagsApi';
+import { DeleteButton } from '@/app/tags/components/DeleteButton';
 
 export default function TagsPage() {
     const { data: tags = [], isLoading } = useGetAllTagsQuery();
@@ -16,12 +17,16 @@ export default function TagsPage() {
                 <TableHeader>
                     <TableColumn>Тэг</TableColumn>
                     <TableColumn>Кол-во</TableColumn>
+                    <TableColumn> </TableColumn>
                 </TableHeader>
                 <TableBody isLoading={isLoading} loadingContent={<Spinner label="Загрузка..." />}>
                     {tags.map((tag) => (
                         <TableRow key={tag.id}>
                             <TableCell>{tag.name}</TableCell>
                             <TableCell>{tag.momentsCount}</TableCell>
+                            <TableCell>
+                                {tag.momentsCount === 0 && <DeleteButton tagId={tag.id} />}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
