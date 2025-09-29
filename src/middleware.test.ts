@@ -45,7 +45,7 @@ describe('middleware', () => {
         (getToken as Mock).mockReturnValue(undefined);
         const req = createRequest('/map');
         const res = await middleware(req);
-        expect(handleUnauthorizedRequest).toHaveBeenCalledWith('/map', req.url);
+        expect(handleUnauthorizedRequest).toHaveBeenCalledWith(req.url);
         expect(res).toEqual(undefined);
     });
 
@@ -67,7 +67,7 @@ describe('middleware', () => {
         });
         const req = createRequest('/map');
         const res = await middleware(req);
-        expect(handleUnauthorizedRequest).toHaveBeenCalledWith('/map', req.url);
+        expect(handleUnauthorizedRequest).toHaveBeenCalledWith(req.url);
         expect(res).toEqual(undefined);
     });
 
