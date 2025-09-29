@@ -9,7 +9,7 @@ export const MapOverview = ({ isPending, momentsCount }: Props) => {
     const summary = momentsCount ? (
         <div className="text-nowrap">Сохранено моментов: {momentsCount}</div>
     ) : (
-        <div className="min-w-[250px]">Чтобы добавить первый момент, выберите точку на карте</div>
+        <div className="min-w-[260px]">Чтобы добавить первый момент, выберите точку на карте</div>
     );
 
     return (
