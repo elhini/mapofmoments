@@ -11,9 +11,6 @@ import type { Moment } from '@/types/moment';
 export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
-    if (!user) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     const body: Moment = await req.json();
     const { title, description, date, not_exact_date, location } = body;
@@ -56,7 +53,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
     const { id } = await context.params;
-    const { error } = await supabase.from('moments').delete().eq('id', id).eq('user_id', user?.id);
+    const { error } = await supabase.from('moments').delete().eq('id', id).eq('user_id', user.id);
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

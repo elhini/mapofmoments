@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const { data: tags, error } = await supabase
         .from('tags')
         .select('id, name, moment_tags(count)')
-        .eq('user_id', user?.id);
+        .eq('user_id', user.id);
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

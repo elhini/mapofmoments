@@ -11,9 +11,6 @@ import type { Moment } from '@/types/moment';
 export async function POST(req: NextRequest) {
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
-    if (!user) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     const body: Moment = await req.json();
     const { title, description, date, not_exact_date, location } = body;
@@ -58,7 +55,7 @@ export async function GET(req: NextRequest) {
             `*,
             tags ( id,name )`,
         )
-        .eq('user_id', user?.id)
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
     if (error) {

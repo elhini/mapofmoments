@@ -33,5 +33,5 @@ export const getCurrentUser = async (req: NextRequest) => {
     const token = getToken(req);
     const { data } = await supabase.auth.getUser(token);
 
-    return data?.user;
+    return data?.user || ({} as User);
 };

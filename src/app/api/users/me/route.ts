@@ -5,11 +5,7 @@ import { NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
     const user = await getCurrentUser(req);
 
-    if (!user) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const publicUser = { email: user.email, username: user.user_metadata.username };
+    const publicUser = { email: user.email, username: user.user_metadata?.username };
 
     return NextResponse.json(publicUser);
 }
