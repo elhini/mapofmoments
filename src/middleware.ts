@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest) {
     // Check token existence
     if (!token) {
         if (isAuthStart) return NextResponse.next();
-        return handleUnauthorizedRequest(req.nextUrl.pathname, req.url);
+        return handleUnauthorizedRequest(req.url);
     }
 
     // Check token validity
@@ -31,7 +31,7 @@ export async function middleware(req: NextRequest) {
     const { error } = await supabase.auth.getUser(token);
     if (error) {
         if (isAuthStart) return NextResponse.next();
-        return handleUnauthorizedRequest(req.nextUrl.pathname, req.url);
+        return handleUnauthorizedRequest(req.url);
     }
 
     // Redirect to /map if just authenticated

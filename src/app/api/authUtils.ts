@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getSupabaseServiceClient } from './getSupabaseServiceClient';
+import type { User } from '@supabase/auth-js';
 
 export const SUPABASE_COOKIE_KEY = 'sb-access-token';
 
@@ -21,10 +22,7 @@ export const handleAuthorizedRequest = (accessToken: string, reqUrl: string) => 
     return response;
 };
 
-export const handleUnauthorizedRequest = (pathname: string, reqUrl: string) => {
-    if (pathname.startsWith('/api')) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+export const handleUnauthorizedRequest = (reqUrl: string) => {
     const response = NextResponse.redirect(new URL('/login', reqUrl), 303);
     response.cookies.delete(SUPABASE_COOKIE_KEY);
     return response;
