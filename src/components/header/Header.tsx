@@ -22,7 +22,7 @@ export const Header = () => {
     const isPublicPage = publicRoutes.includes(pathname);
 
     const { data: user } = useMeQuery(!isPublicPage);
-    const { mutate: logout } = useLogoutMutation();
+    const { mutate: logout, isPending: isLoggingOut } = useLogoutMutation();
     const username = user?.username;
 
     return isPublicPage ? null : (
@@ -39,8 +39,8 @@ export const Header = () => {
                 <div className="overflow-hidden text-right text-ellipsis whitespace-nowrap">
                     {user ? user.email + (username ? ' (' + username + ')' : '') : 'Загрузка...'}
                 </div>
-                <Button onPress={() => logout()} size="sm">
-                    Выйти
+                <Button onPress={() => logout()} isLoading={isLoggingOut} size="sm">
+                    {isLoggingOut ? '' : 'Выйти'}
                 </Button>
             </div>
         </header>
