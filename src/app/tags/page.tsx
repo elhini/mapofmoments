@@ -5,6 +5,7 @@ import { Spinner } from '@heroui/spinner';
 
 import { useGetAllTagsQuery } from '@/hooks/useTagsApi';
 import { DeleteButton } from '@/app/tags/components/DeleteButton';
+import { ShareButton } from '@/app/tags/components/ShareButton';
 
 export default function TagsPage() {
     const { data: tags = [], isLoading } = useGetAllTagsQuery();
@@ -17,7 +18,7 @@ export default function TagsPage() {
                 <TableHeader>
                     <TableColumn>Тэг</TableColumn>
                     <TableColumn>Кол-во</TableColumn>
-                    <TableColumn> </TableColumn>
+                    <TableColumn>Действия</TableColumn>
                 </TableHeader>
                 <TableBody isLoading={isLoading} loadingContent={<Spinner label="Загрузка..." />}>
                     {tags.map((tag) => (
@@ -25,7 +26,8 @@ export default function TagsPage() {
                             <TableCell>{tag.name}</TableCell>
                             <TableCell>{tag.momentsCount}</TableCell>
                             <TableCell>
-                                {tag.momentsCount === 0 && <DeleteButton tagId={tag.id} />}
+                                {tag.publicId ? <ShareButton publicId={tag.publicId} /> : null}
+                                {!tag.momentsCount ? <DeleteButton tagId={tag.id} /> : null}
                             </TableCell>
                         </TableRow>
                     ))}

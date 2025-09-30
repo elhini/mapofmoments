@@ -17,13 +17,13 @@ export default function RootLayout({
     children: ReactNode;
 }>) {
     return (
-        <Providers>
-            <html lang="ru">
-                <body className="bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100 text-center antialiased dark:from-slate-800 dark:via-slate-900 dark:to-black">
+        <html lang="ru">
+            <body className="bg-gradient-to-br from-sky-100 via-emerald-100 to-cyan-100 text-center antialiased dark:from-slate-800 dark:via-slate-900 dark:to-black">
+                <Providers>
                     <Header />
                     {children}
-                </body>
-            </html>
-        </Providers>
+                </Providers>
+            </body>
+        </html>
     );
 }

@@ -1,1 +1,6 @@
-export type Tag = { id: string; name: string; momentsCount?: number };
+export type Tag = {
+    id: string;
+    name: string;
+    momentsCount?: number;
+    publicId?: string;
+};
