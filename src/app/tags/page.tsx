@@ -26,8 +26,11 @@ export default function TagsPage() {
                             <TableCell>{tag.name}</TableCell>
                             <TableCell>{tag.momentsCount}</TableCell>
                             <TableCell>
-                                {tag.publicId ? <ShareButton publicId={tag.publicId} /> : null}
-                                {!tag.momentsCount ? <DeleteButton tagId={tag.id} /> : null}
+                                {tag.momentsCount ? (
+                                    <ShareButton tagId={tag.id} publicId={tag.publicId} />
+                                ) : (
+                                    <DeleteButton tagId={tag.id} />
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}
