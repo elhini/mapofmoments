@@ -6,7 +6,7 @@ import type { LngLat, Map, Marker } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
-import type { Moment } from '@/types/moment';
+import type { Moment, PublicMoment } from '@/types/moment';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -17,7 +17,7 @@ const accessToken =
     'pk.eyJ1IjoiZWxoaW5pIiwiYSI6ImNtZjgzamQ2bzB0a20yanM5cnY1ZXFibnIifQ.fN1U6AuZGZhSYIz3UkLxoQ';
 
 type Props = {
-    moments: Moment[];
+    moments: (Moment | PublicMoment)[];
     onMarkerClick: (momentId: string, marker: Marker) => void;
     onMarkerCreate?: (lngLat: LngLat, marker: Marker) => void;
     withGeocoder?: boolean;

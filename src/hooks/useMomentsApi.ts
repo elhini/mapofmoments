@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import type { Moment } from '@/types/moment';
+import type { Moment, PublicMoment } from '@/types/moment';
 import type { ApiError } from '@/api-client/apiClient';
 import { create, update, deleteMoment, getAll, getShared } from '@/api-client/moments/momentsApi';
 
@@ -30,7 +30,7 @@ export function useGetAllMomentsQuery() {
 }
 
 export function useGetSharedMomentsQuery(tagPublicId: string) {
-    return useQuery<Moment[], ApiError>({
+    return useQuery<PublicMoment[], ApiError>({
         queryKey: ['shared-moments'],
         queryFn: () => getShared(tagPublicId),
     });

@@ -1,5 +1,5 @@
 import { api } from '@/api-client/apiClient';
-import type { Moment } from '@/types/moment';
+import type { Moment, PublicMoment } from '@/types/moment';
 
 export async function create(data: Moment) {
     return api.post<Moment>('api/moments', data);
@@ -18,5 +18,5 @@ export async function getAll() {
 }
 
 export async function getShared(tagPublicId: string) {
-    return api.get<Moment[]>(`api/moments/shared?tagPublicId=${tagPublicId}`);
+    return api.get<PublicMoment[]>(`api/moments/shared?tagPublicId=${tagPublicId}`);
 }

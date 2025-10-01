@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         .from('moments')
         .select(
             `*,
-            tags !inner ( public_id )`,
+            tags !inner ( public_id )`, // TODO: add name
         )
         .eq('tags.public_id', tagPublicId)
         .order('created_at', { ascending: false });

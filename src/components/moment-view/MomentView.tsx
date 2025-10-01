@@ -1,9 +1,9 @@
 import { Modal, ModalContent } from '@heroui/modal';
 
-import type { Moment } from '@/types/moment';
+import type { PublicMoment } from '@/types/moment';
 
 type Props = {
-    moment: Moment;
+    moment: PublicMoment;
     onClose: () => void;
 };
 
