@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 
 import { MapView } from '@/components/map-view/MapView';
 import { MomentView } from '@/components/moment-view/MomentView';
@@ -11,6 +11,9 @@ import { useGetSharedMomentsQuery } from '@/hooks/useMomentsApi';
 
 export default function ShareTagPage() {
     const { public_id } = useParams<{ public_id: string }>();
+    const searchParams = useSearchParams();
+    const withLines = searchParams.get('lines') === '1';
+    const zoom = parseFloat(searchParams.get('zoom') || '');
     const [momentId, setMomentId] = useState<string>('');
 
     const openView = (momentId: string) => {
@@ -26,7 +29,7 @@ export default function ShareTagPage() {
 
     return (
         <>
-            <MapView moments={moments} onMarkerClick={openView} withLines={false} />
+            <MapView moments={moments} onMarkerClick={openView} withLines={withLines} zoom={zoom} />
             {moment ? (
                 <MomentView moment={moment} onClose={closeView} />
             ) : (

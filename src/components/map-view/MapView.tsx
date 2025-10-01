@@ -22,6 +22,7 @@ type Props = {
     onMarkerCreate?: (lngLat: LngLat, marker: Marker) => void;
     withGeocoder?: boolean;
     withLines?: boolean;
+    zoom?: number;
 };
 
 export const MapView = ({
@@ -30,6 +31,7 @@ export const MapView = ({
     onMarkerCreate,
     withGeocoder,
     withLines,
+    zoom,
 }: Props) => {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -40,7 +42,7 @@ export const MapView = ({
 
         const map = new mapboxgl.Map({
             container: mapContainerRef.current || document.body,
-            zoom: 2.3,
+            zoom: zoom || 2.3,
         });
         if (onMarkerCreate) {
             map.addInteraction('click-to-create', {
