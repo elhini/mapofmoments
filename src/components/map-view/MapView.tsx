@@ -84,16 +84,16 @@ export const MapView = ({
         });
 
         if (withLines && moments.length) {
-            const momentsSorted = [...moments].sort((a, b) =>
-                (a.date || '').localeCompare(b.date || ''),
-            );
+            const momentsSortedCoords = [...moments]
+                .sort((m1, m2) => (m1.date || '').localeCompare(m2.date || ''))
+                .map((m) => m.location.coordinates);
             mapRef.current?.addSource('route', {
                 type: 'geojson',
                 data: {
                     type: 'Feature',
                     geometry: {
                         type: 'LineString',
-                        coordinates: momentsSorted.map((m) => m.location.coordinates),
+                        coordinates: momentsSortedCoords,
                     },
                     properties: {},
                 },
