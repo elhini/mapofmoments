@@ -17,7 +17,9 @@ export const MomentView = ({ moment, onClose }: Props) => (
             <div className="flex flex-col gap-2 p-2 text-left">
                 <div>{moment.title}</div>
                 <div>{moment.description}</div>
-                <div>{moment.date}</div>
+                <div>
+                    {moment.date} {moment.not_exact_date ? '(примерная дата)' : ''}
+                </div>
             </div>
         </ModalContent>
     </Modal>
