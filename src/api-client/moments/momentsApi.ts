@@ -16,3 +16,7 @@ export async function deleteMoment(id: string) {
 export async function getAll() {
     return api.get<Moment[]>('api/moments');
 }
+
+export async function getShared(tagPublicId: string) {
+    return api.get<Moment[]>(`api/moments/shared?tagPublicId=${tagPublicId}`);
+}

@@ -1,31 +1,31 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 
-import type { LngLat, Map, Marker } from 'mapbox-gl';
-import mapboxgl from 'mapbox-gl';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import type { LngLat, Marker } from 'mapbox-gl';
 
 import type { Coordinates } from '@/types/coordinates';
+import { MapView } from '@/components/map-view/MapView';
 import { MomentForm } from '@/components/moment-form/MomentForm';
 import { MapOverview } from '@/components/map-overview/MapOverview';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-
-import './page.css';
-
-const accessToken =
-    'pk.eyJ1IjoiZWxoaW5pIiwiYSI6ImNtZjgzamQ2bzB0a20yanM5cnY1ZXFibnIifQ.fN1U6AuZGZhSYIz3UkLxoQ';
-
 export default function MapPage() {
-    const mapRef = useRef<Map>(null);
     const markerRef = useRef<Marker>(null);
-    const mapContainerRef = useRef<HTMLDivElement>(null);
-    const markerIdsRef = useRef<Set<string>>(new Set());
     const [location, setLocation] = useState<LngLat>();
     const [momentId, setMomentId] = useState<string>('');
+
+    const openForm = (momentId: string, marker: Marker) => {
+        markerRef.current = marker;
+        setLocation(undefined);
+        setMomentId(momentId);
+    };
+
+    const openDraftForm = (lngLat: LngLat, marker: Marker) => {
+        markerRef.current = marker;
+        setLocation(lngLat);
+        setMomentId('');
+    };
 
     const closeForm = () => {
         if (!momentId) markerRef.current?.remove();
@@ -43,68 +43,20 @@ export default function MapPage() {
         closeForm();
         await refetch();
     };
+
     const onDelete = async () => {
-        markerIdsRef.current.delete(momentId);
         markerRef.current?.remove();
         closeForm();
         await refetch();
     };
 
-    useEffect(() => {
-        mapboxgl.accessToken = accessToken;
-        const map = new mapboxgl.Map({
-            container: mapContainerRef.current || document.body,
-            zoom: 2.3,
-        });
-        map.addControl(
-            new MapboxGeocoder({
-                accessToken: mapboxgl.accessToken,
-                // @ts-expect-error -- geocoder types are outdated
-                mapboxgl: mapboxgl,
-            }),
-        );
-        map.addInteraction('click-to-create', {
-            type: 'click',
-            handler: (e) => {
-                markerRef.current?.remove();
-                setLocation(e.lngLat);
-                setMomentId('');
-                const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
-                mapRef.current?.panTo(marker.getLngLat());
-                markerRef.current = marker;
-            },
-        });
-        mapRef.current = map;
-
-        return () => mapRef.current?.remove();
-    }, []);
-
-    useEffect(() => {
-        moments.forEach((moment, i) => {
-            if (!mapRef.current) return;
-            if (markerIdsRef.current.has(moment.id)) return;
-            const coords = moment.location.coordinates || [0, 0];
-            const marker = new mapboxgl.Marker().setLngLat(coords).addTo(mapRef.current);
-            markerIdsRef.current.add(moment.id);
-            marker.getElement().addEventListener('click', (e) => {
-                e.stopPropagation();
-                setLocation(undefined);
-                setMomentId(moment.id);
-                markerRef.current = marker;
-                mapRef.current?.panTo(marker.getLngLat());
-            });
-            if (i === 0) {
-                mapRef.current?.panTo(coords);
-            }
-        });
-    }, [moments]);
-
     return (
         <>
-            <div
-                id="map-container"
-                className="h-screen w-full bg-[#04152b]"
-                ref={mapContainerRef}
+            <MapView
+                moments={moments}
+                onMarkerClick={openForm}
+                onMarkerCreate={openDraftForm}
+                withGeocoder
             />
             {location || moment ? (
                 <MomentForm

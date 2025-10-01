@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import type { Moment } from '@/types/moment';
 import type { ApiError } from '@/api-client/apiClient';
-import { create, update, deleteMoment, getAll } from '@/api-client/moments/momentsApi';
+import { create, update, deleteMoment, getAll, getShared } from '@/api-client/moments/momentsApi';
 
 export function useCreateMomentMutation() {
     return useMutation<Moment, ApiError, Moment>({
@@ -26,5 +26,12 @@ export function useGetAllMomentsQuery() {
     return useQuery<Moment[], ApiError>({
         queryKey: ['moments'],
         queryFn: getAll,
+    });
+}
+
+export function useGetSharedMomentsQuery(tagPublicId: string) {
+    return useQuery<Moment[], ApiError>({
+        queryKey: ['shared-moments'],
+        queryFn: () => getShared(tagPublicId),
     });
 }
