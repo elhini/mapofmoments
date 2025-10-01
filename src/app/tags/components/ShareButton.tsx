@@ -4,6 +4,7 @@ import { addToast } from '@heroui/toast';
 import { Copy, Share2 } from 'lucide-react';
 
 import { useShareTagMutation } from '@/hooks/useTagsApi';
+import { buildLink } from '@/app/tags/utils/buildLink';
 
 type Props = {
     tagId: string;
@@ -16,7 +17,7 @@ export const ShareButton = ({ tagId, publicId }: Props) => {
     const shareOrCopy = async () => {
         if (navigator.clipboard) {
             const publicIdForLink = publicId || (await shareTag(tagId));
-            const link = `${window.location.origin}/share/tag/${publicIdForLink}`;
+            const link = buildLink(publicIdForLink);
             await navigator.clipboard.writeText(link);
             const createdText = publicId ? '' : 'создана и ';
             addToast({
