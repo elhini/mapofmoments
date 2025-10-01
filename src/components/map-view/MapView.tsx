@@ -22,7 +22,7 @@ type Props = {
     onMarkerCreate?: (lngLat: LngLat, marker: Marker) => void;
     withGeocoder?: boolean;
     withLines?: boolean;
-    zoom?: number;
+    viewOnly?: boolean;
 };
 
 export const MapView = ({
@@ -31,7 +31,7 @@ export const MapView = ({
     onMarkerCreate,
     withGeocoder,
     withLines,
-    zoom,
+    viewOnly,
 }: Props) => {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ export const MapView = ({
 
         const map = new mapboxgl.Map({
             container: mapContainerRef.current || document.body,
-            zoom: zoom || 2.3,
+            zoom: 2.3,
         });
         if (onMarkerCreate) {
             map.addInteraction('click-to-create', {
@@ -80,15 +80,27 @@ export const MapView = ({
                 onMarkerClick(moment.id, marker);
                 mapRef.current?.panTo(marker.getLngLat());
             });
-            if (i === 0) {
+            if (i === 0 && !viewOnly) {
                 mapRef.current?.panTo(coords);
             }
         });
 
+        const momentsSortedCoords = [...moments]
+            .sort((m1, m2) => (m1.date || '').localeCompare(m2.date || ''))
+            .map((m) => m.location.coordinates);
+
+        if (viewOnly && moments.length) {
+            const bounds = new mapboxgl.LngLatBounds();
+            for (const coords of momentsSortedCoords) {
+                bounds.extend(coords);
+            }
+            mapRef.current?.fitBounds(bounds, {
+                padding: 75,
+                maxZoom: 15,
+            });
+        }
+
         if (withLines && moments.length) {
-            const momentsSortedCoords = [...moments]
-                .sort((m1, m2) => (m1.date || '').localeCompare(m2.date || ''))
-                .map((m) => m.location.coordinates);
             mapRef.current?.addSource('route', {
                 type: 'geojson',
                 data: {
@@ -106,7 +118,7 @@ export const MapView = ({
                 source: 'route',
             });
         }
-    }, [moments]);
+    }, [moments, viewOnly, withLines]);
 
     return (
         <>

@@ -13,7 +13,6 @@ export default function ShareTagPage() {
     const { public_id } = useParams<{ public_id: string }>();
     const searchParams = useSearchParams();
     const withLines = searchParams.get('lines') === '1';
-    const zoom = parseFloat(searchParams.get('zoom') || '');
     const [momentId, setMomentId] = useState<string>('');
 
     const openView = (momentId: string) => {
@@ -29,7 +28,7 @@ export default function ShareTagPage() {
 
     return (
         <>
-            <MapView moments={moments} onMarkerClick={openView} withLines={withLines} zoom={zoom} />
+            <MapView moments={moments} onMarkerClick={openView} withLines={withLines} viewOnly />
             {moment ? (
                 <MomentView moment={moment} onClose={closeView} />
             ) : (
