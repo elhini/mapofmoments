@@ -6,4 +6,5 @@ export const publicRoutes = [
     '/auth-callback',
     '/reset-password',
     '/update-password',
+    '/share',
 ];

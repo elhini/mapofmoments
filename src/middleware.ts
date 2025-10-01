@@ -11,11 +11,13 @@ const authProcessPages = ['/verify-email', '/auth-callback', '/reset-password', 
 const authProcessRoutes = ['/api/login', '/api/register', '/api/auth-callback'];
 
 const publicPaths = ['/', ...authProcessRoutes, ...authProcessPages];
+const sharedPaths = ['/share', '/api/moments/shared'];
 
 export async function middleware(req: NextRequest) {
     const isPublicPath = publicPaths.includes(req.nextUrl.pathname);
-    // Pass through if public
-    if (isPublicPath) return NextResponse.next();
+    const isSharedPath = sharedPaths.some((p) => req.nextUrl.pathname.startsWith(p));
+    // Pass through if public or shared
+    if (isPublicPath || isSharedPath) return NextResponse.next();
 
     const token = getToken(req);
     const isAuthStart = authStartPages.includes(req.nextUrl.pathname);

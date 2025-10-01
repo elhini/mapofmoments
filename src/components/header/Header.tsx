@@ -19,7 +19,7 @@ const getLinkProps = (href: string, pathname: string) => {
 
 export const Header = () => {
     const pathname = usePathname();
-    const isPublicPage = publicRoutes.includes(pathname);
+    const isPublicPage = publicRoutes.some((r) => pathname.startsWith(r));
 
     const { data: user } = useMeQuery(!isPublicPage);
     const { mutate: logout, isPending: isLoggingOut } = useLogoutMutation();
