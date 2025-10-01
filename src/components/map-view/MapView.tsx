@@ -21,9 +21,16 @@ type Props = {
     onMarkerClick: (momentId: string, marker: Marker) => void;
     onMarkerCreate?: (lngLat: LngLat, marker: Marker) => void;
     withGeocoder?: boolean;
+    withLines?: boolean;
 };
 
-export const MapView = ({ moments, onMarkerClick, onMarkerCreate, withGeocoder }: Props) => {
+export const MapView = ({
+    moments,
+    onMarkerClick,
+    onMarkerCreate,
+    withGeocoder,
+    withLines,
+}: Props) => {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const markerIdsRef = useRef<Set<string>>(new Set());
@@ -31,23 +38,22 @@ export const MapView = ({ moments, onMarkerClick, onMarkerCreate, withGeocoder }
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
 
-        mapRef.current = new mapboxgl.Map({
+        const map = new mapboxgl.Map({
             container: mapContainerRef.current || document.body,
             zoom: 2.3,
         });
         if (onMarkerCreate) {
-            mapRef.current.addInteraction('click-to-create', {
+            map.addInteraction('click-to-create', {
                 type: 'click',
                 handler: (e) => {
-                    if (!mapRef.current) return;
-                    const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(mapRef.current);
-                    mapRef.current.panTo(marker.getLngLat());
+                    const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
+                    map.panTo(marker.getLngLat());
                     onMarkerCreate(e.lngLat, marker);
                 },
             });
         }
         if (withGeocoder) {
-            mapRef.current.addControl(
+            map.addControl(
                 new MapboxGeocoder({
                     accessToken: mapboxgl.accessToken,
                     // @ts-expect-error -- geocoder types are outdated
@@ -55,8 +61,9 @@ export const MapView = ({ moments, onMarkerClick, onMarkerCreate, withGeocoder }
                 }),
             );
         }
+        mapRef.current = map;
 
-        return () => mapRef.current?.remove();
+        return () => map.remove();
     }, [withGeocoder]);
 
     useEffect(() => {
@@ -75,6 +82,28 @@ export const MapView = ({ moments, onMarkerClick, onMarkerCreate, withGeocoder }
                 mapRef.current?.panTo(coords);
             }
         });
+
+        if (withLines && moments.length) {
+            const momentsSorted = [...moments].sort((a, b) =>
+                (a.date || '').localeCompare(b.date || ''),
+            );
+            mapRef.current?.addSource('route', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: momentsSorted.map((m) => m.location.coordinates),
+                    },
+                    properties: {},
+                },
+            });
+            mapRef.current?.addLayer({
+                id: 'route',
+                type: 'line',
+                source: 'route',
+            });
+        }
     }, [moments]);
 
     return (

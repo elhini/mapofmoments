@@ -26,7 +26,7 @@ export default function ShareTagPage() {
 
     return (
         <>
-            <MapView moments={moments} onMarkerClick={openView} />
+            <MapView moments={moments} onMarkerClick={openView} withLines={false} />
             {moment ? (
                 <MomentView moment={moment} onClose={closeView} />
             ) : (
