@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 
 import { Header } from '@/components/header/Header';
+import { Footer } from '@/components/footer/Footer';
 
 import { baseMetadata } from './metadata';
 import { Providers } from './providers';
@@ -22,6 +23,7 @@ export default function RootLayout({
                 <Providers>
                     <Header />
                     {children}
+                    <Footer />
                 </Providers>
             </body>
         </html>

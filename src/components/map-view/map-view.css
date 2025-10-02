@@ -7,3 +7,11 @@
     margin: 0;
     text-align: left;
 }
+
+a.mapboxgl-ctrl-logo {
+    margin: 0 0 4px 6px;
+}
+
+.mapboxgl-ctrl-attrib {
+    display: none;
+}

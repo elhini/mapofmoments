@@ -13,7 +13,7 @@ export const MapOverview = ({ isPending, momentsCount }: Props) => {
     );
 
     return (
-        <Card className="fixed bottom-[50px] left-[50%] z-1 translate-x-[-50%] p-3">
+        <Card className="fixed bottom-[52px] left-[50%] z-1 translate-x-[-50%] p-3">
             {isPending ? 'Загрузка моментов... ' : summary}
         </Card>
     );
