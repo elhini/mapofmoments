@@ -1,5 +1,7 @@
 'use client';
 
+import { Link } from '@heroui/link';
+
 import { usePublicPage } from '@/hooks/usePublicPage';
 
 export const Footer = () => {
@@ -8,27 +10,27 @@ export const Footer = () => {
     return isPublic ? null : (
         <footer className="fixed right-0 bottom-0 left-0 z-2 flex w-full items-center justify-end bg-gradient-to-t from-black to-transparent p-4 text-white">
             <div className="flex gap-6">
-                <a
+                <Link
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfddRpKAD-HxTAyqK9LPLsT0nAajq8pXHfnEoI3JXVVbOAH-w/viewform?usp=dialog"
                     target="_blank"
-                    className="inline-flex text-sm font-medium text-white/70 transition hover:text-white"
+                    className="text-sm text-white/70 transition hover:text-white"
                 >
                     Отзыв или идея
-                </a>
-                <a
+                </Link>
+                <Link
                     href="https://elhini.ru"
                     target="_blank"
-                    className="inline-flex text-sm font-medium text-white/70 transition hover:text-white"
+                    className="text-sm text-white/70 transition hover:text-white"
                 >
                     Сайт автора
-                </a>
-                <a
+                </Link>
+                <Link
                     href="https://github.com/elhini/mapofmoments"
                     target="_blank"
-                    className="inline-flex text-sm font-medium text-white/70 transition hover:text-white"
+                    className="text-sm text-white/70 transition hover:text-white"
                 >
                     Код на GitHub
-                </a>
+                </Link>
             </div>
         </footer>
     );
