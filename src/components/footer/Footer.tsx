@@ -1,7 +1,11 @@
 'use client';
 
+import { usePublicPage } from '@/hooks/usePublicPage';
+
 export const Footer = () => {
-    return (
+    const { isPublic } = usePublicPage();
+
+    return isPublic ? null : (
         <footer className="fixed right-0 bottom-0 left-0 z-2 flex w-full items-center justify-end bg-gradient-to-t from-black to-transparent p-4 text-white">
             <div className="flex gap-6">
                 <a

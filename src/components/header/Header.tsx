@@ -1,15 +1,13 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-
 import { Button } from '@heroui/button';
 import { Link } from '@heroui/link';
 import type { LinkProps } from '@heroui/link';
 
 import { GlobeIcon, TagsIcon } from 'lucide-react';
 
-import { publicRoutes } from '@/constants/public-routes';
 import { useLogoutMutation, useMeQuery } from '@/hooks/useAuthApi';
+import { usePublicPage } from '@/hooks/usePublicPage';
 
 const getLinkProps = (href: string, pathname: string) => {
     return href === pathname
@@ -18,14 +16,13 @@ const getLinkProps = (href: string, pathname: string) => {
 };
 
 export const Header = () => {
-    const pathname = usePathname();
-    const isPublicPage = pathname === '/' || publicRoutes.some((r) => pathname.startsWith(r));
+    const { isPublic, pathname } = usePublicPage();
 
-    const { data: user } = useMeQuery(!isPublicPage);
+    const { data: user } = useMeQuery(!isPublic);
     const { mutate: logout, isPending: isLoggingOut } = useLogoutMutation();
     const username = user?.username;
 
-    return isPublicPage ? null : (
+    return isPublic ? null : (
         <header className="fixed top-0 right-0 left-0 z-1 flex w-full items-center justify-between bg-gradient-to-b from-black to-transparent p-4 text-white">
             <div className="flex w-[50%] gap-4">
                 <Link {...getLinkProps('/map', pathname)} className="gap-1 text-white">
