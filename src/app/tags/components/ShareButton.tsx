@@ -5,21 +5,21 @@ import { Copy, Share2 } from 'lucide-react';
 
 import { useShareTagMutation } from '@/hooks/useTagsApi';
 import { buildLink } from '@/app/tags/utils/buildLink';
+import type { Tag } from '@/types/tag';
 
 type Props = {
-    tagId: string;
-    publicId?: string;
+    tag: Tag;
 };
 
-export const ShareButton = ({ tagId, publicId }: Props) => {
-    const { mutateAsync: shareTag, isPending: isSharing } = useShareTagMutation(tagId);
+export const ShareButton = ({ tag }: Props) => {
+    const { mutateAsync: shareTag, isPending: isSharing } = useShareTagMutation(tag.id);
 
     const shareOrCopy = async () => {
         if (navigator.clipboard) {
-            const publicIdForLink = publicId || (await shareTag(tagId));
-            const link = buildLink(publicIdForLink);
+            const publicIdForLink = tag.publicId || (await shareTag(tag.id));
+            const link = buildLink(publicIdForLink, tag.isChain);
             await navigator.clipboard.writeText(link);
-            const createdText = publicId ? '' : 'создана и ';
+            const createdText = tag.publicId ? '' : 'создана и ';
             addToast({
                 title: 'Ссылка ' + createdText + 'скопирована в буфер обмена',
                 severity: 'success',
@@ -31,7 +31,7 @@ export const ShareButton = ({ tagId, publicId }: Props) => {
 
     return (
         <Button onPress={shareOrCopy} variant="light" size="sm" isIconOnly isLoading={isSharing}>
-            {publicId ? <Copy size={16} /> : <Share2 size={16} />}
+            {tag.publicId ? <Copy size={16} /> : <Share2 size={16} />}
         </Button>
     );
 };

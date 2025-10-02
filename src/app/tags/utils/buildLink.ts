@@ -1,1 +1,2 @@
-export const buildLink = (publicId: string) => `${window.location.origin}/share/tag/${publicId}`;
+export const buildLink = (publicId = '', isChain = false) =>
+    `${window.location.origin}/share/tag/${publicId}${isChain ? '?lines=1' : ''}`;

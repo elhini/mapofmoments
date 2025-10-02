@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
     const { data: tags, error } = await supabase
         .from('tags')
-        .select('id, name, moment_tags(count), public_id')
+        .select('id, name, moment_tags(count), public_id, is_chain')
         .eq('user_id', user.id);
 
     if (error) {
@@ -25,6 +25,7 @@ export async function GET(req: NextRequest) {
                 name: t.name,
                 momentsCount: t.moment_tags[0].count,
                 publicId: t.public_id,
+                isChain: t.is_chain,
             }),
         )
         .sort((t1, t2) => (t2.momentsCount || 0) - (t1.momentsCount || 0)); // desc

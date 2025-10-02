@@ -4,6 +4,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import { Spinner } from '@heroui/spinner';
 
 import { useGetAllTagsQuery } from '@/hooks/useTagsApi';
+import { IsChainField } from '@/app/tags/components/IsChainField';
 import { DeleteButton } from '@/app/tags/components/DeleteButton';
 import { ShareButton } from '@/app/tags/components/ShareButton';
 import { OpenButton } from '@/app/tags/components/OpenButton';
@@ -19,6 +20,7 @@ export default function TagsPage() {
                 <TableHeader>
                     <TableColumn>Тэг</TableColumn>
                     <TableColumn>Кол-во</TableColumn>
+                    <TableColumn>Цепочка</TableColumn>
                     <TableColumn>Действия</TableColumn>
                 </TableHeader>
                 <TableBody isLoading={isLoading} loadingContent={<Spinner label="Загрузка..." />}>
@@ -27,10 +29,13 @@ export default function TagsPage() {
                             <TableCell>{tag.name}</TableCell>
                             <TableCell>{tag.momentsCount}</TableCell>
                             <TableCell>
+                                <IsChainField tag={tag} />
+                            </TableCell>
+                            <TableCell>
                                 {tag.momentsCount ? (
                                     <>
-                                        <ShareButton tagId={tag.id} publicId={tag.publicId} />
-                                        {tag.publicId ? <OpenButton publicId={tag.publicId} /> : ''}
+                                        <ShareButton tag={tag} />
+                                        {tag.publicId ? <OpenButton tag={tag} /> : ''}
                                     </>
                                 ) : (
                                     <DeleteButton tagId={tag.id} />

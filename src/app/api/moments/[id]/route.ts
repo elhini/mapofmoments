@@ -52,8 +52,11 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
-    const { id } = await context.params;
-    const { error } = await supabase.from('moments').delete().eq('id', id).eq('user_id', user.id);
+    const { error } = await supabase
+        .from('moments')
+        .delete()
+        .eq('id', (await context.params).id)
+        .eq('user_id', user.id);
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

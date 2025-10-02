@@ -14,7 +14,8 @@ export async function GET(req: NextRequest) {
             tags !inner ( public_id )`, // TODO: add name
         )
         .eq('tags.public_id', tagPublicId)
-        .order('created_at', { ascending: false });
+        .order('date')
+        .order('created_at');
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

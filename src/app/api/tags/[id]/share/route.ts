@@ -12,9 +12,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 
     const { data, error } = await supabase
         .from('tags')
-        .update({
-            public_id: randomUUID(),
-        })
+        .update({ public_id: randomUUID() })
         .eq('id', (await context.params).id)
         .eq('user_id', user.id)
         .select()

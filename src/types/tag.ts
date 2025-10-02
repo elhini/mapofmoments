@@ -3,6 +3,7 @@ export type Tag = {
     name: string;
     momentsCount?: number;
     publicId?: string;
+    isChain: boolean;
 };
 
 export type PublicTag = {

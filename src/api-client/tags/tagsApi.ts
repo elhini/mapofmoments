@@ -1,6 +1,10 @@
 import { api } from '@/api-client/apiClient';
 import type { Tag } from '@/types/tag';
 
+export async function update(id: string, data: Tag) {
+    return api.put<Tag>(`api/tags/${id}`, data);
+}
+
 export async function deleteTag(id: string) {
     return api.delete<Tag>(`api/tags/${id}`);
 }
