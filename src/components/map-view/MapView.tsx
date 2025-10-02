@@ -99,6 +99,11 @@ export const MapView = ({
         }
 
         if (withLines && moments.length) {
+            const source = mapRef.current?.getSource('route');
+            if (source) {
+                mapRef.current?.removeLayer('route');
+                mapRef.current?.removeSource('route');
+            }
             mapRef.current?.addSource('route', {
                 type: 'geojson',
                 data: {
