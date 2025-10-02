@@ -85,9 +85,7 @@ export const MapView = ({
             }
         });
 
-        const momentsSortedCoords = [...moments]
-            .sort((m1, m2) => (m1.date || '').localeCompare(m2.date || ''))
-            .map((m) => m.location.coordinates);
+        const momentsSortedCoords = moments.map((m) => m.location.coordinates);
 
         if (viewOnly && moments.length) {
             const bounds = new mapboxgl.LngLatBounds();
