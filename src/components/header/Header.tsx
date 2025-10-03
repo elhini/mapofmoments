@@ -27,15 +27,18 @@ export const Header = () => {
         <header className="fixed top-0 right-0 left-0 z-1 flex w-full min-w-[360px] items-center justify-between bg-gradient-to-b from-black to-transparent p-4 text-white">
             {isPublic ? (
                 <>
-                    <div className="flex w-[50%]">
-                        <Link href="/" className="text-white">
-                            Map of Moments
+                    <div className="flex w-[70%] gap-4">
+                        <Link href="" isDisabled={true} className="gap-1 text-white">
+                            <GlobeIcon size={16} /> Map of Moments
                         </Link>
-                    </div>
-                    <div className="flex w-[50%] justify-end">
-                        <Link href="/" className="text-white">
+                        <Link href="/" underline="hover" className="text-white">
                             Что это?
                         </Link>
+                    </div>
+                    <div className="flex w-[30%] justify-end">
+                        <Button href="/login" size="sm">
+                            Войти
+                        </Button>
                     </div>
                 </>
             ) : (
