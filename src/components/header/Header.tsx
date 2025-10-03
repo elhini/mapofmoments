@@ -17,29 +17,49 @@ const getLinkProps = (href: string, pathname: string) => {
 
 export const Header = () => {
     const { isPublic, pathname } = usePublicPage();
+    const needHeader = !isPublic || pathname.startsWith('/share');
 
     const { data: user } = useMeQuery(!isPublic);
     const { mutate: logout, isPending: isLoggingOut } = useLogoutMutation();
     const username = user?.username;
 
-    return isPublic ? null : (
-        <header className="fixed top-0 right-0 left-0 z-1 flex w-full items-center justify-between bg-gradient-to-b from-black to-transparent p-4 text-white">
-            <div className="flex w-[50%] gap-4">
-                <Link {...getLinkProps('/map', pathname)} className="gap-1 text-white">
-                    <GlobeIcon size={16} /> Карта
-                </Link>
-                <Link {...getLinkProps('/tags', pathname)} className="gap-1 text-white">
-                    <TagsIcon size={16} /> Тэги
-                </Link>
-            </div>
-            <div className="flex w-[50%] items-center justify-end gap-4">
-                <div className="overflow-hidden text-right text-ellipsis whitespace-nowrap">
-                    {user ? user.email + (username ? ' (' + username + ')' : '') : 'Загрузка...'}
-                </div>
-                <Button onPress={() => logout()} isLoading={isLoggingOut} size="sm">
-                    {isLoggingOut ? '' : 'Выйти'}
-                </Button>
-            </div>
+    return needHeader ? (
+        <header className="fixed top-0 right-0 left-0 z-1 flex w-full min-w-[360px] items-center justify-between bg-gradient-to-b from-black to-transparent p-4 text-white">
+            {isPublic ? (
+                <>
+                    <div className="flex w-[50%]">
+                        <Link href="/" className="text-white">
+                            Map of Moments
+                        </Link>
+                    </div>
+                    <div className="flex w-[50%] justify-end">
+                        <Link href="/" className="text-white">
+                            Что это?
+                        </Link>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className="flex w-[50%] gap-4">
+                        <Link {...getLinkProps('/map', pathname)} className="gap-1 text-white">
+                            <GlobeIcon size={16} /> Карта
+                        </Link>
+                        <Link {...getLinkProps('/tags', pathname)} className="gap-1 text-white">
+                            <TagsIcon size={16} /> Тэги
+                        </Link>
+                    </div>
+                    <div className="flex w-[50%] items-center justify-end gap-4">
+                        <div className="overflow-hidden text-right text-ellipsis whitespace-nowrap">
+                            {user
+                                ? user.email + (username ? ' (' + username + ')' : '')
+                                : 'Загрузка...'}
+                        </div>
+                        <Button onPress={() => logout()} isLoading={isLoggingOut} size="sm">
+                            {isLoggingOut ? '' : 'Выйти'}
+                        </Button>
+                    </div>
+                </>
+            )}
         </header>
-    );
+    ) : null;
 };
