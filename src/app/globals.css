@@ -26,3 +26,9 @@ body {
     justify-content: center;
     min-height: 100vh;
 }
+
+@media (width >= 480px) {
+    .xs\:block {
+        display: block;
+    }
+}
