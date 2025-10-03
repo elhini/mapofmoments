@@ -36,7 +36,7 @@ export const Header = () => {
                         </Link>
                     </div>
                     <div className="flex w-[30%] justify-end">
-                        <Button href="/login" size="sm">
+                        <Button as={Link} href="/login" size="sm">
                             Войти
                         </Button>
                     </div>
