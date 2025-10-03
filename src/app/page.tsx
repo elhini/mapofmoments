@@ -14,7 +14,7 @@ export default function HomePage() {
                 Сохрани свои памятные моменты на&nbsp;карте
             </h3>
 
-            <div className="-mx-1 flex flex-wrap justify-center gap-4">
+            <div className="-mx-2 flex flex-wrap justify-center gap-4">
                 <span className="rotate-2 rounded-lg bg-sky-100 px-4 py-2 text-lg text-sky-700 shadow-md dark:bg-sky-800 dark:text-sky-200">
                     🏖️ первая поездка на море 🌊
                 </span>
