@@ -15,6 +15,7 @@ import './map-view.css';
 
 const accessToken =
     'pk.eyJ1IjoiZWxoaW5pIiwiYSI6ImNtZjgzamQ2bzB0a20yanM5cnY1ZXFibnIifQ.fN1U6AuZGZhSYIz3UkLxoQ';
+const doubleClickDelay = 250;
 
 type Props = {
     moments: (Moment | PublicMoment)[];
@@ -39,19 +40,23 @@ export const MapView = ({
 
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
+        let clickTimeout: number; // to keep zoom on dblclick
 
         const map = new mapboxgl.Map({
             container: mapContainerRef.current || document.body,
             zoom: 2.3,
         });
         if (onMarkerCreate) {
-            map.addInteraction('click-to-create', {
-                type: 'click',
-                handler: (e) => {
+            map.on('click', (e) => {
+                window.clearTimeout(clickTimeout);
+                clickTimeout = window.setTimeout(() => {
                     const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
                     map.panTo(marker.getLngLat());
                     onMarkerCreate(e.lngLat, marker);
-                },
+                }, doubleClickDelay);
+            });
+            map.on('dblclick', () => {
+                window.clearTimeout(clickTimeout);
             });
         }
         if (withGeocoder) {
