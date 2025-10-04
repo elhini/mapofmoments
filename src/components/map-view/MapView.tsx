@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 
-import type { LngLat, Map, Marker } from 'mapbox-gl';
+import type { Point } from 'geojson';
+import type { GeoJSONSource, LngLat, Map, Marker } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
@@ -16,6 +17,12 @@ import './map-view.css';
 const accessToken =
     'pk.eyJ1IjoiZWxoaW5pIiwiYSI6ImNtZjgzamQ2bzB0a20yanM5cnY1ZXFibnIifQ.fN1U6AuZGZhSYIz3UkLxoQ';
 const doubleClickDelay = 250;
+
+declare module 'mapbox-gl' {
+    export interface MapMouseEvent {
+        pointClicked?: boolean;
+    }
+}
 
 type Props = {
     moments: (Moment | PublicMoment)[];
@@ -36,29 +43,14 @@ export const MapView = ({
 }: Props) => {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    const markerIdsRef = useRef<Set<string>>(new Set());
 
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
-        let clickTimeout: number; // to keep zoom on dblclick
 
         const map = new mapboxgl.Map({
             container: mapContainerRef.current || document.body,
             zoom: 2.3,
         });
-        if (onMarkerCreate) {
-            map.on('click', (e) => {
-                window.clearTimeout(clickTimeout);
-                clickTimeout = window.setTimeout(() => {
-                    const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
-                    map.panTo(marker.getLngLat());
-                    onMarkerCreate(e.lngLat, marker);
-                }, doubleClickDelay);
-            });
-            map.on('dblclick', () => {
-                window.clearTimeout(clickTimeout);
-            });
-        }
         if (withGeocoder) {
             map.addControl(
                 new MapboxGeocoder({
@@ -74,56 +66,118 @@ export const MapView = ({
     }, [withGeocoder]);
 
     useEffect(() => {
-        moments.forEach((moment, i) => {
-            if (!mapRef.current) return;
-            if (markerIdsRef.current.has(moment.id)) return; // skip if already rendered
-            const coords = moment.location.coordinates;
-            const marker = new mapboxgl.Marker().setLngLat(coords).addTo(mapRef.current);
-            markerIdsRef.current.add(moment.id);
-            marker.getElement().addEventListener('click', (e) => {
-                e.stopPropagation(); // prevent map click event
-                onMarkerClick(moment.id, marker);
-                mapRef.current?.panTo(marker.getLngLat());
-            });
-            if (i === 0 && !viewOnly) {
-                mapRef.current?.panTo(coords);
+        const map = mapRef.current;
+        if (!map || !moments.length) return;
+
+        const source = map.getSource('points-source');
+        if (source) {
+            map.removeLayer('points-layer');
+            map.removeSource('points-source');
+        }
+        map.addSource('points-source', {
+            type: 'geojson',
+            data: {
+                type: 'FeatureCollection',
+                features: moments.map((m) => ({
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: m.location.coordinates,
+                    },
+                    properties: { id: m.id },
+                })),
+            },
+            cluster: true,
+        });
+        map.addLayer({
+            id: 'points-layer',
+            source: 'points-source',
+            type: 'circle',
+            paint: {
+                'circle-color': '#3FB1CE',
+                'circle-radius': 8,
+                'circle-stroke-color': '#ffffff',
+                'circle-stroke-width': 2,
+            },
+        });
+
+        map.on('mouseenter', 'points-layer', () => (map.getCanvas().style.cursor = 'pointer'));
+        map.on('mouseleave', 'points-layer', () => (map.getCanvas().style.cursor = ''));
+        map.on('click', 'points-layer', (e) => {
+            e.pointClicked = true;
+            const feature = e.features?.[0];
+            const id = feature?.properties?.id;
+            onMarkerClick(id, { setDraggable: (_: boolean) => {} } as Marker); // TODO: pass real marker
+            const coords = (feature?.geometry as Point).coordinates as [number, number];
+            map.panTo(coords);
+
+            const isCluster = feature?.properties?.cluster;
+            if (isCluster) {
+                const clusterSource = map.getSource('points-source') as GeoJSONSource;
+                const clusterId = feature.properties?.cluster_id;
+                clusterSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
+                    if (err) return;
+                    map.flyTo({
+                        center: coords,
+                        zoom: Number(zoom) + 1,
+                        duration: 1000, // 1s
+                    });
+                });
             }
         });
 
-        const momentsSortedCoords = moments.map((m) => m.location.coordinates);
-
-        if (viewOnly && moments.length) {
-            const bounds = new mapboxgl.LngLatBounds();
-            for (const coords of momentsSortedCoords) {
-                bounds.extend(coords);
-            }
-            mapRef.current?.fitBounds(bounds, {
-                padding: 75,
-                maxZoom: 15,
+        if (onMarkerCreate) {
+            let clickTimeout: number; // to keep zoom on dblclick
+            map.on('click', (e) => {
+                if (e.pointClicked) return;
+                window.clearTimeout(clickTimeout);
+                clickTimeout = window.setTimeout(() => {
+                    const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
+                    map.panTo(marker.getLngLat());
+                    onMarkerCreate(e.lngLat, marker);
+                }, doubleClickDelay);
+            });
+            map.on('dblclick', () => {
+                window.clearTimeout(clickTimeout);
             });
         }
 
-        if (withLines && moments.length) {
-            const source = mapRef.current?.getSource('route');
-            if (source) {
-                mapRef.current?.removeLayer('route');
-                mapRef.current?.removeSource('route');
+        const momentsCoords = moments.map((m) => m.location.coordinates);
+
+        if (viewOnly) {
+            const bounds = new mapboxgl.LngLatBounds();
+            for (const coords of momentsCoords) {
+                bounds.extend(coords);
             }
-            mapRef.current?.addSource('route', {
+            map.fitBounds(bounds, {
+                padding: 75,
+                maxZoom: 15,
+            });
+        } else {
+            map.panTo(momentsCoords[0]); // TODO: run only on first load
+        }
+
+        if (withLines) {
+            const source = map.getSource('route-source');
+            if (source) {
+                map.removeLayer('route-layer');
+                map.removeSource('route-source');
+            }
+            map.addSource('route-source', {
                 type: 'geojson',
                 data: {
                     type: 'Feature',
                     geometry: {
                         type: 'LineString',
-                        coordinates: momentsSortedCoords,
+                        coordinates: momentsCoords,
                     },
                     properties: {},
                 },
             });
-            mapRef.current?.addLayer({
-                id: 'route',
+            map.addLayer({
+                id: 'route-layer',
                 type: 'line',
-                source: 'route',
+                source: 'route-source',
             });
         }
     }, [moments, viewOnly, withLines]);
