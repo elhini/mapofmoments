@@ -72,6 +72,8 @@ export const MapView = ({
         const source = map.getSource('points-source');
         if (source) {
             map.removeLayer('points-layer');
+            map.removeLayer('clusters-layer');
+            map.removeLayer('counters-layer');
             map.removeSource('points-source');
         }
         map.addSource('points-source', {
@@ -89,41 +91,76 @@ export const MapView = ({
             },
             cluster: !viewOnly,
         });
+        // слой для одиночных точек
         map.addLayer({
             id: 'points-layer',
-            source: 'points-source',
             type: 'circle',
+            source: 'points-source',
+            filter: ['!', ['has', 'point_count']],
             paint: {
                 'circle-color': '#3FB1CE',
-                'circle-radius': 8,
-                'circle-stroke-color': '#ffffff',
+                'circle-radius': 7,
+                'circle-stroke-color': '#389DB6',
                 'circle-stroke-width': 2,
+            },
+        });
+        // слой для кластеров
+        map.addLayer({
+            id: 'clusters-layer',
+            type: 'circle',
+            source: 'points-source',
+            filter: ['has', 'point_count'],
+            paint: {
+                'circle-color': '#3FB1CE',
+                'circle-radius': 10,
+                'circle-stroke-color': '#389DB6',
+                'circle-stroke-width': 2,
+            },
+        });
+        // слой для счётчиков
+        map.addLayer({
+            id: 'counters-layer',
+            type: 'symbol',
+            source: 'points-source',
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-size': 12,
+            },
+            paint: {
+                'text-color': '#ffffff',
             },
         });
 
         map.on('mouseenter', 'points-layer', () => (map.getCanvas().style.cursor = 'pointer'));
         map.on('mouseleave', 'points-layer', () => (map.getCanvas().style.cursor = ''));
+
+        map.on('mouseenter', 'clusters-layer', () => (map.getCanvas().style.cursor = 'pointer'));
+        map.on('mouseleave', 'clusters-layer', () => (map.getCanvas().style.cursor = ''));
+
         map.on('click', 'points-layer', (e) => {
             e.pointClicked = true;
             const feature = e.features?.[0];
-            const id = feature?.properties?.id;
-            onMarkerClick(id, { setDraggable: (_: boolean) => {} } as Marker); // TODO: pass real marker
+            const momentId = feature?.properties?.id;
+            onMarkerClick(momentId, { setDraggable: (_: boolean) => {} } as Marker); // TODO: pass real marker
             const coords = (feature?.geometry as Point).coordinates as [number, number];
             map.panTo(coords);
+        });
 
-            const isCluster = feature?.properties?.cluster;
-            if (isCluster) {
-                const clusterSource = map.getSource('points-source') as GeoJSONSource;
-                const clusterId = feature.properties?.cluster_id;
-                clusterSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
-                    if (err) return;
-                    map.flyTo({
-                        center: coords,
-                        zoom: Number(zoom) + 1,
-                        duration: 1000, // 1s
-                    });
+        map.on('click', 'clusters-layer', (e) => {
+            e.pointClicked = true;
+            const feature = e.features?.[0];
+            const source = map.getSource('points-source') as GeoJSONSource;
+            const clusterId = feature?.properties?.cluster_id;
+            source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+                if (err) return;
+                const coords = (feature?.geometry as Point).coordinates as [number, number];
+                map.flyTo({
+                    center: coords,
+                    zoom: Number(zoom) + 1,
+                    duration: 1000, // 1s
                 });
-            }
+            });
         });
 
         if (onMarkerCreate) {
