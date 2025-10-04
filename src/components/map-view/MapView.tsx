@@ -87,7 +87,7 @@ export const MapView = ({
                     properties: { id: m.id },
                 })),
             },
-            cluster: true,
+            cluster: !viewOnly,
         });
         map.addLayer({
             id: 'points-layer',
@@ -180,6 +180,7 @@ export const MapView = ({
                 source: 'route-source',
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [moments, viewOnly, withLines]);
 
     return (
