@@ -90,6 +90,7 @@ export const MapView = ({
                 })),
             },
             cluster: !viewOnly,
+            clusterRadius: 16,
         });
         // слой для одиночных точек
         map.addLayer({
