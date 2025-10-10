@@ -60,6 +60,11 @@ export const MapView = ({
                 }),
             );
         }
+        // svg is not supported
+        map.loadImage('/static/marker.png', (error, image) => {
+            if (error || !image) throw error || new Error('No image loaded');
+            map.addImage('single-point', image);
+        });
         mapRef.current = map;
 
         return () => map.remove();
@@ -90,19 +95,18 @@ export const MapView = ({
                 })),
             },
             cluster: !viewOnly,
-            clusterRadius: 16,
+            clusterRadius: 19,
         });
         // слой для одиночных точек
         map.addLayer({
             id: 'points-layer',
-            type: 'circle',
+            type: 'symbol',
             source: 'points-source',
             filter: ['!', ['has', 'point_count']],
-            paint: {
-                'circle-color': '#3FB1CE',
-                'circle-radius': 7,
-                'circle-stroke-color': '#389DB6',
-                'circle-stroke-width': 2,
+            layout: {
+                'icon-image': 'single-point',
+                'icon-anchor': 'bottom',
+                'icon-allow-overlap': true,
             },
         });
         // слой для кластеров
@@ -154,11 +158,11 @@ export const MapView = ({
             const source = map.getSource('points-source') as GeoJSONSource;
             const clusterId = feature?.properties?.cluster_id;
             source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-                if (err) return;
+                if (err || !zoom) return;
                 const coords = (feature?.geometry as Point).coordinates as [number, number];
                 map.flyTo({
                     center: coords,
-                    zoom: Number(zoom) + 1,
+                    zoom: zoom + 1,
                     duration: 1000, // 1s
                 });
             });
