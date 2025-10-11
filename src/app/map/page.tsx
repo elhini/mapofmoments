@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 
-import type { LngLat, Marker } from 'mapbox-gl';
+import type { LngLat, Marker, Map } from 'mapbox-gl';
 
 import type { Coordinates } from '@/types/coordinates';
 import { MapView } from '@/components/map-view/MapView';
@@ -11,6 +11,7 @@ import { MapOverview } from '@/components/map-overview/MapOverview';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
 export default function MapPage() {
+    const [map, setMap] = useState<Map>();
     const markerRef = useRef<Marker>(null);
     const [location, setLocation] = useState<LngLat>();
     const [momentId, setMomentId] = useState<string>('');
@@ -56,6 +57,7 @@ export default function MapPage() {
                 moments={moments}
                 onMarkerClick={openForm}
                 onMarkerCreate={openDraftForm}
+                onLoaded={setMap}
                 withGeocoder
             />
             {location || moment ? (
@@ -64,7 +66,7 @@ export default function MapPage() {
                     onSubmit={onSubmit}
                     onDelete={onDelete}
                     onClose={closeForm}
-                    marker={markerRef.current}
+                    map={map}
                 />
             ) : (
                 <MapOverview isPending={isPending} momentsCount={moments.length} />

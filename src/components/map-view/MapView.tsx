@@ -28,6 +28,7 @@ type Props = {
     moments: (Moment | PublicMoment)[];
     onMarkerClick: (momentId: string, marker: Marker) => void;
     onMarkerCreate?: (lngLat: LngLat, marker: Marker) => void;
+    onLoaded?: (map: Map) => void;
     withGeocoder?: boolean;
     withLines?: boolean;
     viewOnly?: boolean;
@@ -37,6 +38,7 @@ export const MapView = ({
     moments,
     onMarkerClick,
     onMarkerCreate,
+    onLoaded,
     withGeocoder,
     withLines,
     viewOnly,
@@ -66,6 +68,7 @@ export const MapView = ({
             map.addImage('single-point', image);
         });
         mapRef.current = map;
+        onLoaded?.(map);
 
         return () => map.remove();
     }, [withGeocoder]);
@@ -197,7 +200,9 @@ export const MapView = ({
                 maxZoom: 15,
             });
         } else {
-            map.panTo(momentsCoords[0]); // TODO: run only on first load
+            const center = map.getCenter();
+            const isZeroZero = center.lng === 0 && center.lat === 0;
+            if (isZeroZero) map.panTo(momentsCoords[0]);
         }
 
         if (withLines) {

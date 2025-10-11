@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { Marker } from 'mapbox-gl';
+import type { Map } from 'mapbox-gl';
 
 import { Modal, ModalContent } from '@heroui/modal';
 import { Form } from '@heroui/form';
@@ -30,7 +30,7 @@ export type MomentFormProps = {
     onSubmit: () => void;
     onDelete: () => void;
     onClose: () => void;
-    marker: Marker | null;
+    map?: Map;
 };
 
 export const MomentForm: React.FC<MomentFormProps> = ({
@@ -38,7 +38,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     onSubmit,
     onDelete,
     onClose,
-    marker,
+    map,
 }) => {
     const {
         formData,
@@ -52,7 +52,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     } = useMomentForm({ moment, onSubmit, onDelete });
 
     const { draggingEnabled, enableDragging, disableDragging, applyCoords, rollbackCoords } =
-        useDragging(marker, moment);
+        useDragging(map, moment);
 
     const submitCoords = async () => {
         applyCoords();
