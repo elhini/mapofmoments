@@ -100,13 +100,14 @@ export const MapView = ({
         // слой для одиночных точек
         map.addLayer({
             id: 'points-layer',
-            type: 'symbol',
+            type: 'symbol', // https://docs.mapbox.com/style-spec/reference/layers/#symbol
             source: 'points-source',
             filter: ['!', ['has', 'point_count']],
             layout: {
                 'icon-image': 'single-point',
                 'icon-anchor': 'bottom',
                 'icon-allow-overlap': true,
+                'icon-offset': [0, 5],
             },
         });
         // слой для кластеров
