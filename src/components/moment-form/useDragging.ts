@@ -4,15 +4,25 @@ import mapboxgl from 'mapbox-gl';
 
 import type { Moment } from '@/types/moment';
 
-export const useDragging = (map?: Map, moment?: Moment) => {
+export const useDragging = (
+    onDraggableIdChanged: (id: string) => void,
+    map?: Map,
+    moment?: Moment,
+) => {
     const [enabled, setEnabled] = useState(false);
     const [marker, setMarker] = useState<Marker>();
 
     useEffect(() => {
-        if (enabled && map) {
-            const coords = moment?.location.coordinates || [0, 0];
-            const m = new mapboxgl.Marker({ draggable: true }).setLngLat(coords).addTo(map);
-            setMarker(m);
+        if (!map) return;
+        const coords = moment?.location.coordinates || [0, 0];
+        if (enabled) {
+            const mrk = new mapboxgl.Marker({ draggable: true }).setLngLat(coords).addTo(map);
+            mrk.on('dragend', () => map.panTo(mrk.getLngLat()));
+            onDraggableIdChanged(moment?.id || '');
+            setMarker(mrk);
+        } else {
+            map.panTo(coords);
+            onDraggableIdChanged('');
         }
     }, [enabled, map]);
 

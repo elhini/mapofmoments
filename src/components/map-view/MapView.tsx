@@ -26,6 +26,7 @@ declare module 'mapbox-gl' {
 
 type Props = {
     moments: (Moment | PublicMoment)[];
+    draggableMomentId?: string;
     onMarkerClick: (momentId: string) => void;
     onMarkerCreate?: (lngLat: LngLat, marker: Marker) => void;
     onLoaded?: (map: Map) => void;
@@ -36,6 +37,7 @@ type Props = {
 
 export const MapView = ({
     moments,
+    draggableMomentId,
     onMarkerClick,
     onMarkerCreate,
     onLoaded,
@@ -230,6 +232,17 @@ export const MapView = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [moments, viewOnly, withLines]);
+
+    useEffect(() => {
+        const map = mapRef.current;
+        if (!map?.isStyleLoaded()) return;
+        map.setPaintProperty('points-layer', 'icon-opacity', [
+            'case',
+            ['==', ['get', 'id'], draggableMomentId],
+            0.5,
+            1.0,
+        ]);
+    }, [draggableMomentId]);
 
     return (
         <>

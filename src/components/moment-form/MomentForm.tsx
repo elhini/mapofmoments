@@ -30,6 +30,7 @@ export type MomentFormProps = {
     onSubmit: () => void;
     onDelete: () => void;
     onClose: () => void;
+    onDraggableIdChanged: (id: string) => void;
     map?: Map;
 };
 
@@ -38,6 +39,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     onSubmit,
     onDelete,
     onClose,
+    onDraggableIdChanged,
     map,
 }) => {
     const {
@@ -52,7 +54,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     } = useMomentForm({ moment, onSubmit, onDelete });
 
     const { draggingEnabled, enableDragging, disableDragging, applyCoords, rollbackCoords } =
-        useDragging(map, moment);
+        useDragging(onDraggableIdChanged, map, moment);
 
     const submitCoords = async () => {
         applyCoords();

@@ -15,6 +15,7 @@ export default function MapPage() {
     const markerRef = useRef<Marker>(null);
     const [location, setLocation] = useState<LngLat>();
     const [momentId, setMomentId] = useState<string>('');
+    const [draggableMomentId, setDraggableMomentId] = useState<string>('');
 
     const openForm = (momentId: string) => {
         setLocation(undefined);
@@ -54,6 +55,7 @@ export default function MapPage() {
         <>
             <MapView
                 moments={moments}
+                draggableMomentId={draggableMomentId}
                 onMarkerClick={openForm}
                 onMarkerCreate={openDraftForm}
                 onLoaded={setMap}
@@ -65,6 +67,7 @@ export default function MapPage() {
                     onSubmit={onSubmit}
                     onDelete={onDelete}
                     onClose={closeForm}
+                    onDraggableIdChanged={setDraggableMomentId}
                     map={map}
                 />
             ) : (
