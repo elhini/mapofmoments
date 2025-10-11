@@ -16,8 +16,7 @@ export default function MapPage() {
     const [location, setLocation] = useState<LngLat>();
     const [momentId, setMomentId] = useState<string>('');
 
-    const openForm = (momentId: string, marker: Marker) => {
-        markerRef.current = marker;
+    const openForm = (momentId: string) => {
         setLocation(undefined);
         setMomentId(momentId);
     };

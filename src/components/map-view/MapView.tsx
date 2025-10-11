@@ -26,7 +26,7 @@ declare module 'mapbox-gl' {
 
 type Props = {
     moments: (Moment | PublicMoment)[];
-    onMarkerClick: (momentId: string, marker: Marker) => void;
+    onMarkerClick: (momentId: string) => void;
     onMarkerCreate?: (lngLat: LngLat, marker: Marker) => void;
     onLoaded?: (map: Map) => void;
     withGeocoder?: boolean;
@@ -151,7 +151,7 @@ export const MapView = ({
             e.pointClicked = true;
             const feature = e.features?.[0];
             const momentId = feature?.properties?.id;
-            onMarkerClick(momentId, { setDraggable: (_: boolean) => {} } as Marker); // TODO: pass real marker
+            onMarkerClick(momentId);
             const coords = (feature?.geometry as Point).coordinates as [number, number];
             map.panTo(coords);
         });
