@@ -15,7 +15,7 @@ export type DraggingFormProps = {
 export const DraggingForm: React.FC<DraggingFormProps> = ({ submit, isSubmitting, cancel }) => {
     return (
         <Modal
-            className="fixed top-[52%] w-[280px] p-3 sm:left-[50%] sm:m-0"
+            className="fixed top-[55%] w-[280px] p-3 sm:left-[50%] sm:m-0"
             isOpen
             onClose={cancel}
             hideCloseButton
