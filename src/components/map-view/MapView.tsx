@@ -111,8 +111,8 @@ export const MapView = ({
             layout: {
                 'icon-image': 'single-point',
                 'icon-anchor': 'bottom',
-                'icon-allow-overlap': true,
                 'icon-offset': [0, 6.5],
+                'icon-allow-overlap': true,
                 'icon-ignore-placement': true,
             },
         });
