@@ -112,7 +112,8 @@ export const MapView = ({
                 'icon-image': 'single-point',
                 'icon-anchor': 'bottom',
                 'icon-allow-overlap': true,
-                'icon-offset': [0, 5],
+                'icon-offset': [0, 6.5],
+                'icon-ignore-placement': true,
             },
         });
         // слой для кластеров
