@@ -15,3 +15,7 @@ a.mapboxgl-ctrl-logo {
 .mapboxgl-ctrl-attrib {
     display: none;
 }
+
+.mapboxgl-marker {
+    opacity: 1 !important; /* fix for https://stackoverflow.com/questions/74247501 */
+}
