@@ -24,7 +24,8 @@ export const useDragging = (
             map.panTo(coords);
             onDraggableIdChanged('');
         }
-    }, [enabled, map]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [enabled, moment?.id]);
 
     const applyCoords = () => {
         const { lng = 0, lat = 0 } = marker?.getLngLat() || {};

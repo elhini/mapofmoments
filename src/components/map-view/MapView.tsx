@@ -73,6 +73,7 @@ export const MapView = ({
         onLoaded?.(map);
 
         return () => map.remove();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withGeocoder]);
 
     useEffect(() => {
