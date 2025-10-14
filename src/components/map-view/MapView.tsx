@@ -145,11 +145,13 @@ export const MapView = ({
             },
         });
 
-        map.on('mouseenter', 'points-layer', () => (map.getCanvas().style.cursor = 'pointer'));
-        map.on('mouseleave', 'points-layer', () => (map.getCanvas().style.cursor = ''));
+        const style = map.getCanvas().style;
 
-        map.on('mouseenter', 'clusters-layer', () => (map.getCanvas().style.cursor = 'pointer'));
-        map.on('mouseleave', 'clusters-layer', () => (map.getCanvas().style.cursor = ''));
+        map.on('mouseenter', 'points-layer', () => (style.cursor = 'pointer'));
+        map.on('mouseleave', 'points-layer', () => (style.cursor = ''));
+
+        map.on('mouseenter', 'clusters-layer', () => (style.cursor = 'pointer'));
+        map.on('mouseleave', 'clusters-layer', () => (style.cursor = ''));
 
         map.on('click', 'points-layer', (e) => {
             e.pointClicked = true;
