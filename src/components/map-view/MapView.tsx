@@ -67,7 +67,7 @@ export const MapView = ({
         // svg is not supported
         map.loadImage('/static/marker.png', (error, image) => {
             if (error || !image) throw error || new Error('No image loaded');
-            map.addImage('single-point', image);
+            map.addImage('single-point', image, { pixelRatio: 2 });
         });
         mapRef.current = map;
         onLoaded?.(map);
