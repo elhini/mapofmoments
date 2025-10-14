@@ -102,7 +102,7 @@ export const MapView = ({
             cluster: !viewOnly,
             clusterRadius: 19,
         });
-        // слой для одиночных точек
+        // single points layer
         map.addLayer({
             id: 'points-layer',
             type: 'symbol', // https://docs.mapbox.com/style-spec/reference/layers/#symbol
@@ -116,7 +116,7 @@ export const MapView = ({
                 'icon-ignore-placement': true,
             },
         });
-        // слой для кластеров
+        // clusters layer
         map.addLayer({
             id: 'clusters-layer',
             type: 'circle',
@@ -129,7 +129,7 @@ export const MapView = ({
                 'circle-stroke-width': 2,
             },
         });
-        // слой для счётчиков
+        // cluster counters layer
         map.addLayer({
             id: 'counters-layer',
             type: 'symbol',

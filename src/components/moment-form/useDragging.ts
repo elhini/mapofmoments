@@ -29,7 +29,7 @@ export const useDragging = (
     const applyCoords = () => {
         const { lng = 0, lat = 0 } = marker?.getLngLat() || {};
         if (moment) moment.location = { coordinates: [lng, lat] };
-        setTimeout(() => marker?.remove(), 2000);
+        setTimeout(() => marker?.remove(), 2000); // TODO: honestly wait for rerender
     };
     const rollbackCoords = () => {
         marker?.remove();
