@@ -55,6 +55,7 @@ export const MapView = ({
             container: mapContainerRef.current || document.body,
             zoom: 2.3,
         });
+        map.addControl(new mapboxgl.NavigationControl(), 'right');
         if (withGeocoder) {
             map.addControl(
                 new MapboxGeocoder({

@@ -8,6 +8,12 @@
     text-align: left;
 }
 
+@media (width <= 768px) {
+    .mapboxgl-ctrl-group:has(.mapboxgl-ctrl-compass) {
+        display: none;
+    }
+}
+
 a.mapboxgl-ctrl-logo {
     margin: 0 0 4px 6px;
 }
