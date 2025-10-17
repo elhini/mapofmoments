@@ -1,39 +1,25 @@
-'use client';
+import type { Metadata } from 'next';
 
-import { useState } from 'react';
+import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 
-import { useParams, useSearchParams } from 'next/navigation';
+import ShareTagView from '@/app/share/tag/[public_id]/view';
 
-import { MapView } from '@/components/map-view/MapView';
-import { MomentView } from '@/components/moment-view/MomentView';
-import { MapOverview } from '@/components/map-overview/MapOverview';
-import { useGetSharedMomentsQuery } from '@/hooks/useMomentsApi';
+type PageProps = {
+    params: Promise<{ public_id: string }>;
+    searchParams: Promise<{ lines: string }>;
+};
 
-export default function ShareTagPage() {
-    const { public_id } = useParams<{ public_id: string }>();
-    const searchParams = useSearchParams();
-    const withLines = searchParams.get('lines') === '1';
-    const [momentId, setMomentId] = useState<string>('');
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const publicId = (await params).public_id;
+    const supabase = getSupabaseServiceClient();
+    const { data } = await supabase.from('tags').select('name').eq('public_id', publicId).single();
 
-    const openView = (momentId: string) => {
-        setMomentId(momentId);
-    };
+    return { title: 'Тэг: ' + data?.name };
+}
 
-    const closeView = () => {
-        setMomentId('');
-    };
+export default async function ShareTagPage({ params, searchParams }: PageProps) {
+    const publicId = (await params).public_id;
+    const withLines = (await searchParams).lines === '1';
 
-    const { data: moments = [], isPending } = useGetSharedMomentsQuery(public_id);
-    const moment = moments.find((m) => m.id === momentId);
-
-    return (
-        <>
-            <MapView moments={moments} onMarkerClick={openView} withLines={withLines} viewOnly />
-            {moment ? (
-                <MomentView moment={moment} onClose={closeView} />
-            ) : (
-                <MapOverview isPending={isPending} momentsCount={moments.length} />
-            )}
-        </>
-    );
+    return <ShareTagView publicId={publicId} withLines={withLines} />;
 }
