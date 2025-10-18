@@ -2,14 +2,16 @@ import type { Metadata } from 'next';
 
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 
-import ShareTagView from '@/app/share/tag/[public_id]/view';
+import ShareTagView from './view';
 
 type PageProps = {
     params: Promise<{ public_id: string }>;
     searchParams: Promise<{ lines: string }>;
 };
 
-const getTitle = (tag: string) => `Пользователь делится с вами своими моментами по тэгу "${tag}"`;
+const getTitle = (tag: string) =>
+    `Пользователь сервиса MapOfMoments делится с вами своими воспоминаниями по тэгу "${tag}"`;
+const description = 'Вы можете посмотреть их, а также создать свою карту моментов!';
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const publicId = (await params).public_id;
@@ -17,7 +19,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const { data } = await supabase.from('tags').select('name').eq('public_id', publicId).single();
     const title = getTitle(data?.name);
 
-    return { title, openGraph: { title } };
+    return { title, description, openGraph: { title, description } };
 }
 
 export default async function ShareTagPage({ params, searchParams }: PageProps) {
