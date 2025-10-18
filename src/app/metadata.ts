@@ -14,7 +14,7 @@ export const baseMetadata: Metadata = {
             {
                 url: 'https://mapofmoments.vercel.app/og-image.png',
                 width: 1024,
-                height: 1024,
+                height: 539,
                 alt: 'Map of Moments',
             },
         ],
