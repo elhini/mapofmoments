@@ -15,8 +15,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const publicId = (await params).public_id;
     const supabase = getSupabaseServiceClient();
     const { data } = await supabase.from('tags').select('name').eq('public_id', publicId).single();
+    const title = getTitle(data?.name);
 
-    return { title: getTitle(data?.name) };
+    return { title, openGraph: { title } };
 }
 
 export default async function ShareTagPage({ params, searchParams }: PageProps) {
