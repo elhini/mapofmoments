@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const baseMetadata: Metadata = {
     title: 'Map of Moments — карта твоих событий',
-    description: 'Сохрани памятные события на карте — отметь важные места и моменты',
+    description: 'Сохрани свои памятные события на карте — отметь важные места и моменты',
     openGraph: {
         title: 'Map of Moments — карта твоих событий',
         description: 'Сохрани свои памятные моменты на карте — отметь важные места и моменты',

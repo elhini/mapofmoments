@@ -9,12 +9,14 @@ type PageProps = {
     searchParams: Promise<{ lines: string }>;
 };
 
+const getTitle = (tag: string) => `Пользователь делится с вами своими моментами по тэгу "${tag}"`;
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const publicId = (await params).public_id;
     const supabase = getSupabaseServiceClient();
     const { data } = await supabase.from('tags').select('name').eq('public_id', publicId).single();
 
-    return { title: 'Тэг: ' + data?.name };
+    return { title: getTitle(data?.name) };
 }
 
 export default async function ShareTagPage({ params, searchParams }: PageProps) {
