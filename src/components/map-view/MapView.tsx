@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 import type { Point } from 'geojson';
-import type { GeoJSONSource, LngLat, Map, Marker } from 'mapbox-gl';
+import type { GeoJSONSource, LngLat, Map, MapMouseEvent, Marker } from 'mapbox-gl';
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
@@ -179,20 +179,23 @@ export const MapView = ({
             });
         });
 
+        let clickTimeout: number; // to keep zoom on dblclick
+        const onClick = (e: MapMouseEvent) => {
+            if (e.pointClicked) return;
+            window.clearTimeout(clickTimeout);
+            clickTimeout = window.setTimeout(() => {
+                const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
+                map.panTo(marker.getLngLat());
+                onMarkerCreate?.(e.lngLat, marker);
+            }, doubleClickDelay);
+        };
+        const onDblClick = () => {
+            window.clearTimeout(clickTimeout);
+        };
+
         if (onMarkerCreate) {
-            let clickTimeout: number; // to keep zoom on dblclick
-            map.on('click', (e) => {
-                if (e.pointClicked) return;
-                window.clearTimeout(clickTimeout);
-                clickTimeout = window.setTimeout(() => {
-                    const marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(map);
-                    map.panTo(marker.getLngLat());
-                    onMarkerCreate(e.lngLat, marker);
-                }, doubleClickDelay);
-            });
-            map.on('dblclick', () => {
-                window.clearTimeout(clickTimeout);
-            });
+            map.on('click', onClick);
+            map.on('dblclick', onDblClick);
         }
 
         const momentsCoords = moments.map((m) => m.location.coordinates);
@@ -235,6 +238,11 @@ export const MapView = ({
                 source: 'route-source',
             });
         }
+
+        return () => {
+            map.off('click', onClick);
+            map.off('dblclick', onDblClick);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [moments, viewOnly, withLines]);
 
