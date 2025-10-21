@@ -10,7 +10,7 @@ const authStartPages = ['/register', '/login'];
 const authProcessPages = ['/verify-email', '/auth-callback', '/reset-password', '/update-password'];
 const authProcessRoutes = ['/api/login', '/api/register', '/api/auth-callback'];
 
-const publicPaths = ['/', ...authProcessRoutes, ...authProcessPages];
+const publicPaths = ['/', ...authProcessRoutes, ...authProcessPages, '/about'];
 const sharedPaths = ['/share', '/api/moments/shared'];
 
 export async function middleware(req: NextRequest) {

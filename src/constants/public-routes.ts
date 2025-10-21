@@ -6,4 +6,5 @@ export const publicRoutes = [
     '/reset-password',
     '/update-password',
     '/share',
+    '/about',
 ];
