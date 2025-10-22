@@ -5,7 +5,7 @@ export const baseMetadata: Metadata = {
     description: 'Сохрани свои памятные события на карте — отметь важные места и моменты',
     openGraph: {
         title: 'Map of Moments — карта твоих событий',
-        description: 'Сохрани свои памятные моменты на карте — отметь важные места и моменты',
+        description: 'Сохрани свои памятные события на карте — отметь важные места и моменты',
         siteName: 'Map of Moments',
         locale: 'ru_RU',
         type: 'website',
