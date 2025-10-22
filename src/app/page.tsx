@@ -48,8 +48,8 @@ export default function HomePage() {
                 Отмечай места, добавляй впечатления&nbsp;— и&nbsp;делись ими с&nbsp;друзьями
             </h4>
 
-            <div className="sticky bottom-0 w-full rounded-2xl bg-white p-5 shadow-[0_0_20px_20px_white]">
-                <div className="flex justify-center gap-4">
+            <div className="sticky bottom-0 flex w-full flex-col items-center gap-4 rounded-2xl bg-white p-5 shadow-[0_0_20px_20px_white]">
+                <div className="flex gap-4">
                     <Button
                         as={Link}
                         size="lg"
@@ -68,6 +68,9 @@ export default function HomePage() {
                         Продолжить
                     </Button>
                 </div>
+                <Link href="/about" className="text-sm text-sky-600">
+                    Об этом проекте
+                </Link>
             </div>
         </div>
     );
