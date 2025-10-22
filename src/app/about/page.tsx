@@ -1,5 +1,8 @@
 'use client';
 
+import { Link } from '@heroui/link';
+import { Button } from '@heroui/button';
+
 export default function AboutPage() {
     return (
         <div
@@ -53,6 +56,13 @@ export default function AboutPage() {
                 Попробуйте, и&nbsp;надеюсь, вам тоже захочется сохранить свои памятные моменты
                 на&nbsp;карте!
             </p>
+            <Button
+                as={Link}
+                href="/register"
+                className="self-end rounded-xl bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 text-white shadow-md"
+            >
+                Начать
+            </Button>
         </div>
     );
 }
