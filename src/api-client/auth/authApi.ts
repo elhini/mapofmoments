@@ -1,27 +1,20 @@
 import { api } from '@/api-client/apiClient';
 
 // TODO: move to types
-export type RegisterRequest = {
-    email: string;
-    password: string;
-    username: string;
-};
-
-export type LoginRequest = {
+export type AuthRequest = {
     email: string;
     password: string;
 };
 
 export type User = {
     email: string;
-    username?: string;
 };
 
-export async function register(req: RegisterRequest) {
+export async function register(req: AuthRequest) {
     return api.post('api/register', req);
 }
 
-export async function login(req: LoginRequest) {
+export async function login(req: AuthRequest) {
     return api.post('api/login', req);
 }
 

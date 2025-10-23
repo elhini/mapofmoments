@@ -5,13 +5,13 @@ import { handleAuthorizedRequest } from '@/app/api/authUtils';
 
 // api/register
 export async function POST(req: NextRequest) {
-    const { email, password, username } = await req.json();
+    const { email, password } = await req.json();
     if (!email || !password) {
         return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
     const supabase = getSupabaseServiceClient();
-    const params = { email, password, options: { data: { username } } };
+    const params = { email, password };
     const { data, error } = await supabase.auth.signUp(params);
 
     if (error) {

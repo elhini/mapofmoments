@@ -1,10 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import {
-    login,
-    register,
-    type LoginRequest,
-    type RegisterRequest,
-} from '@/api-client/auth/authApi';
+import { login, register, type AuthRequest } from '@/api-client/auth/authApi';
 import { api } from '@/api-client/apiClient';
 
 // Mock the apiClient module and its default exported singleton `api`
@@ -26,7 +21,7 @@ describe('authApi', () => {
     });
 
     it('login calls api.post with correct path and body and returns data', async () => {
-        const req: LoginRequest = { email: 'a@b.com', password: 'secret' };
+        const req: AuthRequest = { email: 'a@b.com', password: 'secret' };
         const resp = { token: 't1', user: { id: 1 } };
         (api.post as unknown as Mock).mockResolvedValueOnce(resp);
 
@@ -38,10 +33,9 @@ describe('authApi', () => {
     });
 
     it('register calls api.post with correct path and body and returns data', async () => {
-        const req: RegisterRequest = {
+        const req: AuthRequest = {
             email: 'new@user.com',
             password: 'p@ss',
-            username: 'newbie',
         };
         const resp = { id: 123, email: req.email };
         (api.post as unknown as Mock).mockResolvedValueOnce(resp);
@@ -54,7 +48,7 @@ describe('authApi', () => {
     });
 
     it('propagates errors from underlying api.post for login', async () => {
-        const req: LoginRequest = { email: 'err@user.com', password: 'bad' };
+        const req: AuthRequest = { email: 'err@user.com', password: 'bad' };
         const error = new Error('Invalid credentials');
         (api.post as unknown as Mock).mockRejectedValueOnce(error);
 

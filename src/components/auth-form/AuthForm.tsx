@@ -40,17 +40,6 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
             >
                 Map of Moments
             </a>
-            {mode === 'register' && (
-                <Input
-                    label="Логин"
-                    name="username"
-                    type="text"
-                    value={formData.username}
-                    onChange={handleChange}
-                    isRequired
-                    autoFocus={mode === 'register'}
-                />
-            )}
 
             <Input
                 label="Email"
@@ -59,7 +48,7 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
                 value={formData.email}
                 onChange={handleChange}
                 isRequired
-                autoFocus={mode === 'login'}
+                autoFocus
             />
 
             <Input

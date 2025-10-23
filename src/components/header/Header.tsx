@@ -21,7 +21,6 @@ export const Header = () => {
 
     const { data: user } = useMeQuery(!isPublic);
     const { mutate: logout, isPending: isLoggingOut } = useLogoutMutation();
-    const username = user?.username;
 
     return needHeader ? (
         <header className="fixed top-0 right-0 left-0 z-1 flex w-full min-w-[360px] items-center justify-between bg-gradient-to-b from-black to-transparent p-4 text-white">
@@ -53,9 +52,7 @@ export const Header = () => {
                     </div>
                     <div className="flex w-[50%] items-center justify-end gap-4">
                         <div className="overflow-hidden text-right text-ellipsis whitespace-nowrap">
-                            {user
-                                ? user.email + (username ? ' (' + username + ')' : '')
-                                : 'Загрузка...'}
+                            {user ? user.email : 'Загрузка...'}
                         </div>
                         <Button onPress={() => logout()} isLoading={isLoggingOut} size="sm">
                             {isLoggingOut ? '' : 'Выйти'}

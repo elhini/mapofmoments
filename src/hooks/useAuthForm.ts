@@ -10,7 +10,7 @@ interface UseAuthFormProps {
 
 type FormErrors = Partial<AuthFormData>;
 
-const emptyData: AuthFormData = { email: '', password: '', username: '' };
+const emptyData: AuthFormData = { email: '', password: '' };
 
 export const useAuthForm = ({ mode }: UseAuthFormProps) => {
     const [formData, setFormData] = useState<AuthFormData>(emptyData);
