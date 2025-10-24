@@ -79,7 +79,7 @@ export const MapView = ({
 
     useEffect(() => {
         const map = mapRef.current;
-        if (!map || !moments.length) return;
+        if (!map || !map.isStyleLoaded()) return;
 
         const source = map.getSource('points-source');
         if (source) {
