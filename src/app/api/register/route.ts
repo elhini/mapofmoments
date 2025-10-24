@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = getSupabaseServiceClient();
-    const params = { email, password };
+    const emailRedirectTo = new URL('/auth-callback', req.url).toString();
+    const params = { email, password, options: { emailRedirectTo } };
     const { data, error } = await supabase.auth.signUp(params);
 
     if (error) {
