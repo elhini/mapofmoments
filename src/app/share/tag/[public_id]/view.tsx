@@ -25,7 +25,7 @@ export default function ShareTagView({ publicId, withLines }: Props) {
     };
 
     const { data: moments = [], isPending } = useGetSharedMomentsQuery(publicId);
-    const moment = moments.find((m) => m.id === momentId);
+    const moment = moments?.find((m) => m.id === momentId);
 
     return (
         <>
