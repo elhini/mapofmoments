@@ -1,6 +1,8 @@
 import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 
+import posthog from 'posthog-js';
+
 import type { AuthFormData, AuthFormMode } from '@/types/auth';
 import { useLoginMutation, useRegisterMutation } from '@/hooks/useAuthApi';
 
@@ -38,6 +40,7 @@ export const useAuthForm = ({ mode }: UseAuthFormProps) => {
         if (!validateForm()) return;
         const submit =
             mode === 'register' ? registerMutation.mutateAsync : loginMutation.mutateAsync;
+        posthog.capture(mode, { email: formData.email });
         await submit(formData);
     };
 
