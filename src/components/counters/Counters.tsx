@@ -1,4 +1,6 @@
 export const Counters = () => {
+    if (process.env.NODE_ENV !== 'production') return;
+
     const metricaHtml = `
         <script type="text/javascript">
             (function(m,e,t,r,i,k,a){
