@@ -165,17 +165,17 @@ export function createApiClient(opts: ApiClientOptions = {}) {
 
         let payload: BodyInit | undefined = undefined;
         if (body !== undefined && body !== null && method !== 'GET' && method !== 'HEAD') {
-            if (isObject(body) || Array.isArray(body)) {
-                if (!finalHeaders.has('Content-Type'))
-                    finalHeaders.set('Content-Type', 'application/json');
-                payload = JSON.stringify(body);
-            } else if (
+            if (
                 body instanceof FormData ||
                 body instanceof URLSearchParams ||
                 body instanceof Blob
             ) {
                 // Let browser set appropriate content-type
                 payload = body as BodyInit;
+            } else if (isObject(body) || Array.isArray(body)) {
+                if (!finalHeaders.has('Content-Type'))
+                    finalHeaders.set('Content-Type', 'application/json');
+                payload = JSON.stringify(body);
             } else if (typeof body === 'string') {
                 if (!finalHeaders.has('Content-Type'))
                     finalHeaders.set('Content-Type', 'text/plain;charset=UTF-8');
