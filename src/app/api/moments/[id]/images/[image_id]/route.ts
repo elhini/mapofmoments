@@ -8,20 +8,30 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ imag
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
     const id = (await context.params).image_id;
-    const { data } = await supabase
+
+    const { data, error } = await supabase
         .from('moment_images')
         .select('storage_path')
         .eq('id', id)
         .single();
-    const { error } = await supabase
+    if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const { error: deleteError } = await supabase
         .from('moment_images')
         .delete()
         .eq('id', id)
         .eq('user_id', user.id);
-    await supabase.storage.from('moments').remove([data?.storage_path]);
+    if (deleteError) {
+        return NextResponse.json({ error: deleteError.message }, { status: 500 });
+    }
 
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    const { error: removeError } = await supabase.storage
+        .from('moment_images')
+        .remove([data?.storage_path]);
+    if (removeError) {
+        return NextResponse.json({ error: removeError.message }, { status: 500 });
     }
 
     return NextResponse.json({});
