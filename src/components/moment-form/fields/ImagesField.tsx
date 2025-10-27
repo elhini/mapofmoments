@@ -98,14 +98,15 @@ export const ImagesField = ({ momentId }: Props) => {
                 <div className="text-foreground-500 text-xs">Перетащить тоже&nbsp;можно</div>
             </div>
 
-            <div className="grid w-full grid-cols-3 gap-2">
+            <div className="grid w-full grid-cols-3 gap-[6px]">
                 {images.map((img, i) => (
-                    <Card key={img.id} className="group h-[87px]">
+                    <Card key={img.id} className="group h-[88px] w-[88px]">
                         <Image
                             fill
+                            sizes="88px"
                             alt={`Изображение №${i + 1}`}
                             src={getPublicUrl(img.storage_path)}
-                            className="h-24 w-full object-cover"
+                            className="w-full object-cover"
                         />
                         <Button
                             isIconOnly
