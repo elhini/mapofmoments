@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 
 import Image from 'next/image';
 
-import { ImagePlus } from 'lucide-react';
+import { Trash, ImagePlus } from 'lucide-react';
 
 import { Button } from '@heroui/button';
 import { Card } from '@heroui/card';
@@ -62,6 +62,12 @@ export const ImagesField = ({ momentId }: Props) => {
         onFilesSelected(e.dataTransfer.files);
     };
 
+    const handleDelete = async (imageId: string) => {
+        await api.delete(`api/moments/${momentId}/images/${imageId}`); // TODO: wrap in useMutation
+        // refresh
+        fetchImages();
+    };
+
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
     };
@@ -102,13 +108,21 @@ export const ImagesField = ({ momentId }: Props) => {
 
             <div className="grid w-full grid-cols-3 gap-2">
                 {images.map((img, i) => (
-                    <Card key={img.id} className="h-[87px]">
+                    <Card key={img.id} className="group h-[87px]">
                         <Image
                             fill
                             alt={`Изображение №${i + 1}`}
                             src={getPublicUrl(img.storage_path)}
                             className="h-24 w-full object-cover"
                         />
+                        <Button
+                            isIconOnly
+                            size="sm"
+                            className="absolute right-0 hidden group-hover:flex"
+                            onPress={() => handleDelete(img.id)}
+                        >
+                            <Trash size={16} />
+                        </Button>
                     </Card>
                 ))}
             </div>
