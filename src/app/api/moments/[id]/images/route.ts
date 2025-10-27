@@ -3,6 +3,7 @@ import { randomUUID } from 'crypto';
 
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
+import { momentImagesBucket } from '@/constants/buckets';
 
 // Добавление изображения
 export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -17,7 +18,9 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
     const extension = file.name.split('.').pop();
     const path = `${user.id}/${momentId}/${randomUUID()}.${extension}`;
 
-    const { error: uploadError } = await supabase.storage.from('moment_images').upload(path, file);
+    const { error: uploadError } = await supabase.storage
+        .from(momentImagesBucket)
+        .upload(path, file);
 
     if (uploadError) {
         return NextResponse.json({ error: uploadError.message }, { status: 500 });

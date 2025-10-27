@@ -1,11 +1,12 @@
 import type { NextConfig } from 'next';
 
+import { supabaseUrl } from '@/utils/supabaseConfig';
+import { momentImagesBucket } from '@/constants/buckets';
+
 const nextConfig: NextConfig = {
     images: {
         remotePatterns: [
-            new URL(
-                'https://mduigtlmzuzjcaezvhpn.supabase.co/storage/v1/object/public/moment_images/**',
-            ),
+            new URL(`${supabaseUrl}/storage/v1/object/public/${momentImagesBucket}/**`),
         ],
     },
 };

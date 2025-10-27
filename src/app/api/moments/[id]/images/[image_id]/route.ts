@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
+import { momentImagesBucket } from '@/constants/buckets';
 
 // Удаление существующего изображения
 export async function DELETE(req: NextRequest, context: { params: Promise<{ image_id: string }> }) {
@@ -28,7 +29,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ imag
     }
 
     const { error: removeError } = await supabase.storage
-        .from('moment_images')
+        .from(momentImagesBucket)
         .remove([data?.storage_path]);
     if (removeError) {
         return NextResponse.json({ error: removeError.message }, { status: 500 });

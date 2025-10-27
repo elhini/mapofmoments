@@ -8,6 +8,7 @@ import { Button } from '@heroui/button';
 import { Card } from '@heroui/card';
 
 import { supabaseUrl } from '@/utils/supabaseConfig';
+import { momentImagesBucket } from '@/constants/buckets';
 import {
     useGetAllMomentImagesQuery,
     useCreateMomentMutation,
@@ -36,8 +37,7 @@ export const ImagesField = ({ momentId }: Props) => {
     );
 
     const getPublicUrl = (path: string) => {
-        // moment_images is bucket name
-        return `${supabaseUrl}/storage/v1/object/public/moment_images/${encodeURIComponent(path)}`;
+        return `${supabaseUrl}/storage/v1/object/public/${momentImagesBucket}/${encodeURIComponent(path)}`;
     };
 
     const onFilesSelected = async (files: FileList | null) => {
