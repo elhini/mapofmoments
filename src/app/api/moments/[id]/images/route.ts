@@ -10,10 +10,12 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
 
     const user = await getCurrentUser(req);
     const momentId = (await context.params).id;
-    const path = `${user.id}/${momentId}/${randomUUID()}.jpg`; // TODO: use extension from file
 
     const formData = await req.formData();
     const file = formData.get('file') as File;
+
+    const extension = file.name.split('.').pop();
+    const path = `${user.id}/${momentId}/${randomUUID()}.${extension}`;
 
     const { error: uploadError } = await supabase.storage.from('moment_images').upload(path, file);
 
