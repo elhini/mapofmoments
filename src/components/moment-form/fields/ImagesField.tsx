@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import Image from 'next/image';
 
@@ -7,27 +7,27 @@ import { Trash, ImagePlus } from 'lucide-react';
 import { Button } from '@heroui/button';
 import { Card } from '@heroui/card';
 
-import { api } from '@/api-client/apiClient';
-import type { MomentImage } from '@/types/moment';
 import { supabaseUrl } from '@/utils/supabaseConfig';
+import {
+    useGetAllMomentImagesQuery,
+    useCreateMomentMutation,
+    useDeleteMomentMutation,
+} from '@/hooks/useMomentImagesApi';
 
 type Props = {
     momentId?: string;
 };
 
 export const ImagesField = ({ momentId }: Props) => {
-    const [images, setImages] = useState<MomentImage[]>([]);
-    const [isUploading, setIsUploading] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const fetchImages = async () => {
-        const images = await api.get<MomentImage[]>(`api/moments/${momentId}/images`); // TODO: wrap in useQuery
-        setImages(images || []);
-    };
-
-    useEffect(() => {
-        if (momentId) fetchImages();
-    }, [momentId]);
+    const { data: images = [], isLoading, isError } = useGetAllMomentImagesQuery(momentId || '');
+    const { mutateAsync: createImage, isPending: isCreating } = useCreateMomentMutation(
+        momentId || '',
+    );
+    const { mutateAsync: deleteImage, isPending: isDeleting } = useDeleteMomentMutation(
+        momentId || '',
+    );
 
     const getPublicUrl = (path: string) => {
         // moment_images is bucket name
@@ -36,17 +36,10 @@ export const ImagesField = ({ momentId }: Props) => {
 
     const onFilesSelected = async (files: FileList | null) => {
         if (!files || !momentId) return;
-        setIsUploading(true);
-        try {
-            for (const file of Array.from(files)) {
-                const fd = new FormData();
-                fd.append('file', file);
-                await api.post(`api/moments/${momentId}/images`, fd); // TODO: wrap in useMutation
-            }
-            // refresh
-            fetchImages();
-        } finally {
-            setIsUploading(false);
+        for (const file of Array.from(files)) {
+            const fd = new FormData();
+            fd.append('file', file);
+            await createImage(fd);
         }
     };
 
@@ -62,12 +55,6 @@ export const ImagesField = ({ momentId }: Props) => {
         onFilesSelected(e.dataTransfer.files);
     };
 
-    const handleDelete = async (imageId: string) => {
-        await api.delete(`api/moments/${momentId}/images/${imageId}`); // TODO: wrap in useMutation
-        // refresh
-        fetchImages();
-    };
-
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
     };
@@ -79,6 +66,22 @@ export const ImagesField = ({ momentId }: Props) => {
             </div>
         );
 
+    if (isLoading) {
+        return (
+            <div className="text-foreground-500 border-foreground-200 w-full items-center rounded border-2 border-dashed p-2 text-xs">
+                Загрузка изображений...
+            </div>
+        );
+    }
+
+    if (isError) {
+        return (
+            <div className="text-foreground-500 border-foreground-200 w-full items-center rounded border-2 border-dashed p-2 text-xs">
+                Ошибка загрузки изображений
+            </div>
+        );
+    }
+
     return (
         <>
             <div
@@ -88,8 +91,8 @@ export const ImagesField = ({ momentId }: Props) => {
             >
                 <Button
                     onPress={() => inputRef.current?.click()}
-                    isLoading={isUploading}
-                    startContent={!isUploading && <ImagePlus size={16} />}
+                    isLoading={isCreating}
+                    startContent={!isCreating && <ImagePlus size={16} />}
                     className="flex-shrink-0"
                     size="sm"
                 >
@@ -119,7 +122,8 @@ export const ImagesField = ({ momentId }: Props) => {
                             isIconOnly
                             size="sm"
                             className="absolute right-0 hidden group-hover:flex"
-                            onPress={() => handleDelete(img.id)}
+                            onPress={() => deleteImage(img.id)}
+                            isLoading={isDeleting}
                         >
                             <Trash size={16} />
                         </Button>
