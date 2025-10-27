@@ -2,18 +2,15 @@ import React, { useRef } from 'react';
 
 import Image from 'next/image';
 
-import { Trash, ImagePlus } from 'lucide-react';
+import { ImagePlus } from 'lucide-react';
 
 import { Button } from '@heroui/button';
 import { Card } from '@heroui/card';
 
 import { supabaseUrl } from '@/utils/supabaseConfig';
 import { momentImagesBucket } from '@/constants/buckets';
-import {
-    useGetAllMomentImagesQuery,
-    useCreateMomentMutation,
-    useDeleteMomentMutation,
-} from '@/hooks/useMomentImagesApi';
+import { useGetAllMomentImagesQuery, useCreateMomentMutation } from '@/hooks/useMomentImagesApi';
+import { DeleteImageButton } from '@/components/moment-form/buttons/DeleteImageButton';
 
 type Props = {
     momentId?: string;
@@ -25,16 +22,11 @@ const Message = ({ children }: { children: React.ReactNode }) => (
     </div>
 );
 
-export const ImagesField = ({ momentId }: Props) => {
+export const ImagesField = ({ momentId = '' }: Props) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
-    const { data: images = [], isLoading, isError } = useGetAllMomentImagesQuery(momentId || '');
-    const { mutateAsync: createImage, isPending: isCreating } = useCreateMomentMutation(
-        momentId || '',
-    );
-    const { mutateAsync: deleteImage, isPending: isDeleting } = useDeleteMomentMutation(
-        momentId || '',
-    );
+    const { data: images = [], isLoading, isError } = useGetAllMomentImagesQuery(momentId);
+    const { mutateAsync: createImage, isPending: isCreating } = useCreateMomentMutation(momentId);
 
     const getPublicUrl = (path: string) => {
         return `${supabaseUrl}/storage/v1/object/public/${momentImagesBucket}/${encodeURIComponent(path)}`;
@@ -108,15 +100,7 @@ export const ImagesField = ({ momentId }: Props) => {
                             src={getPublicUrl(img.storage_path)}
                             className="w-full object-cover"
                         />
-                        <Button
-                            isIconOnly
-                            size="sm"
-                            className="absolute right-0 hidden group-hover:flex"
-                            onPress={() => deleteImage(img.id)}
-                            isLoading={isDeleting}
-                        >
-                            <Trash size={16} />
-                        </Button>
+                        <DeleteImageButton momentId={momentId} imageId={img.id} />
                     </Card>
                 ))}
             </div>
