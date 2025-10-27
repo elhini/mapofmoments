@@ -15,6 +15,7 @@ export const DescriptionField = ({ value = '', onChange }: Props) => (
         label="Описание"
         name="description"
         type="text"
+        minRows={2}
         value={value}
         onChange={(e) => onChange(e.target)}
     />
