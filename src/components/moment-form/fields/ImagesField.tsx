@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -7,10 +7,10 @@ import { ImagePlus } from 'lucide-react';
 import { Button } from '@heroui/button';
 import { Card } from '@heroui/card';
 
-import { supabaseUrl } from '@/utils/supabaseConfig';
-import { momentImagesBucket } from '@/constants/buckets';
+import { getMomentImageUrl } from '@/utils/getMomentImageUrl';
 import { useGetAllMomentImagesQuery, useCreateMomentMutation } from '@/hooks/useMomentImagesApi';
 import { DeleteImageButton } from '@/components/moment-form/buttons/DeleteImageButton';
+import { ImageGallery } from '@/components/image-gallery/ImageGallery';
 
 type Props = {
     momentId?: string;
@@ -24,13 +24,10 @@ const Message = ({ children }: { children: React.ReactNode }) => (
 
 export const ImagesField = ({ momentId = '' }: Props) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
     const { data: images = [], isLoading, isError } = useGetAllMomentImagesQuery(momentId);
     const { mutateAsync: createImage, isPending: isCreating } = useCreateMomentMutation(momentId);
-
-    const getPublicUrl = (path: string) => {
-        return `${supabaseUrl}/storage/v1/object/public/${momentImagesBucket}/${encodeURIComponent(path)}`;
-    };
 
     const onFilesSelected = async (files: FileList | null) => {
         if (!files || !momentId) return;
@@ -97,12 +94,20 @@ export const ImagesField = ({ momentId = '' }: Props) => {
                             fill
                             sizes="88px"
                             alt={`Изображение №${i + 1}`}
-                            src={getPublicUrl(img.storage_path)}
-                            className="w-full object-cover"
+                            src={getMomentImageUrl(img.storage_path)}
+                            className="cursor-pointer object-cover"
+                            onClick={() => setSelectedIndex(i)}
                         />
                         <DeleteImageButton momentId={momentId} imageId={img.id} />
                     </Card>
                 ))}
+                {selectedIndex !== null && (
+                    <ImageGallery
+                        images={images}
+                        index={selectedIndex}
+                        onClose={() => setSelectedIndex(null)}
+                    />
+                )}
             </div>
         </>
     );
