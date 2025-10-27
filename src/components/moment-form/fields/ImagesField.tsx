@@ -18,6 +18,12 @@ type Props = {
     momentId?: string;
 };
 
+const Message = ({ children }: { children: React.ReactNode }) => (
+    <div className="text-foreground-500 border-foreground-200 w-full items-center rounded border-2 border-dashed p-2 text-xs">
+        {children}
+    </div>
+);
+
 export const ImagesField = ({ momentId }: Props) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -59,28 +65,11 @@ export const ImagesField = ({ momentId }: Props) => {
         e.preventDefault();
     };
 
-    if (!momentId)
-        return (
-            <div className="text-foreground-500 border-foreground-200 w-full items-center rounded border-2 border-dashed p-2 text-xs">
-                Сохраните момент, чтобы добавить&nbsp;изображения
-            </div>
-        );
+    if (!momentId) return <Message>Сохраните момент, чтобы добавить&nbsp;изображения</Message>;
 
-    if (isLoading) {
-        return (
-            <div className="text-foreground-500 border-foreground-200 w-full items-center rounded border-2 border-dashed p-2 text-xs">
-                Загрузка изображений...
-            </div>
-        );
-    }
+    if (isLoading) return <Message>Загрузка изображений...</Message>;
 
-    if (isError) {
-        return (
-            <div className="text-foreground-500 border-foreground-200 w-full items-center rounded border-2 border-dashed p-2 text-xs">
-                Ошибка загрузки изображений
-            </div>
-        );
-    }
+    if (isError) return <Message>Ошибка загрузки изображений</Message>;
 
     return (
         <>
