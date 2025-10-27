@@ -68,7 +68,7 @@ export const ImagesField = ({ momentId }: Props) => {
 
     if (!momentId)
         return (
-            <div className="text-foreground-500 text-xs">
+            <div className="text-foreground-500 border-foreground-200 w-full items-center rounded border-2 border-dashed p-2 text-xs">
                 Сохраните момент, чтобы добавить&nbsp;изображения
             </div>
         );
