@@ -15,7 +15,7 @@ export const DeleteButton = ({ onPress, isLoading }: Props) => {
         <Popover isOpen={isOpen} onOpenChange={(open) => setIsOpen(open)}>
             <PopoverTrigger>
                 <Button color="danger" isIconOnly onPress={() => setIsOpen(!isOpen)}>
-                    <Trash />
+                    <Trash size={20} />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="gap-2 p-2">

@@ -13,6 +13,6 @@ export const CloseBtn = ({ onPress }: Props) => (
         className="absolute top-[-16px] right-[-16px] rounded-full"
         size="sm"
     >
-        <X />
+        <X size={20} />
     </Button>
 );

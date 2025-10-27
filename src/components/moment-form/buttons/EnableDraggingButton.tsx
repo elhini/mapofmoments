@@ -8,6 +8,6 @@ type Props = {
 
 export const EnableDraggingButton = ({ onPress }: Props) => (
     <Button onPress={onPress} isIconOnly>
-        <Move />
+        <Move size={20} />
     </Button>
 );
