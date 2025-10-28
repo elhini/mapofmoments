@@ -18,7 +18,7 @@ export const ImageGallery = ({ images, index, onClose }: Props) => {
     return (
         <Modal isOpen onClose={onClose} size="full">
             <ModalContent className="justify-center bg-[#04152b]">
-                <Gallery items={items} startIndex={index} />
+                <Gallery items={items} startIndex={index} showFullscreenButton={false} />
             </ModalContent>
         </Modal>
     );
