@@ -1,10 +1,9 @@
 import React from 'react';
-
 import { Button } from '@heroui/button';
-
 import { Trash } from 'lucide-react';
 
 import { useDeleteMomentMutation } from '@/hooks/useMomentImagesApi';
+import { DeleteConfirm } from '@/components/delete-confirm/DeleteConfirm';
 
 type Props = {
     momentId: string;
@@ -13,16 +12,17 @@ type Props = {
 
 export const DeleteImageButton = ({ momentId, imageId }: Props) => {
     const { mutateAsync: deleteImage, isPending: isDeleting } = useDeleteMomentMutation(momentId);
+    const onPress = () => deleteImage(imageId);
 
     return (
-        <Button
-            isIconOnly
-            size="sm"
-            className="absolute right-0 hidden group-hover:flex"
-            onPress={() => deleteImage(imageId)}
-            isLoading={isDeleting}
-        >
-            <Trash size={16} />
-        </Button>
+        <DeleteConfirm text="Удалить это изображение?" onPress={onPress} isLoading={isDeleting}>
+            <Button
+                isIconOnly
+                size="sm"
+                className="absolute right-0 opacity-0 group-hover:opacity-100"
+            >
+                <Trash size={16} />
+            </Button>
+        </DeleteConfirm>
     );
 };
