@@ -8,7 +8,10 @@ import { Button } from '@heroui/button';
 import { Card } from '@heroui/card';
 
 import { getMomentImageUrl } from '@/utils/getMomentImageUrl';
-import { useGetAllMomentImagesQuery, useCreateMomentMutation } from '@/hooks/useMomentImagesApi';
+import {
+    useGetAllMomentImagesQuery,
+    useCreateMomentImageMutation,
+} from '@/hooks/useMomentImagesApi';
 import { DeleteImageButton } from '@/components/moment-form/buttons/DeleteImageButton';
 import { ImageGallery } from '@/components/image-gallery/ImageGallery';
 
@@ -27,7 +30,8 @@ export const ImagesField = ({ momentId = '' }: Props) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
     const { data: images = [], isLoading, isError } = useGetAllMomentImagesQuery(momentId);
-    const { mutateAsync: createImage, isPending: isCreating } = useCreateMomentMutation(momentId);
+    const { mutateAsync: createImage, isPending: isCreating } =
+        useCreateMomentImageMutation(momentId);
 
     const onFilesSelected = async (files: FileList | null) => {
         if (!files || !momentId) return;
