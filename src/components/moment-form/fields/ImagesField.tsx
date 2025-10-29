@@ -1,35 +1,27 @@
-import React, { useRef, useState } from 'react';
-
-import Image from 'next/image';
+import React, { useRef } from 'react';
 
 import { ImagePlus } from 'lucide-react';
 
 import { Button } from '@heroui/button';
-import { Card } from '@heroui/card';
+import { Alert } from '@heroui/alert';
+import type { AlertProps } from '@heroui/alert';
 
-import { getMomentImageUrl } from '@/utils/getMomentImageUrl';
-import {
-    useGetAllMomentImagesQuery,
-    useCreateMomentImageMutation,
-} from '@/hooks/useMomentImagesApi';
-import { DeleteImageButton } from '@/components/moment-form/buttons/DeleteImageButton';
-import { ImageGallery } from '@/components/image-gallery/ImageGallery';
+import { useCreateMomentImageMutation } from '@/hooks/useMomentImagesApi';
+import { MomentImages } from '@/components/moment-images/MomentImages';
+
+const Message = ({ color, children }: AlertProps) => (
+    <Alert hideIcon className="text-foreground-500 px-0 py-1 text-xs" color={color}>
+        <div className="self-center">{children}</div>
+    </Alert>
+);
 
 type Props = {
     momentId?: string;
 };
 
-const Message = ({ children }: { children: React.ReactNode }) => (
-    <div className="text-foreground-500 border-foreground-200 w-full items-center rounded border-2 border-dashed p-2 text-xs">
-        {children}
-    </div>
-);
-
 export const ImagesField = ({ momentId = '' }: Props) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-    const { data: images = [], isLoading, isError } = useGetAllMomentImagesQuery(momentId);
     const { mutateAsync: createImage, isPending: isCreating } =
         useCreateMomentImageMutation(momentId);
 
@@ -60,10 +52,6 @@ export const ImagesField = ({ momentId = '' }: Props) => {
 
     if (!momentId) return <Message>Сохраните момент, чтобы добавить&nbsp;изображения</Message>;
 
-    if (isLoading) return <Message>Загрузка изображений...</Message>;
-
-    if (isError) return <Message>Ошибка загрузки изображений</Message>;
-
     return (
         <>
             <div
@@ -91,28 +79,7 @@ export const ImagesField = ({ momentId = '' }: Props) => {
                 <div className="text-foreground-500 text-xs">Перетащить тоже&nbsp;можно</div>
             </div>
 
-            <div className="grid w-full grid-cols-3 gap-[6px]">
-                {images.map((img, i) => (
-                    <Card key={img.id} className="group h-[88px] w-[88px]">
-                        <Image
-                            fill
-                            sizes="88px"
-                            alt={`Изображение №${i + 1}`}
-                            src={getMomentImageUrl(img.storage_path)}
-                            className="cursor-pointer object-cover"
-                            onClick={() => setSelectedIndex(i)}
-                        />
-                        <DeleteImageButton momentId={momentId} imageId={img.id} />
-                    </Card>
-                ))}
-                {selectedIndex !== null && (
-                    <ImageGallery
-                        images={images}
-                        index={selectedIndex}
-                        onClose={() => setSelectedIndex(null)}
-                    />
-                )}
-            </div>
+            <MomentImages momentId={momentId} withDelete />
         </>
     );
 };
