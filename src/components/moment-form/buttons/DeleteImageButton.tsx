@@ -20,7 +20,7 @@ export const DeleteImageButton = ({ momentId, imageId }: Props) => {
             <Button
                 isIconOnly
                 size="sm"
-                className="absolute right-0 opacity-0 group-hover:opacity-100"
+                className="absolute right-0 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
             >
                 <Trash size={16} />
             </Button>
