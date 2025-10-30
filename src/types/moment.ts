@@ -1,10 +1,6 @@
 import type { Coordinates } from '@/types/coordinates';
 import type { PublicTag, Tag } from '@/types/tag';
-
-export type MomentImage = {
-    id: string;
-    storage_path: string;
-};
+import type { MomentImage } from '@/types/moment-image';
 
 export type Moment = {
     id: string;

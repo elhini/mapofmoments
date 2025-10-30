@@ -1,5 +1,5 @@
 import { api } from '@/api-client/apiClient';
-import type { MomentImage } from '@/types/moment';
+import type { MomentImage } from '@/types/moment-image';
 
 export async function create(momentId: string, formData: FormData) {
     return api.post<MomentImage>(`api/moments/${momentId}/images`, formData);
