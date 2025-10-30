@@ -4,6 +4,8 @@ import { randomUUID } from 'crypto';
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
 import { momentImagesBucket } from '@/constants/buckets';
+import { getMomentImagesCount } from '@/app/api/moments/[id]/images/getMomentImagesCount';
+import { MAX_IMAGES_PER_MOMENT } from '@/constants/images';
 
 // Добавление изображения
 export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -11,6 +13,14 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
 
     const user = await getCurrentUser(req);
     const momentId = (await context.params).id;
+
+    const { count } = await getMomentImagesCount(user.id, momentId);
+    if (count && count >= MAX_IMAGES_PER_MOMENT) {
+        return NextResponse.json(
+            { error: `No more than ${MAX_IMAGES_PER_MOMENT} images per 1 moment` },
+            { status: 400 },
+        );
+    }
 
     const formData = await req.formData();
     const file = formData.get('file') as File;

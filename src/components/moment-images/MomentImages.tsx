@@ -7,7 +7,6 @@ import { Alert } from '@heroui/alert';
 import type { AlertProps } from '@heroui/alert';
 
 import { getMomentImageUrl } from '@/utils/getMomentImageUrl';
-import { useGetAllMomentImagesQuery } from '@/hooks/useMomentImagesApi';
 import { ImageGallery } from '@/components/image-gallery/ImageGallery';
 import { DeleteImageButton } from '@/components/moment-form/buttons/DeleteImageButton';
 
@@ -18,12 +17,13 @@ const Message = ({ color, children }: AlertProps) => (
 );
 
 type Props = {
+    images: { id: string; storage_path: string }[];
+    isError: boolean;
     momentId: string;
     withDelete?: boolean;
 };
 
-export const MomentImages = ({ momentId, withDelete }: Props) => {
-    const { data: images = [], isError } = useGetAllMomentImagesQuery(momentId);
+export const MomentImages = ({ images, isError, momentId, withDelete }: Props) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
     if (isError) return <Message color="danger">Ошибка загрузки изображений</Message>;
