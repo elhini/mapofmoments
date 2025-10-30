@@ -98,6 +98,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
                     </div>
 
                     <TagsField value={formData?.tags} onChange={handleChange} />
+
                     <ImagesField momentId={moment?.id} />
 
                     <div className="flex w-full justify-between gap-2">

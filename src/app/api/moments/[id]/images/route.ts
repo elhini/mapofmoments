@@ -62,7 +62,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
     const { data, error } = await supabase
         .from('moment_images')
-        .select()
+        .select('id,storage_path')
         .eq('user_id', user.id)
         .eq('moment_id', momentId);
 

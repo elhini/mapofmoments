@@ -4,7 +4,6 @@ import type { PublicTag, Tag } from '@/types/tag';
 export type MomentImage = {
     id: string;
     storage_path: string;
-    created_at: string;
 };
 
 export type Moment = {
