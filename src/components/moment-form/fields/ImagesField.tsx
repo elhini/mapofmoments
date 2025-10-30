@@ -31,8 +31,7 @@ export const ImagesField = ({ momentId = '' }: Props) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const { data: images = [], isError } = useGetAllMomentImagesQuery(momentId);
-    const { mutateAsync: createImage, isPending: isCreating } =
-        useCreateMomentImageMutation(momentId);
+    const { mutateAsync: upload, isPending: isUploading } = useCreateMomentImageMutation(momentId);
 
     const onFilesSelected = async (files: FileList | null) => {
         if (!files || !momentId) return;
@@ -44,7 +43,7 @@ export const ImagesField = ({ momentId = '' }: Props) => {
         for (const file of Array.from(files)) {
             const fd = new FormData();
             fd.append('file', file);
-            await createImage(fd);
+            await upload(fd);
         }
     };
 
@@ -84,8 +83,8 @@ export const ImagesField = ({ momentId = '' }: Props) => {
                 >
                     <Button
                         onPress={() => inputRef.current?.click()}
-                        isLoading={isCreating}
-                        startContent={!isCreating && <ImagePlus size={16} />}
+                        isLoading={isUploading}
+                        startContent={!isUploading && <ImagePlus size={16} />}
                         isDisabled={uploadDisabled}
                         className="flex-shrink-0"
                         size="sm"
