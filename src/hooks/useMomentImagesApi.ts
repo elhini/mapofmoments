@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import type { MomentImage } from '@/types/moment';
 import type { ApiError } from '@/api-client/apiClient';
-import { create, deleteMomentImage, getAll } from '@/api-client/moment_images/momentImagesApi';
+import { create, deleteMomentImage, getAll } from '@/api-client/moment-images/momentImagesApi';
 import { showError } from '@/utils/showError';
 
 export function useCreateMomentImageMutation(momentId: string) {
