@@ -2,7 +2,7 @@ import type { FormEvent } from 'react';
 import { useCallback } from 'react';
 import { useEffect, useState } from 'react';
 
-import type { Moment, MomentImage } from '@/types/moment';
+import type { Moment } from '@/types/moment';
 import type { Tag } from '@/types/tag';
 import {
     useCreateMomentMutation,
@@ -16,9 +16,9 @@ interface UseMomentFormProps {
     onDelete: () => void;
 }
 
-type FormErrors = Record<string, string | string[]>;
+type FormErrors = Partial<Omit<Moment, 'id' | 'location' | 'not_exact_date' | 'tags' | 'images'>>;
 
-type ChangeArgs = { name: string; value?: string | boolean | Tag[] | MomentImage[] };
+type ChangeArgs = { name: string; value?: string | boolean | Tag[] };
 
 const emptyMoment: Moment = {
     id: '',
@@ -76,10 +76,10 @@ export const useMomentForm = ({ moment, onSubmit, onDelete }: UseMomentFormProps
             });
 
             // Clear error when user starts typing
-            if (validationErrors[name]) {
+            if (validationErrors[name as keyof FormErrors]) {
                 setValidationErrors((prev) => ({
                     ...prev,
-                    [name]: '',
+                    [name]: undefined,
                 }));
             }
         },
