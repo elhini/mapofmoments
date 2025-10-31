@@ -14,7 +14,7 @@ export const MomentView = ({ moment, onClose }: Props) => {
 
     return (
         <Modal
-            className="fixed top-[50px] w-[300px] p-3 sm:top-[50%] sm:left-[50%] sm:m-0"
+            className="fixed top-10 w-[300px] p-3 sm:top-[50%] sm:left-[50%] sm:m-0"
             isOpen
             onClose={onClose}
         >
