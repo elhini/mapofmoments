@@ -64,7 +64,8 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
         .from('moment_images')
         .select('id,storage_path')
         .eq('user_id', user.id)
-        .eq('moment_id', momentId);
+        .eq('moment_id', momentId)
+        .order('created_at', { ascending: true });
 
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
