@@ -36,7 +36,7 @@ export const TagsField = ({ value = [], onChange }: Props) => {
             options={createOptions(existingTags)}
             value={createOptions(value)}
             onChange={handleChange}
-            className="z-11 w-full text-left"
+            className="z-11 w-full text-left text-sm"
         />
     );
 };

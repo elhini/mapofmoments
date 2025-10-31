@@ -16,7 +16,7 @@ interface UseMomentFormProps {
     onDelete: () => void;
 }
 
-type FormErrors = Partial<Omit<Moment, 'id' | 'location' | 'not_exact_date' | 'tags'>>;
+type FormErrors = Partial<Omit<Moment, 'id' | 'location' | 'not_exact_date' | 'tags' | 'images'>>;
 
 type ChangeArgs = { name: string; value?: string | boolean | Tag[] };
 

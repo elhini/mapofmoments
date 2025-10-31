@@ -12,7 +12,7 @@ export const SubmitButton = ({ text, isLoading }: Props) => (
         type="submit"
         color="primary"
         isLoading={isLoading}
-        startContent={!isLoading && <Check />}
+        startContent={!isLoading && <Check size={20} />}
     >
         {text}
     </Button>

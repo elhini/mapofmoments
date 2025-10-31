@@ -4,6 +4,7 @@ import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
 import { buildLocationString } from '@/app/api/coordUtils';
 import { upsertTags } from '@/app/api/tags/upsertTags';
+import { deleteImages } from '@/app/api/moments/[id]/images/[image_id]/deleteImages';
 
 import type { Moment } from '@/types/moment';
 
@@ -52,10 +53,17 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
     const supabase = getSupabaseServiceClient();
     const user = await getCurrentUser(req);
+    const momentId = (await context.params).id;
+
+    const { error: imagesError } = await deleteImages(momentId, user.id);
+    if (imagesError) {
+        return NextResponse.json({ error: 'Delete images error, ' + imagesError }, { status: 500 });
+    }
+
     const { error } = await supabase
         .from('moments')
         .delete()
-        .eq('id', (await context.params).id)
+        .eq('id', momentId)
         .eq('user_id', user.id);
 
     if (error) {

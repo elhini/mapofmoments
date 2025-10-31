@@ -1,5 +1,6 @@
 import type { Coordinates } from '@/types/coordinates';
 import type { PublicTag, Tag } from '@/types/tag';
+import type { MomentImage } from '@/types/moment-image';
 
 export type Moment = {
     id: string;
@@ -9,6 +10,7 @@ export type Moment = {
     not_exact_date?: boolean;
     location: { coordinates: Coordinates };
     tags: Tag[];
+    images?: MomentImage[];
 };
 
 export type PublicMoment = Omit<Moment, 'tags'> & {
