@@ -1,1 +1,1 @@
-export const MAX_IMAGES_PER_MOMENT = 10;
+export const MAX_IMAGES_PER_MOMENT = 9;
