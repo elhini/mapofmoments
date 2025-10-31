@@ -73,7 +73,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
         <DraggingForm submit={submitCoords} isSubmitting={isSubmitting} cancel={rollbackCoords} />
     ) : (
         <Modal
-            className="fixed top-[50px] w-[300px] p-3 sm:top-[50%] sm:left-[50%] sm:m-0"
+            className="fixed top-[50px] w-[300px] p-3 sm:top-auto sm:bottom-4 sm:left-[50%] sm:m-0"
             isOpen
             onClose={onClose}
             hideCloseButton

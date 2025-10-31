@@ -52,7 +52,7 @@ export const MomentImages = ({ images, isError, momentId, withDelete }: Props) =
                         )}
                         {!expanded && i === 2 && images.length > INITIAL_IMAGES_COUNT && (
                             <CardFooter
-                                className="absolute bottom-0 justify-center bg-black/50 p-1"
+                                className="absolute bottom-0 cursor-pointer justify-center bg-black/50 p-1 hover:bg-black/70"
                                 onClick={() => setExpanded(true)}
                             >
                                 <div className="text-small text-foreground-300">

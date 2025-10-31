@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 
 import { ImagePlus } from 'lucide-react';
 
+import { Tooltip } from '@heroui/tooltip';
 import { Button } from '@heroui/button';
 import { Alert } from '@heroui/alert';
 import type { AlertProps } from '@heroui/alert';
@@ -13,7 +14,6 @@ import {
 import { MomentImages } from '@/components/moment-images/MomentImages';
 import { showError } from '@/utils/showError';
 import { MAX_IMAGES_PER_MOMENT } from '@/constants/images';
-import { Tooltip } from '@heroui/tooltip';
 
 const Message = ({ color, children }: AlertProps) => (
     <Alert hideIcon className="text-foreground-500 px-0 py-1 text-xs" color={color}>
