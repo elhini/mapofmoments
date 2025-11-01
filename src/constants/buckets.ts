@@ -1,4 +1,4 @@
-import { supabaseUrl } from '@/utils/supabaseConfig';
+import { supabaseUrl } from './supabaseConfig';
 
 export const momentImagesBucket = 'moment_images';
 

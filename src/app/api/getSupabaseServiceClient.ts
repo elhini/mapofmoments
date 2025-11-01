@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { supabaseUrl, supabaseServiceRoleKey } from '@/utils/supabaseConfig';
+import { supabaseUrl, supabaseServiceRoleKey } from '@/constants/supabaseConfig';
 
 if (!supabaseUrl) {
     throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL');
