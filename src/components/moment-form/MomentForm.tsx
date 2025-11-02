@@ -58,8 +58,12 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     const { draggingEnabled, enableDragging, disableDragging, applyCoords, rollbackCoords } =
         useDragging(onDraggableIdChanged, map, moment);
 
-    const [isImagesExpanded] = useAtom(isMomentImagesExpanded);
+    const [isImagesExpanded, setImagesExpanded] = useAtom(isMomentImagesExpanded);
     const hiddenClass = isImagesExpanded ? 'hidden' : '';
+    const handleClose = () => {
+        setImagesExpanded(false);
+        onClose();
+    };
 
     const submitCoords = async () => {
         applyCoords();
@@ -122,7 +126,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
 
                 {isImagesExpanded && <ImagesField momentId={moment?.id} />}
 
-                <CloseBtn onPress={onClose} />
+                <CloseBtn onPress={handleClose} />
             </ModalContent>
         </Modal>
     );
