@@ -17,7 +17,7 @@ export const TextField = ({ value = '', onChange }: Props) => (
         type="text"
         value={value}
         onChange={(e) => onChange(e.target)}
-        autoFocus
+        autoFocus={!value}
         isRequired
         errorMessage="Заголовок обязателен"
     />
