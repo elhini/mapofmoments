@@ -69,7 +69,7 @@ export default function HomePage() {
                     </Button>
                 </div>
                 <Link href="/about" className="text-sm text-sky-600">
-                    Об этом проекте
+                    Об проекте
                 </Link>
             </div>
         </div>
