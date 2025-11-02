@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { Point } from 'geojson';
 import type { GeoJSONSource, LngLat, Map, MapMouseEvent, Marker } from 'mapbox-gl';
@@ -47,6 +47,7 @@ export const MapView = ({
 }: Props) => {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
+    const [styleLoaded, setStyleLoaded] = useState(false);
 
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
@@ -65,6 +66,7 @@ export const MapView = ({
                 }),
             );
         }
+        map.on('style.load', () => setStyleLoaded(true));
         // svg is not supported
         map.loadImage('/static/marker.png', (error, image) => {
             if (error || !image) throw error || new Error('No image loaded');
@@ -79,7 +81,7 @@ export const MapView = ({
 
     useEffect(() => {
         const map = mapRef.current;
-        if (!map || !map.isStyleLoaded()) return;
+        if (!map || !styleLoaded) return;
 
         const source = map.getSource('points-source');
         if (source) {
@@ -205,10 +207,12 @@ export const MapView = ({
             for (const coords of momentsCoords) {
                 bounds.extend(coords);
             }
-            map.fitBounds(bounds, {
-                padding: 75,
-                maxZoom: 15,
-            });
+            if (momentsCoords.length) {
+                map.fitBounds(bounds, {
+                    padding: 75,
+                    maxZoom: 15,
+                });
+            }
         } else {
             const center = map.getCenter();
             const isZeroZero = center.lng === 0 && center.lat === 0;
@@ -244,7 +248,7 @@ export const MapView = ({
             map.off('dblclick', onDblClick);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [moments, viewOnly, withLines]);
+    }, [styleLoaded, moments, viewOnly, withLines]);
 
     useEffect(() => {
         const map = mapRef.current;
