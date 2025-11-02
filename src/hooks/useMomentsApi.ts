@@ -31,7 +31,8 @@ export function useGetAllMomentsQuery() {
 
 export function useGetSharedMomentsQuery(tagPublicId: string) {
     return useQuery<PublicMoment[], ApiError>({
-        queryKey: ['shared-moments'],
+        queryKey: ['shared-moments', tagPublicId],
         queryFn: () => getShared(tagPublicId),
+        enabled: !!tagPublicId,
     });
 }
