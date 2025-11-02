@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useAtom } from 'jotai';
+
 import Image from 'next/image';
 
 import { Card, CardFooter } from '@heroui/card';
@@ -7,6 +9,7 @@ import { Button } from '@heroui/button';
 import { Alert } from '@heroui/alert';
 import type { AlertProps } from '@heroui/alert';
 
+import { isMomentImagesExpanded } from '@/atoms/ui';
 import { getMomentImageUrl } from '@/utils/getMomentImageUrl';
 import { ImageGallery } from '@/components/image-gallery/ImageGallery';
 import { DeleteImageButton } from '@/components/moment-form/buttons/DeleteImageButton';
@@ -28,7 +31,7 @@ type Props = {
 
 export const MomentImages = ({ images, isError, momentId, withDelete }: Props) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useAtom(isMomentImagesExpanded);
 
     if (isError) return <Message color="danger">Ошибка загрузки изображений</Message>;
 
@@ -64,7 +67,7 @@ export const MomentImages = ({ images, isError, momentId, withDelete }: Props) =
                 ))}
             </div>
             {expanded && (
-                <Button size="sm" className="self-end" onPress={() => setExpanded(false)}>
+                <Button size="sm" className="mt-2 self-end" onPress={() => setExpanded(false)}>
                     Закрыть галерею
                 </Button>
             )}

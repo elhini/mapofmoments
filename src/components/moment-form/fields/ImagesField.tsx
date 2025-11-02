@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 
+import { useAtom } from 'jotai';
+
 import { ImagePlus } from 'lucide-react';
 
 import { Tooltip } from '@heroui/tooltip';
@@ -7,13 +9,14 @@ import { Button } from '@heroui/button';
 import { Alert } from '@heroui/alert';
 import type { AlertProps } from '@heroui/alert';
 
+import { isMomentImagesExpanded } from '@/atoms/ui';
 import {
     useCreateMomentImageMutation,
     useGetAllMomentImagesQuery,
 } from '@/hooks/useMomentImagesApi';
 import { MomentImages } from '@/components/moment-images/MomentImages';
-import { showError } from '@/utils/showError';
 import { MAX_IMAGES_PER_MOMENT } from '@/constants/images';
+import { showError } from '@/utils/showError';
 
 const Message = ({ color, children }: AlertProps) => (
     <Alert hideIcon className="text-foreground-500 px-0 py-1 text-xs" color={color}>
@@ -29,6 +32,7 @@ type Props = {
 
 export const ImagesField = ({ momentId = '' }: Props) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [isImagesExpanded] = useAtom(isMomentImagesExpanded);
 
     const { data: images = [], isError } = useGetAllMomentImagesQuery(momentId);
     const { mutateAsync: upload, isPending: isUploading } = useCreateMomentImageMutation(momentId);
@@ -65,6 +69,11 @@ export const ImagesField = ({ momentId = '' }: Props) => {
     };
 
     if (!momentId) return <Message>Сохраните момент, чтобы добавить&nbsp;изображения</Message>;
+
+    const gallery = (
+        <MomentImages images={images} isError={isError} momentId={momentId} withDelete />
+    );
+    if (isImagesExpanded) return gallery;
 
     const uploadDisabled = images.length >= MAX_IMAGES_PER_MOMENT;
 
@@ -105,7 +114,7 @@ export const ImagesField = ({ momentId = '' }: Props) => {
                 </div>
             </Tooltip>
 
-            <MomentImages images={images} isError={isError} momentId={momentId} withDelete />
+            {gallery}
         </>
     );
 };

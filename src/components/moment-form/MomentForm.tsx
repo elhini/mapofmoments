@@ -1,12 +1,13 @@
-'use client';
-
 import React from 'react';
+
+import { useAtom } from 'jotai';
 
 import type { Map } from 'mapbox-gl';
 
 import { Modal, ModalContent } from '@heroui/modal';
 import { Form } from '@heroui/form';
 
+import { isMomentImagesExpanded } from '@/atoms/ui';
 import type { Moment } from '@/types/moment';
 import { useMomentForm } from '@/hooks/useMomentForm';
 
@@ -57,6 +58,9 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     const { draggingEnabled, enableDragging, disableDragging, applyCoords, rollbackCoords } =
         useDragging(onDraggableIdChanged, map, moment);
 
+    const [isImagesExpanded] = useAtom(isMomentImagesExpanded);
+    const hiddenClass = isImagesExpanded ? 'hidden' : '';
+
     const submitCoords = async () => {
         applyCoords();
         await handleSubmit();
@@ -79,7 +83,11 @@ export const MomentForm: React.FC<MomentFormProps> = ({
             hideCloseButton
         >
             <ModalContent className="overflow-visible">
-                <Form onSubmit={handleSubmit} validationErrors={validationErrors}>
+                <Form
+                    onSubmit={handleSubmit}
+                    validationErrors={validationErrors}
+                    className={hiddenClass}
+                >
                     <div className="relative w-full">
                         <TextField value={formData?.title} onChange={handleChange} />
                         <div className="text-foreground-500 absolute top-2 right-3 z-10 text-xs">
@@ -99,7 +107,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
 
                     <TagsField value={formData?.tags} onChange={handleChange} />
 
-                    <ImagesField momentId={moment?.id} />
+                    {!isImagesExpanded && <ImagesField momentId={moment?.id} />}
 
                     <div className="flex w-full justify-between gap-2">
                         <SubmitButton text={submitText} isLoading={isSubmitting} />
@@ -111,6 +119,9 @@ export const MomentForm: React.FC<MomentFormProps> = ({
 
                     {submitErrorText && <ErrorAlert title={submitErrorText} />}
                 </Form>
+
+                {isImagesExpanded && <ImagesField momentId={moment?.id} />}
+
                 <CloseBtn onPress={onClose} />
             </ModalContent>
         </Modal>
