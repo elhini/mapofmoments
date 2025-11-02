@@ -14,6 +14,8 @@ export const deleteImages = async (momentId: string, userId: string) => {
         return { error: 'selection failed: ' + error.message };
     }
 
+    if (!images.length) return { error: null };
+
     const { error: deletionError } = await supabase
         .from('moment_images')
         .delete()
