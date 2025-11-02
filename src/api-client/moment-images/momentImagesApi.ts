@@ -12,3 +12,7 @@ export async function deleteMomentImage(momentId: string, imageId: string) {
 export async function getAll(momentId: string) {
     return api.get<MomentImage[]>(`api/moments/${momentId}/images`);
 }
+
+export async function getShared(momentId: string) {
+    return api.get<MomentImage[]>(`api/images/shared?momentId=${momentId}`);
+}

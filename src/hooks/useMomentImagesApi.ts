@@ -2,7 +2,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import type { MomentImage } from '@/types/moment-image';
 import type { ApiError } from '@/api-client/apiClient';
-import { create, deleteMomentImage, getAll } from '@/api-client/moment-images/momentImagesApi';
+import {
+    create,
+    deleteMomentImage,
+    getAll,
+    getShared,
+} from '@/api-client/moment-images/momentImagesApi';
 import { showError } from '@/utils/showError';
 
 export function useCreateMomentImageMutation(momentId: string) {
@@ -29,6 +34,14 @@ export function useGetAllMomentImagesQuery(momentId: string) {
     return useQuery<MomentImage[], ApiError>({
         queryKey: ['moment-images', momentId],
         queryFn: () => getAll(momentId),
+        enabled: !!momentId,
+    });
+}
+
+export function useGetSharedMomentImagesQuery(momentId: string) {
+    return useQuery<MomentImage[], ApiError>({
+        queryKey: ['shared-images', momentId],
+        queryFn: () => getShared(momentId),
         enabled: !!momentId,
     });
 }

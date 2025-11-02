@@ -2,7 +2,7 @@ import { Modal, ModalContent } from '@heroui/modal';
 
 import type { PublicMoment } from '@/types/moment';
 import { MomentImages } from '@/components/moment-images/MomentImages';
-import { useGetAllMomentImagesQuery } from '@/hooks/useMomentImagesApi';
+import { useGetSharedMomentImagesQuery } from '@/hooks/useMomentImagesApi';
 
 type Props = {
     moment: PublicMoment;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const MomentView = ({ moment, onClose }: Props) => {
-    const { data: images = [], isError } = useGetAllMomentImagesQuery(moment.id);
+    const { data: images = [], isError } = useGetSharedMomentImagesQuery(moment.id);
 
     return (
         <Modal
