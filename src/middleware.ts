@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getToken, handleUnauthorizedRequest } from '@/app/api/authUtils';
 
-export const config = { matcher: ['/((?!_next|favicon.ico|og-image.png|static).*)'] };
+export const config = { matcher: ['/((?!_next|favicon.ico|static).*)'] };
 
 const authStartPages = ['/register', '/login'];
 
