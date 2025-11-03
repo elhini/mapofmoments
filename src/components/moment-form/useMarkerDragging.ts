@@ -4,7 +4,7 @@ import mapboxgl from 'mapbox-gl';
 
 import type { Moment } from '@/types/moment';
 
-export const useDragging = (
+export const useMarkerDragging = (
     onDraggableIdChanged: (id: string) => void,
     map?: Map,
     moment?: Moment,

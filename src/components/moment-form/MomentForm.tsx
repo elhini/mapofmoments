@@ -17,7 +17,7 @@ import { CloseBtn } from '@/components/moment-form/buttons/CloseButton';
 import { EnableDraggingButton } from '@/components/moment-form/buttons/EnableDraggingButton';
 
 import { DraggingForm } from '@/components/moment-form/DraggingForm';
-import { useDragging } from '@/components/moment-form/useDragging';
+import { useMarkerDragging } from '@/components/moment-form/useMarkerDragging';
 import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
 
 import { TextField } from '@/components/moment-form/fields/TextField';
@@ -56,7 +56,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
     } = useMomentForm({ moment, onSubmit, onDelete });
 
     const { draggingEnabled, enableDragging, disableDragging, applyCoords, rollbackCoords } =
-        useDragging(onDraggableIdChanged, map, moment);
+        useMarkerDragging(onDraggableIdChanged, map, moment);
 
     const [isImagesExpanded, setImagesExpanded] = useAtom(isMomentImagesExpanded);
     const hiddenClass = isImagesExpanded ? 'hidden' : '';
