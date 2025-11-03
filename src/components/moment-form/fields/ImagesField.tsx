@@ -15,6 +15,7 @@ import {
     useGetAllMomentImagesQuery,
 } from '@/hooks/useMomentImagesApi';
 import { MomentImages } from '@/components/moment-images/MomentImages';
+import { useFileDragging } from '@/components/moment-form/useFileDragging';
 import { MAX_IMAGES_PER_MOMENT } from '@/constants/images';
 import { showError } from '@/utils/showError';
 
@@ -57,16 +58,9 @@ export const ImagesField = ({ momentId = '' }: Props) => {
         if (inputRef.current) inputRef.current.value = '';
     };
 
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        if (!momentId) return;
-        onFilesSelected(e.dataTransfer.files);
-    };
-
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        // TODO: style drop-zone on drag over
-        e.preventDefault();
-    };
+    const { handleDrop, handleDragOver, handleDragEnter, handleDragLeave, isDragActive } =
+        useFileDragging(onFilesSelected);
+    const draggingClassNames = isDragActive ? 'border-primary-400 bg-primary-50 cursor-copy' : '';
 
     if (!momentId) return <Message>Сохраните момент, чтобы добавить&nbsp;изображения</Message>;
 
@@ -88,7 +82,9 @@ export const ImagesField = ({ momentId = '' }: Props) => {
                 <div
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
-                    className="border-foreground-200 flex w-full items-center justify-between gap-2 rounded border-2 border-dashed p-2"
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
+                    className={`border-foreground-200 flex w-full items-center justify-between gap-2 rounded border-2 border-dashed p-2 ${draggingClassNames}`}
                 >
                     <Button
                         onPress={() => inputRef.current?.click()}
