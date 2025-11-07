@@ -113,7 +113,7 @@ export const MomentForm: React.FC<MomentFormProps> = ({
 
                     {!isImagesExpanded && <ImagesField momentId={moment?.id} />}
 
-                    <div className="flex w-full justify-between gap-2">
+                    <div className="rounded-large sticky bottom-0 -m-3 -mt-2 box-content flex w-full justify-between gap-3 bg-white/50 p-3 backdrop-blur">
                         <SubmitButton text={submitText} isLoading={isSubmitting} />
                         <div className="flex gap-2">
                             {enableDraggingBtn}
