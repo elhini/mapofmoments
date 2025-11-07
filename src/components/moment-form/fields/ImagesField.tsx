@@ -77,6 +77,7 @@ export const ImagesField = ({ momentId = '' }: Props) => {
                 isDisabled={!uploadDisabled}
                 content={limitText}
                 offset={-6}
+                delay={500}
                 className="bg-warning-100"
             >
                 <div
