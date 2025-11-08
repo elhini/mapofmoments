@@ -24,7 +24,7 @@ export const MomentView = ({ moment, hasPrev, hasNext, onPrev, onNext, onClose }
             onClose={onClose}
         >
             <ModalContent className="flex flex-col gap-3">
-                <div className="relative flex flex-col gap-2 p-2 text-left">
+                <div className="relative -z-1 flex flex-col gap-2 p-2 text-left">
                     <div>{moment.title}</div>
                     <div className="text-foreground-700 text-sm">{moment.description}</div>
                     <div className="text-foreground-500 text-xs">
