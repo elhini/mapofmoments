@@ -7,7 +7,7 @@ import type { LngLat, Marker, Map } from 'mapbox-gl';
 import type { Coordinates } from '@/types/coordinates';
 import { MapView } from '@/components/map-view/MapView';
 import { MomentForm } from '@/components/moment-form/MomentForm';
-import { MapOverview } from '@/components/map-overview/MapOverview';
+import { MapStatus } from '@/components/map-status/MapStatus';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
 export default function MapPage() {
@@ -71,7 +71,7 @@ export default function MapPage() {
                     map={map}
                 />
             ) : (
-                <MapOverview isPending={isPending} momentsCount={moments.length} />
+                <MapStatus isPending={isPending} momentsCount={moments.length} />
             )}
         </>
     );

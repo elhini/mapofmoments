@@ -5,7 +5,7 @@ type Props = {
     momentsCount: number;
 };
 
-export const MapOverview = ({ isPending, momentsCount }: Props) => {
+export const MapStatus = ({ isPending, momentsCount }: Props) => {
     const summary = momentsCount ? (
         <div className="text-nowrap">Сохранено моментов: {momentsCount}</div>
     ) : (

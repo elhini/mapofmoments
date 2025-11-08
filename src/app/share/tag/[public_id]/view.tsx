@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { MapView } from '@/components/map-view/MapView';
 import { MomentView } from '@/components/moment-view/MomentView';
-import { MapOverview } from '@/components/map-overview/MapOverview';
+import { MapStatus } from '@/components/map-status/MapStatus';
 
 import { useGetSharedMomentsQuery } from '@/hooks/useMomentsApi';
 
@@ -33,7 +33,7 @@ export default function ShareTagView({ publicId, withLines }: Props) {
             {moment ? (
                 <MomentView moment={moment} onClose={closeView} />
             ) : (
-                <MapOverview isPending={isPending} momentsCount={moments.length} />
+                <MapStatus isPending={isPending} momentsCount={moments.length} />
             )}
         </>
     );
