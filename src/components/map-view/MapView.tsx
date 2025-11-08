@@ -1,5 +1,6 @@
 'use client';
 
+import type { RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import type { Point } from 'geojson';
@@ -33,6 +34,7 @@ type Props = {
     withGeocoder?: boolean;
     withLines?: boolean;
     viewOnly?: boolean;
+    outerMapRef?: RefObject<Map | null>;
 };
 
 export const MapView = ({
@@ -44,6 +46,7 @@ export const MapView = ({
     withGeocoder,
     withLines,
     viewOnly,
+    outerMapRef,
 }: Props) => {
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -73,6 +76,7 @@ export const MapView = ({
             map.addImage('single-point', image, { pixelRatio: 2 });
         });
         mapRef.current = map;
+        if (outerMapRef) outerMapRef.current = map;
         onLoaded?.(map);
 
         return () => map.remove();
