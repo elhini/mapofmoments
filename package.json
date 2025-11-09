@@ -16,7 +16,8 @@
         "prepare": "husky",
         "test": "vitest",
         "test:ui": "vitest --ui",
-        "test:ci": "vitest run"
+        "test:ci": "vitest run",
+        "postinstall": "npm rebuild sharp --platform=linux --arch=x64"
     },
     "dependencies": {
         "@heroui/alert": "^2.2.26",
