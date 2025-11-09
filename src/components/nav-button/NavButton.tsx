@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { Button } from '@heroui/button';
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -7,8 +9,24 @@ type Props = {
     direction: 'prev' | 'next';
 };
 
+const keyMap = {
+    prev: 'ArrowLeft',
+    next: 'ArrowRight',
+};
+
 export const NavButton = ({ onPress, direction }: Props) => {
     const isPrev = direction === 'prev';
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === keyMap[direction]) {
+                onPress();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    });
 
     return (
         <Button
