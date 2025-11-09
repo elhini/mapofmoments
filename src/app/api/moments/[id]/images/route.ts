@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
+import sharp from 'sharp';
 
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
@@ -28,9 +29,13 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
     const extension = file.name.split('.').pop();
     const path = `${user.id}/${momentId}/${randomUUID()}.${extension}`;
 
+    const image = sharp(await file.arrayBuffer());
+    const format = (await image.metadata()).format;
+    const resized = await image.resize(1920, 1920, { fit: 'inside' }).toBuffer();
+
     const { error: uploadError } = await supabase.storage
         .from(momentImagesBucket)
-        .upload(path, file);
+        .upload(path, resized, { contentType: `image/${format}` });
 
     if (uploadError) {
         return NextResponse.json({ error: uploadError.message }, { status: 500 });
