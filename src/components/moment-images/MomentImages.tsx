@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useAtom } from 'jotai';
 
@@ -9,7 +9,7 @@ import { Button } from '@heroui/button';
 import { Alert } from '@heroui/alert';
 import type { AlertProps } from '@heroui/alert';
 
-import { isMomentImagesExpanded } from '@/atoms/ui';
+import { isMomentImageSelected, isMomentImagesExpanded } from '@/atoms/ui';
 import { getMomentImageUrl } from '@/utils/getMomentImageUrl';
 import { ImageGallery } from '@/components/image-gallery/ImageGallery';
 import { DeleteImageButton } from '@/components/moment-form/buttons/DeleteImageButton';
@@ -32,6 +32,11 @@ type Props = {
 export const MomentImages = ({ images, isError, momentId, withDelete }: Props) => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [expanded, setExpanded] = useAtom(isMomentImagesExpanded);
+    const [, setIsImageSelected] = useAtom(isMomentImageSelected);
+
+    useEffect(() => {
+        setIsImageSelected(selectedIndex !== null);
+    }, [setIsImageSelected, selectedIndex]);
 
     if (isError) return <Message color="danger">Ошибка загрузки изображений</Message>;
 

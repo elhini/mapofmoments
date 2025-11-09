@@ -1,8 +1,12 @@
 import { useEffect } from 'react';
 
+import { useAtom } from 'jotai';
+
 import { Button } from '@heroui/button';
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+
+import { isMomentImageSelected } from '@/atoms/ui';
 
 type Props = {
     onPress: () => void;
@@ -16,17 +20,18 @@ const keyMap = {
 
 export const NavButton = ({ onPress, direction }: Props) => {
     const isPrev = direction === 'prev';
+    const [isImageSelected] = useAtom(isMomentImageSelected);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === keyMap[direction]) {
+            if (e.key === keyMap[direction] && !isImageSelected) {
                 onPress();
             }
         };
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    });
+    }, [direction, isImageSelected, onPress]);
 
     return (
         <Button
