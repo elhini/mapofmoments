@@ -47,6 +47,11 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
+                className="group"
+                classNames={{
+                    inputWrapper:
+                        'bg-white group-hover:bg-white! group-hover:outline-1 group-hover:outline-sky-300',
+                }}
                 isRequired
                 autoFocus
             />
@@ -57,6 +62,11 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
+                className="group"
+                classNames={{
+                    inputWrapper:
+                        'bg-white group-hover:bg-white! group-hover:outline-1 group-hover:outline-emerald-300',
+                }}
                 isRequired
             />
 
