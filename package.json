@@ -19,8 +19,7 @@
         "prepare": "husky",
         "test": "vitest",
         "test:ui": "vitest --ui",
-        "test:ci": "vitest run",
-        "postinstall": "node -e \"const { spawnSync } = require('child_process'); if (process.env.VERCEL) { spawnSync('npm', ['install', '--arch=x64', '--platform=linux', '--no-save', 'sharp'], { stdio: 'inherit' }); }\""
+        "test:ci": "vitest run"
     },
     "dependencies": {
         "@heroui/alert": "^2.2.26",
