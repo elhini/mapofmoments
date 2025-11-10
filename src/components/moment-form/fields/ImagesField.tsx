@@ -66,10 +66,10 @@ export const ImagesField = ({ momentId = '' }: Props) => {
 
     if (!momentId) return <Message>Сохраните момент, чтобы добавить&nbsp;изображения</Message>;
 
-    const gallery = (
+    const imagePreviews = (
         <MomentImages images={images} isError={isError} momentId={momentId} withDelete />
     );
-    if (isImagesExpanded) return gallery;
+    if (isImagesExpanded) return imagePreviews;
 
     const uploadDisabled = images.length >= MAX_IMAGES_PER_MOMENT;
 
@@ -113,7 +113,7 @@ export const ImagesField = ({ momentId = '' }: Props) => {
                 </div>
             </Tooltip>
 
-            {gallery}
+            {imagePreviews}
         </>
     );
 };
