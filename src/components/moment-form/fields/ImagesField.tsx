@@ -18,6 +18,7 @@ import { MomentImages } from '@/components/moment-images/MomentImages';
 import { useFileDragging } from '@/components/moment-form/useFileDragging';
 import { MAX_IMAGES_PER_MOMENT } from '@/constants/images';
 import { showError } from '@/utils/showError';
+import { resizeImage } from '@/utils/resizeImage';
 
 const Message = ({ color, children }: AlertProps) => (
     <Alert hideIcon className="text-foreground-500 px-0 py-1 text-xs" color={color}>
@@ -47,7 +48,8 @@ export const ImagesField = ({ momentId = '' }: Props) => {
         }
         for (const file of Array.from(files)) {
             const fd = new FormData();
-            fd.append('file', file);
+            const resized = await resizeImage(file);
+            fd.append('file', resized);
             await upload(fd);
         }
     };

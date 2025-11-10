@@ -26,12 +26,11 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
     const formData = await req.formData();
     const file = formData.get('file') as File;
 
-    const extension = file.name.split('.').pop();
-    const path = `${user.id}/${momentId}/${randomUUID()}.${extension}`;
-
     const image = sharp(await file.arrayBuffer());
     const format = (await image.metadata()).format;
     const resized = await image.resize(1920, 1920, { fit: 'inside' }).toBuffer();
+
+    const path = `${user.id}/${momentId}/${randomUUID()}.${format}`;
 
     const { error: uploadError } = await supabase.storage
         .from(momentImagesBucket)
