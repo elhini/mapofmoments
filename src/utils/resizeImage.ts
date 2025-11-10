@@ -1,8 +1,10 @@
 import imageCompression from 'browser-image-compression';
 
+import { MAX_IMAGE_SIZE_IN_PX } from '@/constants/images';
+
 const options = {
     maxSizeMB: 4.5,
-    maxWidthOrHeight: 1920,
+    maxWidthOrHeight: MAX_IMAGE_SIZE_IN_PX,
     useWebWorker: true,
 };
 

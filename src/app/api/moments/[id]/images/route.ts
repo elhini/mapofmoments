@@ -5,8 +5,8 @@ import sharp from 'sharp';
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getCurrentUser } from '@/app/api/authUtils';
 import { momentImagesBucket } from '@/constants/buckets';
+import { MAX_IMAGE_SIZE_IN_PX, MAX_IMAGES_PER_MOMENT } from '@/constants/images';
 import { getMomentImagesCount } from '@/app/api/moments/[id]/images/getMomentImagesCount';
-import { MAX_IMAGES_PER_MOMENT } from '@/constants/images';
 
 // Добавление изображения
 export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
     const image = sharp(await file.arrayBuffer());
     const metadata = await image.metadata();
     const { width = 0, height = 0, format } = metadata;
-    const needResize = width > 1920 || height > 1920;
+    const needResize = width > MAX_IMAGE_SIZE_IN_PX || height > MAX_IMAGE_SIZE_IN_PX;
     const buffer = needResize
         ? await image.resize(1920, 1920, { fit: 'inside' }).toBuffer()
         : await image.toBuffer();
