@@ -27,14 +27,18 @@ export async function POST(req: NextRequest, context: { params: Promise<{ id: st
     const file = formData.get('file') as File;
 
     const image = sharp(await file.arrayBuffer());
-    const format = (await image.metadata()).format;
-    const resized = await image.resize(1920, 1920, { fit: 'inside' }).toBuffer();
+    const metadata = await image.metadata();
+    const { width = 0, height = 0, format } = metadata;
+    const needResize = width > 1920 || height > 1920;
+    const buffer = needResize
+        ? await image.resize(1920, 1920, { fit: 'inside' }).toBuffer()
+        : await image.toBuffer();
 
     const path = `${user.id}/${momentId}/${randomUUID()}.${format}`;
 
     const { error: uploadError } = await supabase.storage
         .from(momentImagesBucket)
-        .upload(path, resized, { contentType: `image/${format}` });
+        .upload(path, buffer, { contentType: `image/${format}` });
 
     if (uploadError) {
         return NextResponse.json({ error: uploadError.message }, { status: 500 });
