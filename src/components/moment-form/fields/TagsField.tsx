@@ -37,6 +37,7 @@ export const TagsField = ({ value = [], onChange }: Props) => {
             value={createOptions(value)}
             onChange={handleChange}
             className="z-11 w-full text-left text-sm"
+            classNames={{ valueContainer: () => 'p-[2px]!' }}
         />
     );
 };
