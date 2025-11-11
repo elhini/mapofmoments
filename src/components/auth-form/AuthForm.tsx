@@ -3,12 +3,12 @@
 import React from 'react';
 
 import { Form } from '@heroui/form';
-import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
 import { Link } from '@heroui/link';
 
-import { useAuthForm } from '@/hooks/useAuthForm';
 import type { AuthFormMode } from '@/types/auth';
+import { useAuthForm } from '@/hooks/useAuthForm';
+import { AuthInput } from '@/components/auth-form/AuthInput';
 import { ErrorAlert } from '@/components/error-alert/ErrorAlert';
 import { AuthWithGoogle } from '@/components/auth-form/AuthWithGoogle';
 
@@ -41,34 +41,9 @@ export const AuthForm: React.FC<AuthFormComponentProps> = ({ mode }) => {
                 Map of Moments
             </a>
 
-            <Input
-                label="Email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="group"
-                classNames={{
-                    inputWrapper:
-                        'bg-white group-hover:bg-white! group-hover:outline-1 group-hover:outline-sky-300',
-                }}
-                isRequired
-                autoFocus
-            />
+            <AuthInput type="email" value={formData.email} onChange={handleChange} />
 
-            <Input
-                label="Пароль"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="group"
-                classNames={{
-                    inputWrapper:
-                        'bg-white group-hover:bg-white! group-hover:outline-1 group-hover:outline-emerald-300',
-                }}
-                isRequired
-            />
+            <AuthInput type="password" value={formData.password} onChange={handleChange} />
 
             <Button
                 type="submit"
