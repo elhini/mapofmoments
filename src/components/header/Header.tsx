@@ -29,7 +29,6 @@ export const Header = () => {
     useEffect(() => {
         if (isLoggedOut) return posthog.reset();
         if (isLoggedIn) {
-            console.log('user email', user.email);
             posthog.identify(user.email, { email: user.email });
             console.log('posthog distinct_id', posthog.get_distinct_id());
         }
