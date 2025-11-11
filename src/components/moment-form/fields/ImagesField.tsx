@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react';
 import React, { useRef } from 'react';
 
 import { useAtom } from 'jotai';
@@ -54,7 +55,7 @@ export const ImagesField = ({ momentId = '' }: Props) => {
         }
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onFilesSelected(e.target.files);
         // reset input so same file can be selected again
         if (inputRef.current) inputRef.current.value = '';
@@ -104,7 +105,7 @@ export const ImagesField = ({ momentId = '' }: Props) => {
                         type="file"
                         accept="image/*"
                         multiple
-                        onChange={handleInputChange}
+                        onChange={handleChange}
                         hidden
                     />
                     <div className="text-foreground-500 text-xs">
