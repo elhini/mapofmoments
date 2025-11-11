@@ -13,7 +13,6 @@ export const Posthog = () => {
             defaults: '2025-05-24',
             person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
         });
-        console.log('posthog initialized');
     }, []);
 
     return null;
