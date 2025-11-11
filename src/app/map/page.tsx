@@ -2,6 +2,8 @@
 
 import { useRef, useState } from 'react';
 
+import posthog from 'posthog-js';
+
 import type { LngLat, Marker, Map } from 'mapbox-gl';
 
 import type { Coordinates } from '@/types/coordinates';
@@ -20,12 +22,14 @@ export default function MapPage() {
     const openForm = (momentId: string) => {
         setLocation(undefined);
         setMomentId(momentId);
+        posthog.capture('momentFormOpened');
     };
 
     const openDraftForm = (lngLat: LngLat, marker: Marker) => {
         markerRef.current = marker;
         setLocation(lngLat);
         setMomentId('');
+        posthog.capture('momentDraftFormOpened');
     };
 
     const closeForm = () => {
