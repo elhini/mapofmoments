@@ -22,6 +22,7 @@ export const Counters = () => {
         defaults: '2025-05-24',
         person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
     });
+    console.log('posthog initialized');
 
     return <div id="counters" dangerouslySetInnerHTML={{ __html: metricaHtml }} />;
 };
