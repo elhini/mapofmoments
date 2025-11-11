@@ -1,5 +1,3 @@
-import posthog from 'posthog-js';
-
 export const Counters = () => {
     if (process.env.NODE_ENV !== 'production') return;
 
@@ -16,13 +14,6 @@ export const Counters = () => {
         </script>
         <noscript><div><img src="https://mc.yandex.ru/watch/104839442" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     `;
-
-    posthog.init('phc_ouqVn1MuqRwPrSqesntEteA0BcxRcxflNtkbUVUt5pN', {
-        api_host: 'https://us.i.posthog.com',
-        defaults: '2025-05-24',
-        person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
-    });
-    console.log('posthog initialized');
 
     return <div id="counters" dangerouslySetInnerHTML={{ __html: metricaHtml }} />;
 };
