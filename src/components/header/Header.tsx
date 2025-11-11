@@ -28,7 +28,7 @@ export const Header = () => {
 
     useEffect(() => {
         if (isLoggedOut) return posthog.reset();
-        if (isLoggedIn) posthog.identify(user.email);
+        if (isLoggedIn) posthog.identify(user.email, { email: user.email });
     }, [isLoggedOut, isLoggedIn, user]);
 
     return needHeader ? (
