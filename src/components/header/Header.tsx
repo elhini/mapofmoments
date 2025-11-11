@@ -1,5 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
+
+import posthog from 'posthog-js';
+
 import { Button } from '@heroui/button';
 import { Link } from '@heroui/link';
 import type { LinkProps } from '@heroui/link';
@@ -19,8 +23,13 @@ export const Header = () => {
     const { isPublic, pathname } = usePublicPage();
     const needHeader = !isPublic || pathname.startsWith('/share');
 
-    const { data: user } = useMeQuery(!isPublic);
-    const { mutate: logout, isPending: isLoggingOut } = useLogoutMutation();
+    const { data: user, isSuccess: isLoggedIn } = useMeQuery(!isPublic);
+    const { mutate: logout, isPending: isLoggingOut, isSuccess: isLoggedOut } = useLogoutMutation();
+
+    useEffect(() => {
+        if (isLoggedOut) return posthog.reset();
+        if (isLoggedIn) posthog.identify(user.email);
+    }, [isLoggedOut, isLoggedIn, user]);
 
     return needHeader ? (
         <header className="fixed top-0 right-0 left-0 z-1 flex w-full min-w-[360px] items-center justify-between bg-gradient-to-b from-black to-transparent p-4 text-white">
