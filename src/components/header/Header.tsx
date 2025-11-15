@@ -12,6 +12,7 @@ import { GlobeIcon, TagsIcon } from 'lucide-react';
 
 import { useLogoutMutation, useMeQuery } from '@/hooks/useAuthApi';
 import { usePublicPage } from '@/hooks/usePublicPage';
+import { MAP_PAGE, TAGS_PAGE } from '@/constants/pages';
 
 const getLinkProps = (href: string, pathname: string) => {
     return href === pathname
@@ -52,10 +53,10 @@ export const Header = () => {
             ) : (
                 <>
                     <div className="flex w-[50%] gap-4">
-                        <Link {...getLinkProps('/map', pathname)} className="gap-1 text-white">
+                        <Link {...getLinkProps(MAP_PAGE, pathname)} className="gap-1 text-white">
                             <GlobeIcon size={16} /> Карта
                         </Link>
-                        <Link {...getLinkProps('/tags', pathname)} className="gap-1 text-white">
+                        <Link {...getLinkProps(TAGS_PAGE, pathname)} className="gap-1 text-white">
                             <TagsIcon size={16} /> Тэги
                         </Link>
                     </div>

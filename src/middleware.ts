@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+
 import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 import { getToken, handleUnauthorizedRequest } from '@/app/api/authUtils';
+import { MAP_PAGE } from '@/constants/pages';
 
 export const config = { matcher: ['/((?!_next|favicon.ico|static).*)'] };
 
@@ -37,7 +39,7 @@ export async function middleware(req: NextRequest) {
     }
 
     // Redirect to /map if just authenticated
-    if (isAuthStart) return NextResponse.redirect(new URL('/map', req.url));
+    if (isAuthStart) return NextResponse.redirect(new URL(MAP_PAGE, req.url));
 
     // Pass through if already authenticated
     return NextResponse.next();

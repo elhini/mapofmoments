@@ -1,4 +1,4 @@
-export const publicRoutes = [
+export const publicPages = [
     '/register',
     '/login',
     '/verify-email',
@@ -8,3 +8,6 @@ export const publicRoutes = [
     '/share',
     '/about',
 ];
+
+export const MAP_PAGE = '/map';
+export const TAGS_PAGE = '/tags';

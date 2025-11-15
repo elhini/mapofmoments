@@ -14,8 +14,7 @@ import { MomentForm } from '@/components/moment-form/MomentForm';
 import { MapStatus } from '@/components/map-status/MapStatus';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 import { baseMetadata } from '@/app/metadata';
-
-const MAP_PAGE = '/map';
+import { MAP_PAGE } from '@/constants/pages';
 
 export default function MapPageView() {
     const [map, setMap] = useState<Map>();

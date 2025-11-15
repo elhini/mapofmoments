@@ -1,7 +1,11 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getSupabaseServiceClient } from './getSupabaseServiceClient';
+
 import type { User } from '@supabase/auth-js';
+
+import { MAP_PAGE } from '@/constants/pages';
+
+import { getSupabaseServiceClient } from '@/app/api/getSupabaseServiceClient';
 
 export const SUPABASE_COOKIE_KEY = 'sb-access-token';
 
@@ -11,7 +15,7 @@ export const getToken = (req: NextRequest) => {
 };
 
 export const handleAuthorizedRequest = (accessToken: string, reqUrl: string) => {
-    const response = NextResponse.redirect(new URL('/map', reqUrl), 303);
+    const response = NextResponse.redirect(new URL(MAP_PAGE, reqUrl), 303);
     response.cookies.set(SUPABASE_COOKIE_KEY, accessToken, {
         httpOnly: true,
         secure: true,
