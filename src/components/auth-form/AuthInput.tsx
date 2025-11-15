@@ -11,9 +11,13 @@ interface Props {
 export const AuthInput = ({ type, value, onChange }: Props) => {
     const isEmail = type === 'email';
     const hoverOutlineColor = isEmail
-        ? 'group-hover:outline-sky-300'
+        ? 'group-hover:outline-sky-300 '
         : 'group-hover:outline-emerald-300';
-    const inputWrapperCNs = 'bg-white! group-hover:outline-1 ' + hoverOutlineColor;
+    const hoverCNs = 'group-hover:outline-1 ' + hoverOutlineColor;
+    const focusRingColor = isEmail
+        ? 'group-data-[focus=true]:ring-sky-500'
+        : 'group-data-[focus=true]:ring-emerald-500';
+    const focusCNs = 'group-data-[focus=true]:ring-2 ' + focusRingColor;
 
     return (
         <Input
@@ -25,7 +29,7 @@ export const AuthInput = ({ type, value, onChange }: Props) => {
             isRequired
             autoFocus={isEmail}
             className="group"
-            classNames={{ inputWrapper: inputWrapperCNs }}
+            classNames={{ inputWrapper: 'bg-white! ' + hoverCNs + ' ' + focusCNs }}
         />
     );
 };
