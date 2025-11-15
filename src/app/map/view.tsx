@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -13,6 +13,7 @@ import { MapView } from '@/components/map-view/MapView';
 import { MomentForm } from '@/components/moment-form/MomentForm';
 import { MapStatus } from '@/components/map-status/MapStatus';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
+import { baseMetadata } from '@/app/metadata';
 
 const MAP_PAGE = '/map';
 
@@ -63,6 +64,10 @@ export default function MapPageView() {
         closeForm();
         await refetch();
     };
+
+    useEffect(() => {
+        document.title = moment?.title || String(baseMetadata.title);
+    }, [moment?.title]);
 
     return (
         <>
