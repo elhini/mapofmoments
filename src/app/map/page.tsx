@@ -2,6 +2,8 @@
 
 import { useRef, useState } from 'react';
 
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import posthog from 'posthog-js';
 
 import type { LngLat, Marker, Map } from 'mapbox-gl';
@@ -12,16 +14,21 @@ import { MomentForm } from '@/components/moment-form/MomentForm';
 import { MapStatus } from '@/components/map-status/MapStatus';
 import { useGetAllMomentsQuery } from '@/hooks/useMomentsApi';
 
+const MAP_PAGE = '/map';
+
 export default function MapPage() {
     const [map, setMap] = useState<Map>();
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const markerRef = useRef<Marker>(null);
     const [location, setLocation] = useState<LngLat>();
-    const [momentId, setMomentId] = useState<string>('');
+    const [momentId, setMomentId] = useState<string>(searchParams.get('momentId') || '');
     const [draggableMomentId, setDraggableMomentId] = useState<string>('');
 
     const openForm = (momentId: string) => {
         setLocation(undefined);
         setMomentId(momentId);
+        router.push(`${MAP_PAGE}?momentId=${momentId}`);
         posthog.capture('momentFormOpened');
     };
 
@@ -37,6 +44,8 @@ export default function MapPage() {
         markerRef.current = null;
         setLocation(undefined);
         setMomentId('');
+        router.push(MAP_PAGE);
+        posthog.capture('momentFormClosed');
     };
 
     const { data: moments = [], isPending, refetch } = useGetAllMomentsQuery();
