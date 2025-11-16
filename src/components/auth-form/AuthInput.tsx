@@ -10,14 +10,10 @@ interface Props {
 
 export const AuthInput = ({ type, value, onChange }: Props) => {
     const isEmail = type === 'email';
-    const hoverOutlineColor = isEmail
-        ? 'group-hover:outline-sky-300 '
-        : 'group-hover:outline-emerald-300';
-    const hoverCNs = 'group-hover:outline-1 ' + hoverOutlineColor;
-    const focusRingColor = isEmail
-        ? 'group-data-[focus=true]:ring-sky-500'
-        : 'group-data-[focus=true]:ring-emerald-500';
-    const focusCNs = 'group-data-[focus=true]:ring-2 ' + focusRingColor;
+    const outlineColor = isEmail ? 'outline-sky-300 ' : 'outline-emerald-300';
+    const hoverCNs = 'group-hover:outline-1 group-hover:' + outlineColor;
+    const ringColor = isEmail ? 'ring-sky-500' : 'ring-emerald-500';
+    const focusCNs = 'group-data-[focus=true]:ring-2 group-data-[focus=true]:' + ringColor;
 
     return (
         <Input
