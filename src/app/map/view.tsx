@@ -72,6 +72,7 @@ export default function MapPageView() {
         <>
             <MapView
                 moments={moments}
+                momentId={momentId}
                 draggableMomentId={draggableMomentId}
                 onMarkerClick={openForm}
                 onMarkerCreate={openDraftForm}

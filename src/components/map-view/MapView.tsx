@@ -27,6 +27,7 @@ declare module 'mapbox-gl' {
 
 type Props = {
     moments: (Moment | PublicMoment)[];
+    momentId?: string;
     draggableMomentId?: string;
     onMarkerClick: (momentId: string) => void;
     onMarkerCreate?: (lngLat: LngLat, marker: Marker) => void;
@@ -39,6 +40,7 @@ type Props = {
 
 export const MapView = ({
     moments,
+    momentId,
     draggableMomentId,
     onMarkerClick,
     onMarkerCreate,
@@ -74,6 +76,10 @@ export const MapView = ({
         map.loadImage('/static/marker.png', (error, image) => {
             if (error || !image) throw error || new Error('No image loaded');
             map.addImage('single-point', image, { pixelRatio: 2 });
+        });
+        map.loadImage('/static/marker-green.png', (error, image) => {
+            if (error || !image) throw error || new Error('No image loaded');
+            map.addImage('single-point-active', image, { pixelRatio: 2 });
         });
         mapRef.current = map;
         if (outerMapRef) outerMapRef.current = map;
@@ -253,6 +259,17 @@ export const MapView = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [styleLoaded, moments, viewOnly, withLines]);
+
+    useEffect(() => {
+        const map = mapRef.current;
+        if (!map?.isStyleLoaded()) return;
+        map.setLayoutProperty('points-layer', 'icon-image', [
+            'case',
+            ['==', ['get', 'id'], momentId],
+            'single-point-active',
+            'single-point',
+        ]);
+    }, [momentId]);
 
     useEffect(() => {
         const map = mapRef.current;

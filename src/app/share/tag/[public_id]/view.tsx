@@ -53,6 +53,7 @@ export default function ShareTagView({ publicId, withLines }: Props) {
         <>
             <MapView
                 moments={moments}
+                momentId={momentId}
                 onMarkerClick={openView}
                 withLines={withLines}
                 viewOnly
