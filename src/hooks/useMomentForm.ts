@@ -62,6 +62,16 @@ export const useMomentForm = ({ moment, onSubmit, onDelete }: UseMomentFormProps
         onSubmit();
     };
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                handleSubmit();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
     const handleDelete = async () => {
         await deleteMutation.mutateAsync();
         onDelete();
