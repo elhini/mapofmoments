@@ -9,6 +9,7 @@ import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 import type { Moment, PublicMoment } from '@/types/moment';
+import { useScreenWidth } from '@/hooks/useScreenWidth';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -53,6 +54,7 @@ export const MapView = ({
     const mapRef = useRef<Map>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const [styleLoaded, setStyleLoaded] = useState(false);
+    const { isMobile } = useScreenWidth();
 
     useEffect(() => {
         mapboxgl.accessToken = accessToken;
@@ -219,7 +221,7 @@ export const MapView = ({
             }
             if (momentsCoords.length) {
                 map.fitBounds(bounds, {
-                    padding: 75,
+                    padding: isMobile ? 50 : 150,
                     maxZoom: 15,
                 });
             }
