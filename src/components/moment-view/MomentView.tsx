@@ -3,6 +3,7 @@ import { Modal, ModalContent } from '@heroui/modal';
 import type { PublicMoment } from '@/types/moment';
 import { NavButton } from '@/components/nav-button/NavButton';
 import { MomentImages } from '@/components/moment-images/MomentImages';
+import { TextWithLinks } from '@/components/text-with-links/TextWithLinks';
 import { useGetSharedMomentImagesQuery } from '@/hooks/useMomentImagesApi';
 
 type Props = {
@@ -26,7 +27,9 @@ export const MomentView = ({ moment, hasPrev, hasNext, onPrev, onNext, onClose }
             <ModalContent className="flex flex-col gap-3">
                 <div className="relative -z-1 flex flex-col gap-2 p-2 text-left">
                     <div>{moment.title}</div>
-                    <div className="text-foreground-700 text-sm">{moment.description}</div>
+                    <div className="text-foreground-700 text-sm whitespace-pre-wrap">
+                        <TextWithLinks text={moment.description} />
+                    </div>
                     <div className="text-foreground-500 text-xs">
                         {moment.date} {moment.not_exact_date ? '(примерная дата)' : ''}
                     </div>
