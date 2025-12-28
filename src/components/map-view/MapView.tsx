@@ -79,7 +79,7 @@ export const MapView = ({
             if (error || !image) throw error || new Error('No image loaded');
             map.addImage('single-point', image, { pixelRatio: 2 });
         });
-        map.loadImage('/static/marker-green.png', (error, image) => {
+        map.loadImage('/static/marker-active.png', (error, image) => {
             if (error || !image) throw error || new Error('No image loaded');
             map.addImage('single-point-active', image, { pixelRatio: 2 });
         });
