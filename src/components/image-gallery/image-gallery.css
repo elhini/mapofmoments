@@ -1,0 +1,16 @@
+.image-gallery-index,
+.image-gallery-bullets {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: auto;
+    padding: 10px 20px;
+}
+
+.image-gallery-index {
+    top: -36px;
+}
+
+.image-gallery-bullets {
+    bottom: -36px;
+}
