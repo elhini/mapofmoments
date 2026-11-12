@@ -59,6 +59,8 @@ Map of Moments — карта воспоминаний, которая связ�
 
 ## 💾 Установка
 
+Для разработки нужен Node.js 24.x. Если используешь nvm, выполни `nvm use` в корне проекта.
+
 ```bash
 # Клонировать репозиторий
 git clone https://github.com/elhini/mapofmoments.git
